@@ -1,5 +1,8 @@
 {
   "itemGroup.examplemod": "Example Mod Tab",
   "block.examplemod.example_block": "Example Block",
-  "item.examplemod.example_item": "Example Item"
+  "item.examplemod.example_item": "Example Item",
+
+  "key.easy_gui.test_menu_key": "Test Menu Key",
+  "category.easy_gui.testing": "Easy Gui Testing"
 }
