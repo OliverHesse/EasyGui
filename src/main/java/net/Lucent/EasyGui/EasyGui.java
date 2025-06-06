@@ -1,6 +1,9 @@
 package net.Lucent.EasyGui;
 
+import net.Lucent.EasyGui.overlays.EasyGuiOverlayManager;
 import net.Lucent.EasyGui.testing.KeyHandler;
+import net.Lucent.EasyGui.testing.testOverlay.RandomOverlay;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -43,6 +46,12 @@ public class EasyGui
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
         KeyHandler.register();
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            modEventBus.addListener(EasyGuiOverlayManager.INSTANCE::onRegisterOverlays);
+            EasyGuiOverlayManager.overlays.add(new RandomOverlay());
+        }
+
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
