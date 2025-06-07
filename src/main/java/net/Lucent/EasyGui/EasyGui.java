@@ -1,9 +1,16 @@
 package net.Lucent.EasyGui;
 
+import net.Lucent.EasyGui.elements.other.View;
+import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
+import net.Lucent.EasyGui.overlays.EasyGuiOverlay;
 import net.Lucent.EasyGui.overlays.EasyGuiOverlayManager;
 import net.Lucent.EasyGui.testing.KeyHandler;
-import net.Lucent.EasyGui.testing.testOverlay.RandomOverlay;
+import net.Lucent.EasyGui.testing.testElements.HealthProgressBar;
+
+import net.Lucent.EasyGui.util.TextureData;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -48,8 +55,25 @@ public class EasyGui
         KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
-            modEventBus.addListener(EasyGuiOverlayManager.INSTANCE::onRegisterOverlays);
-            EasyGuiOverlayManager.overlays.add(new RandomOverlay());
+            modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
+            //EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"cultivation_progress"),new RandomOverlay());
+            EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay(( eventHolder, overlay) ->{
+                View view = new View(eventHolder,overlay,0,0, Minecraft.getInstance().getWindow().getScreenWidth(),
+                    Minecraft.getInstance().getWindow().getScreenHeight());
+                view.useMinecraftScale = true;
+
+
+                HealthProgressBar progressBar = new HealthProgressBar(
+                        eventHolder,
+                        new TextureData(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_overlay.png")
+                                ,81,9),
+                        new TextureData(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_background.png")
+                                ,81,9),
+                        view.getScaledWidth()/2 - 91,
+                        view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
+                view.addChild(progressBar);
+                overlay.view = view;
+                }));
         }
 
         // Register the item to a creative tab

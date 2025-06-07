@@ -18,6 +18,13 @@ public interface ContainerRenderable {
     void setVisible(boolean state);
     default boolean isFocused(){return false;}
     void setFocused(boolean state);
+
+    int getX();
+    int getY();
+    void setX(int x);
+    void setY(int y);
+
+
     default double getTotalCustomScaling(){return 1.0;}
     default double getTotalScaleFactorX(){return 1.0;}
     default double getTotalScaleFactorY(){return 1.0;}
@@ -28,6 +35,7 @@ public interface ContainerRenderable {
     ContainerRenderable getRoot();
     List<ContainerRenderable> getChildren();
 
+    void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
     void remove();
 }

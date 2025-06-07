@@ -6,4 +6,4 @@
 ☐ image button
 
 - current task -
-☐ get hover working
+☐ make sticky generals formula

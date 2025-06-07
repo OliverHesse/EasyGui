@@ -11,6 +11,7 @@ public class TestScreen extends EasyGuiBaseScreen {
         super(title);
         View view = new View(this.eventHolder,this,0,0,1920,1080);
         BaseButton button = new BaseButton(this.eventHolder,1920/2,1080/2,200,40);
+        view.useMinecraftScale = false;
         view.addChild(button);
         views.add(view);
         button.customScale = 2;

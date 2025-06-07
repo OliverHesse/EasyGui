@@ -3,6 +3,7 @@ package net.Lucent.EasyGui.holders;
 import net.Lucent.EasyGui.handlers.*;
 import net.Lucent.EasyGui.interfaces.*;
 import net.Lucent.EasyGui.interfaces.events.*;
+import net.minecraft.client.gui.Gui;
 
 
 public class EasyGuiEventHolder {
@@ -16,6 +17,9 @@ public class EasyGuiEventHolder {
     public CharTypedEventHandler CHAR_TYPED_EVENT = new CharTypedEventHandler();
     public MouseScrollEventHandler MOUSE_SCROLL_EVENT = new MouseScrollEventHandler();
     public MouseMovedEventHandler MOUSE_MOVED_EVENT = new MouseMovedEventHandler();
+
+    public GuiScaleChangedEventHandler GUI_SCALE_CHANGED_EVENT = new GuiScaleChangedEventHandler();
+
 
     public void unregister(ContainerRenderable obj){
         if(obj instanceof Clickable){
@@ -48,6 +52,9 @@ public class EasyGuiEventHolder {
         }
         if(obj instanceof MouseMovedListener){
             MOUSE_MOVED_EVENT.unregister((MouseMovedListener) obj);
+        }
+        if(obj instanceof GuiScaleListener){
+            GUI_SCALE_CHANGED_EVENT.unregister((GuiScaleListener) obj);
         }
     }
 
@@ -82,6 +89,9 @@ public class EasyGuiEventHolder {
         }
         if(obj instanceof MouseMovedListener){
             MOUSE_MOVED_EVENT.register((MouseMovedListener) obj);
+        }
+        if(obj instanceof GuiScaleListener){
+            GUI_SCALE_CHANGED_EVENT.register((GuiScaleListener) obj);
         }
     }
 

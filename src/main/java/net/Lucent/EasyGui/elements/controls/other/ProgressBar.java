@@ -5,7 +5,7 @@ import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
 import net.Lucent.EasyGui.util.TextureData;
 import net.minecraft.client.gui.GuiGraphics;
 
-public class ProgressBar extends BaseRenderable {
+public abstract class ProgressBar extends BaseRenderable {
 
     public TextureData background;
     public TextureData barTexture;
@@ -19,6 +19,8 @@ public class ProgressBar extends BaseRenderable {
 
     public ProgressBar(EasyGuiEventHolder eventHandler,TextureData progressBarTexture,int x,int y) {
         super(eventHandler);
+        setX(x);
+        setY(y);
         this.barTexture = progressBarTexture;
 
     }
@@ -44,9 +46,11 @@ public class ProgressBar extends BaseRenderable {
         this.progress = progress;
     }
 
+    public abstract double getProgress();
+
     public int getProgressLength(){
-        if(vertical) return (int) (getHeight()*(progress/100));
-        return (int) (getWidth()*(progress/100));
+        if(vertical) return (int) (getHeight()*(getProgress()));
+        return (int) (getWidth()*(getProgress()));
     }
 
 

@@ -19,4 +19,7 @@ public record TextureData (ResourceLocation texture, int textureWidth, int textu
         guiGraphics.blit(texture,x,y,u,v,uOffset,vOffset,textureWidth,textureHeight);
     }
 
+    public void renderTexture(GuiGraphics guiGraphics,TextureSubSection subSection){
+        renderTexture(guiGraphics,0,0,subSection.u(),subSection.v(),subSection.offsetU(),subSection.offsetV());
+    }
 }

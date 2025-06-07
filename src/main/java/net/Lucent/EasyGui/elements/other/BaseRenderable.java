@@ -23,6 +23,10 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public boolean focused = false;
 
     public boolean useCustomScaling = true;
+    /**
+     * after resize does it maintain its relative position
+     */
+    public boolean sticky = false;
 
     public double customScale = 1;
 
@@ -37,9 +41,11 @@ public abstract class BaseRenderable implements ContainerRenderable {
         eventHandler.register(this);
     }
 
+    @Override
     public int getX(){
         return x;
     }
+    @Override
     public int getY(){
         return y;
     }
@@ -49,7 +55,13 @@ public abstract class BaseRenderable implements ContainerRenderable {
      */
     @Override
     public double getGlobalScaledX() {
-        if(parent != null) return getY()*parent.getTotalScaleFactorX() + parent.getGlobalScaledX();
+
+        if(parent != null){
+            System.out.println("---");
+            System.out.println(parent.getTotalScaleFactorX());
+            System.out.println(parent.getGlobalScaledX());
+            return getX()*parent.getTotalScaleFactorX() + parent.getGlobalScaledX();
+        }
         return getX();
     }
 
@@ -58,15 +70,14 @@ public abstract class BaseRenderable implements ContainerRenderable {
      */
     @Override
     public double getGlobalScaledY() {
-
         if(parent != null) return getY()*parent.getTotalScaleFactorY() + parent.getGlobalScaledY();
         return getY();
     }
-
+    @Override
     public void setX(int x){
         this.x = x;
     }
-
+    @Override
     public void setY(int y){
         this.y = y;
     }
@@ -171,6 +182,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
         return customScale;
     }
 
+    @Override
     public double getTotalScaleFactorX(){
 
         if(parent != null && this.useCustomScaling) return parent.getTotalScaleFactorX()*customScale;
@@ -178,6 +190,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
         if(useCustomScaling) return customScale;
         return 1;
     }
+    @Override
     public double getTotalScaleFactorY(){
 
         if(parent != null && this.useCustomScaling) return parent.getTotalScaleFactorY()*customScale;
@@ -198,9 +211,12 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public int getWidth(){return 0;}
     public int getHeight(){return 0;}
 
+
     public int getScaledWidth(){
+        System.out.println("scale factor: "+getTotalScaleFactorX());
         return (int) (getWidth()*getTotalScaleFactorX());
     }
+
     public int getScaledHeight(){
         return (int) (getHeight()*getTotalScaleFactorY());
     }
@@ -215,8 +231,14 @@ public abstract class BaseRenderable implements ContainerRenderable {
     }
 
     @Override
+    public void setParent(ContainerRenderable parent) {
+        this.parent = parent;
+    }
+
+    @Override
     public void addChild(ContainerRenderable child) {
         this.children.add(child);
+        child.setParent(this);
     }
 
     @Override

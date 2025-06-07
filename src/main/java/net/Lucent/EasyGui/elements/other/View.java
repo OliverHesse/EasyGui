@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
 import net.Lucent.EasyGui.interfaces.EasyGuiScreen;
+import net.Lucent.EasyGui.interfaces.events.ScreenResizeListener;
 import net.Lucent.EasyGui.util.PositionedTextureData;
 import net.Lucent.EasyGui.util.TextureSubSection;
 import net.minecraft.client.Minecraft;
@@ -13,7 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.awt.*;
 
 
-public class View extends BaseRenderable{
+public class View extends BaseRenderable implements ScreenResizeListener {
     /**
      * scales items relative to original viewport size
      * so if it was originally 1920x1080 and now 960x540
@@ -70,6 +71,7 @@ public class View extends BaseRenderable{
 
     @Override
     public double getScale(){
+
         double finalScale = 1;
         if(useCustomScaling){
             finalScale *= customScale;
@@ -93,19 +95,34 @@ public class View extends BaseRenderable{
 
     @Override
     public double getTotalScaleFactorX() {
-        return getScaleX();
+        //magic shit dont worry about it
+        /*
+        if you are worrying then this is because this is because of how minecraft's scaling works.
+        when it scales something "up" it is actually just reducing the available pixels by that amount
+        so a 2x scales is each pixel is worth 2. but the result is stuff like screen width is actually /2....
+        so in the new screen size the width of your texture has technically not changed at all... i know really fucky wucky
+        i know fucky wucky shit
+         */
+        if(useMinecraftScale) return getScaleX()/Minecraft.getInstance().getWindow().getGuiScale();
+        //ok i dont know anymore man
+        return getScaleX()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 
     @Override
     public double getTotalScaleFactorY() {
-        return getScaleY();
+        //magic shit dont worry about it
+        if(useMinecraftScale) return getScaleY()/Minecraft.getInstance().getWindow().getGuiScale();
+        return getScaleY()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 
     @Override
     public double getScaleX() {
-        Window win = Minecraft.getInstance().getWindow();
+
         double finalScale = getScale();
         if(useViewportSize) {
+
+            Window win = Minecraft.getInstance().getWindow();
+
             finalScale *=(double) win.getWidth() / win.getScreenWidth();
         }
         return finalScale;
@@ -125,5 +142,11 @@ public class View extends BaseRenderable{
     public void remove() {
         eventHandler.unregister(this);
         screen.removeView(this);
+    }
+
+    @Override
+    public void onResize(int oldWidth, int oldHeight) {
+        width = Minecraft.getInstance().getWindow().getWidth();
+        height = Minecraft.getInstance().getWindow().getHeight();
     }
 }
