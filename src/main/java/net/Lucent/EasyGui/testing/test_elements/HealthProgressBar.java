@@ -1,9 +1,9 @@
-package net.Lucent.EasyGui.testing.testElements;
+package net.Lucent.EasyGui.testing.test_elements;
 
 import net.Lucent.EasyGui.elements.other.ProgressBar;
 import net.Lucent.EasyGui.elements.other.View;
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
-import net.Lucent.EasyGui.interfaces.complexEvents.Sticky;
+import net.Lucent.EasyGui.interfaces.complex_events.Sticky;
 import net.Lucent.EasyGui.util.TextureData;
 import net.minecraft.client.Minecraft;
 

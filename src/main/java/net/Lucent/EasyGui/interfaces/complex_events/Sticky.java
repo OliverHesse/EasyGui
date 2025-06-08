@@ -1,7 +1,5 @@
-package net.Lucent.EasyGui.interfaces.complexEvents;
+package net.Lucent.EasyGui.interfaces.complex_events;
 
-import com.mojang.blaze3d.platform.Window;
-import net.Lucent.EasyGui.elements.other.View;
 import net.Lucent.EasyGui.interfaces.events.GuiScaleListener;
 import net.Lucent.EasyGui.interfaces.events.ScreenResizeListener;
 import net.minecraft.client.Minecraft;

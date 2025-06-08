@@ -1,11 +1,10 @@
 package net.Lucent.EasyGui;
 
 import net.Lucent.EasyGui.elements.other.View;
-import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
 import net.Lucent.EasyGui.overlays.EasyGuiOverlay;
 import net.Lucent.EasyGui.overlays.EasyGuiOverlayManager;
 import net.Lucent.EasyGui.testing.KeyHandler;
-import net.Lucent.EasyGui.testing.testElements.HealthProgressBar;
+import net.Lucent.EasyGui.testing.test_elements.HealthProgressBar;
 
 import net.Lucent.EasyGui.util.TextureData;
 import net.minecraft.resources.ResourceLocation;

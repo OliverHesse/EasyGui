@@ -1,7 +1,6 @@
 package net.Lucent.EasyGui.testing;
 
-import net.Lucent.EasyGui.screens.EasyGuiBaseScreen;
-import net.Lucent.EasyGui.testing.testScreens.TestScreen;
+import net.Lucent.EasyGui.testing.test_screens.TestScreen;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
