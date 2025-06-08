@@ -1,27 +1,27 @@
 package net.Lucent.EasyGui.testing.testElements;
 
-import net.Lucent.EasyGui.elements.controls.other.ProgressBar;
+import net.Lucent.EasyGui.elements.other.ProgressBar;
 import net.Lucent.EasyGui.elements.other.View;
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
-import net.Lucent.EasyGui.interfaces.ContainerRenderable;
 import net.Lucent.EasyGui.interfaces.complexEvents.Sticky;
 import net.Lucent.EasyGui.util.TextureData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class HealthProgressBar extends ProgressBar implements Sticky {
 
 
-
+    double ROTATION_RATE = (double) 360 /60;
 
     public HealthProgressBar(EasyGuiEventHolder eventHandler,  TextureData progressBarTexture, TextureData backgroundTexture, int x, int y) {
         super(eventHandler, progressBarTexture,backgroundTexture, x, y);
 
     }
 
+    @Override
+    public void tick() {
 
+        setRotation(getRotationX()+ROTATION_RATE,getRotationY()+ROTATION_RATE,getRotationZ()+ROTATION_RATE);
+    }
 
     @Override
     public double getProgress() {

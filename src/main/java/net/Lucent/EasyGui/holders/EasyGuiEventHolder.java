@@ -20,8 +20,10 @@ public class EasyGuiEventHolder {
 
     public GuiScaleChangedEventHandler GUI_SCALE_CHANGED_EVENT = new GuiScaleChangedEventHandler();
 
+    public TickEventHandler TICK_EVENT = new TickEventHandler();
 
     public void unregister(ContainerRenderable obj){
+        TICK_EVENT.unregister(obj);
         if(obj instanceof Clickable){
             CLICK_EVENT.unregister((Clickable) obj);
         }
@@ -59,6 +61,7 @@ public class EasyGuiEventHolder {
     }
 
     public void register(ContainerRenderable obj){
+        TICK_EVENT.register(obj);
         if(obj instanceof Clickable){
             CLICK_EVENT.register((Clickable) obj);
         }

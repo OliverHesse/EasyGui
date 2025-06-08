@@ -1,13 +1,15 @@
-package net.Lucent.EasyGui.elements.other;
+package net.Lucent.EasyGui.elements;
 
 
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
 import net.Lucent.EasyGui.interfaces.ContainerRenderable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Quaternionf;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * handles all the scaling stuff
@@ -31,6 +33,9 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public double customScale = 1;
 
 
+    public double xRotation = 0;
+    public double yRotation = 0;
+    public double zRotation = 0;
 
     public EasyGuiEventHolder eventHandler;
     public ContainerRenderable parent;
@@ -39,6 +44,28 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public BaseRenderable(EasyGuiEventHolder eventHandler){
         this.eventHandler = eventHandler;
         eventHandler.register(this);
+    }
+
+    @Override
+    public void setRotation(double x, double y, double z) {
+        this.xRotation = x;
+        this.yRotation = y;
+        this.zRotation = z;
+    }
+
+    @Override
+    public double getRotationX() {
+        return xRotation;
+    }
+
+    @Override
+    public double getRotationY() {
+        return yRotation;
+    }
+
+    @Override
+    public double getRotationZ() {
+        return zRotation;
     }
 
     @Override
@@ -142,6 +169,11 @@ public abstract class BaseRenderable implements ContainerRenderable {
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(x,y,0);
+        Quaternionf rotation = new Quaternionf()
+                .rotateZ((float) Math.toRadians(getRotationZ()))
+                .rotateY((float) Math.toRadians(getRotationY()))
+                .rotateX((float) Math.toRadians(getRotationX()));
+        guiGraphics.pose().rotateAround(rotation, (float) getWidth() /2, (float) getHeight() /2,1);
         if(useCustomScaling){
             guiGraphics.pose().scale((float) getScaleX(), (float) getScaleY(),1);
         }

@@ -1,25 +1,22 @@
 package net.Lucent.EasyGui.overlays;
 
-import net.Lucent.EasyGui.elements.other.BaseRenderable;
 import net.Lucent.EasyGui.elements.other.View;
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
-import net.Lucent.EasyGui.interfaces.ContainerRenderable;
 import net.Lucent.EasyGui.interfaces.EasyGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.events.ContainerEventHandler;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
+/**
+ * this cannot be inherited will cause problems with events
+ */
 @OnlyIn(Dist.CLIENT)
 public class EasyGuiOverlay implements EasyGuiScreen {
 
@@ -42,6 +39,10 @@ public class EasyGuiOverlay implements EasyGuiScreen {
     @SubscribeEvent
     private void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event){
         runnable.accept(eventHolder,this);
+    }
+    @SubscribeEvent
+    private void onClientTick(ClientTickEvent.Pre event){
+        eventHolder.TICK_EVENT.call();
     }
 
     void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){

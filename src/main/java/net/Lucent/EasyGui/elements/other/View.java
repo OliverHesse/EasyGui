@@ -2,6 +2,7 @@ package net.Lucent.EasyGui.elements.other;
 
 import com.mojang.blaze3d.platform.Window;
 
+import net.Lucent.EasyGui.elements.BaseRenderable;
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
 import net.Lucent.EasyGui.interfaces.EasyGuiScreen;
 import net.Lucent.EasyGui.interfaces.events.ScreenResizeListener;
@@ -10,8 +11,6 @@ import net.Lucent.EasyGui.util.TextureSubSection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-
-import java.awt.*;
 
 
 public class View extends BaseRenderable implements ScreenResizeListener {
@@ -93,6 +92,11 @@ public class View extends BaseRenderable implements ScreenResizeListener {
                 bgTexture.textureWidth(),bgTexture.textureHeight());
     }
 
+    /*
+    this is only for the view object
+    since it is responsible for most of the fucky wucky scaling shit
+     */
+
     @Override
     public double getTotalScaleFactorX() {
         //magic shit dont worry about it
@@ -103,8 +107,14 @@ public class View extends BaseRenderable implements ScreenResizeListener {
         so in the new screen size the width of your texture has technically not changed at all... i know really fucky wucky
         i know fucky wucky shit
          */
+        /*
+        if using minecraft scaling then the viewport size decreases aka the view width gets smaller
+         */
         if(useMinecraftScale) return getScaleX()/Minecraft.getInstance().getWindow().getGuiScale();
         //ok i dont know anymore man
+        /*
+        if not using minecraft scaling then the viewport should not change in size aka get rid of the division
+         */
         return getScaleX()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 

@@ -24,6 +24,12 @@ public interface ContainerRenderable {
     void setX(int x);
     void setY(int y);
 
+    default void setRotation(double x,double y,double z){}
+
+    default double getRotationX(){return 0;}
+    default double getRotationY(){return 0;}
+    default double getRotationZ(){return 0;}
+
 
     default double getTotalCustomScaling(){return 1.0;}
     default double getTotalScaleFactorX(){return 1.0;}
@@ -38,4 +44,6 @@ public interface ContainerRenderable {
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
     void remove();
+
+    default void tick(){}
 }

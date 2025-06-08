@@ -1,6 +1,6 @@
-package net.Lucent.EasyGui.elements.controls.other;
+package net.Lucent.EasyGui.elements.other;
 
-import net.Lucent.EasyGui.elements.other.BaseRenderable;
+import net.Lucent.EasyGui.elements.BaseRenderable;
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
 import net.Lucent.EasyGui.util.TextureData;
 import net.minecraft.client.gui.GuiGraphics;

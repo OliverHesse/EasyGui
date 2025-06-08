@@ -72,6 +72,7 @@ public class EasyGui
                         view.getScaledWidth()/2 - 91,
                         view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
                 view.addChild(progressBar);
+
                 overlay.view = view;
                 }));
         }

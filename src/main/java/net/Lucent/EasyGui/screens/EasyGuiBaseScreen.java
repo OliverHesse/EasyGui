@@ -20,9 +20,11 @@ public class EasyGuiBaseScreen extends Screen implements EasyGuiScreen {
     public List<View> views = new ArrayList<>();
     public EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
 
+
     public EasyGuiBaseScreen(Component title) {
         super(title);
     }
+
 
 
     @Override
@@ -89,6 +91,7 @@ public class EasyGuiBaseScreen extends Screen implements EasyGuiScreen {
         double mouseY = Minecraft.getInstance().mouseHandler.ypos();
         System.out.println(mouseX + " , "+ mouseY);
         eventHolder.MOUSE_OVER_EVENT.call(mouseX,mouseY);
+        eventHolder.TICK_EVENT.call();
     }
 
 

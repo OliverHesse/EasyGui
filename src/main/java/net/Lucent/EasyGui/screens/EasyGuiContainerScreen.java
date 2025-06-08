@@ -83,5 +83,6 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         double mouseX = Minecraft.getInstance().mouseHandler.xpos();
         double mouseY = Minecraft.getInstance().mouseHandler.ypos();
         eventHolder.MOUSE_OVER_EVENT.call(mouseX,mouseY);
+        eventHolder.TICK_EVENT.call();
     }
 }

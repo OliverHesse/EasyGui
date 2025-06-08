@@ -1,4 +1,4 @@
-package net.Lucent.EasyGui.elements.other;
+package net.Lucent.EasyGui.elements;
 
 
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;

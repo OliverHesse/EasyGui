@@ -1,7 +1,7 @@
 package net.Lucent.EasyGui.elements.controls.buttons;
 
 
-import net.Lucent.EasyGui.elements.other.SquareRenderable;
+import net.Lucent.EasyGui.elements.SquareRenderable;
 import net.Lucent.EasyGui.holders.EasyGuiEventHolder;
 import net.Lucent.EasyGui.interfaces.events.Clickable;
 
