@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'correto'
+          distribution: 'temurin'
 
       - name: Build with Gradle
         uses: gradle/actions/setup-gradle@v3
