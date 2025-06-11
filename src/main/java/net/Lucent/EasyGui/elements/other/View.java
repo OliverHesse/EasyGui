@@ -115,6 +115,7 @@ public class View extends BaseRenderable implements ScreenResizeListener {
         /*
         if not using minecraft scaling then the viewport should not change in size aka get rid of the division
          */
+
         return getScaleX()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 

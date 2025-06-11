@@ -7,7 +7,10 @@ import net.Lucent.EasyGui.testing.KeyHandler;
 import net.Lucent.EasyGui.testing.test_elements.HealthProgressBar;
 
 import net.Lucent.EasyGui.util.TextureData;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.item.Item;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.slf4j.Logger;
@@ -44,6 +47,7 @@ public class EasyGui
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public EasyGui(IEventBus modEventBus, ModContainer modContainer)
     {
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
