@@ -39,8 +39,7 @@ public interface ContainerRenderable {
     default double getGlobalScaledX(){return 0.0;}
     default double getGlobalScaledY(){return 0.0;}
 
-    default double getGlobalX(){return 0.0;}
-    default double getGlobalY(){return 0.0;}
+
     ContainerRenderable getParent();
     ContainerRenderable getRoot();
     List<ContainerRenderable> getChildren();

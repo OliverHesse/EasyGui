@@ -86,29 +86,15 @@ public class View extends BaseRenderable implements ScreenResizeListener {
     @Override
     public double getTotalScaleFactorX() {
         //magic shit dont worry about it
-        /*
-        if you are worrying then this is because this is because of how minecraft's scaling works.
-        when it scales something "up" it is actually just reducing the available pixels by that amount
-        so a 2x scales is each pixel is worth 2. but the result is stuff like screen width is actually /2....
-        so in the new screen size the width of your texture has technically not changed at all... i know really fucky wucky
-        i know fucky wucky shit
-         */
-        /*
-        if using minecraft scaling then the viewport size decreases aka the view width gets smaller
-         */
-        if(useMinecraftScale) return getScaleX()/Minecraft.getInstance().getWindow().getGuiScale();
-        //ok i dont know anymore man
-        /*
-        if not using minecraft scaling then the viewport should not change in size aka get rid of the division
-         */
 
+        if(useMinecraftScale) return getScaleX();
         return getScaleX()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 
     @Override
     public double getTotalScaleFactorY() {
         //magic shit dont worry about it
-        if(useMinecraftScale) return getScaleY()/Minecraft.getInstance().getWindow().getGuiScale();
+        if(useMinecraftScale) return getScaleY();
         return getScaleY()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 

@@ -19,6 +19,7 @@ public class ColorButton extends AbstractButton{
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+
         Color finalColor = defaultColor;
         if(focused){
             finalColor = focusColor;

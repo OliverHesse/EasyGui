@@ -58,18 +58,21 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+
         eventHolder.CLICK_EVENT.call(mouseX, mouseY, button);
         return true;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
+
         eventHolder.MOUSE_RELEASE_EVENT.call(mouseX, mouseY, button);
         return true;
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+
         eventHolder.MOUSE_DRAG_EVENT.call(mouseX, mouseY, button,dragX,dragY);
         return true;
     }
@@ -78,9 +81,11 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     @Override
     protected void containerTick() {
         super.containerTick();
+        double scale = Minecraft.getInstance().options.guiScale().get();
         double mouseX = Minecraft.getInstance().mouseHandler.xpos();
         double mouseY = Minecraft.getInstance().mouseHandler.ypos();
-        eventHolder.MOUSE_OVER_EVENT.call(mouseX,mouseY);
+        eventHolder.MOUSE_OVER_EVENT.call(mouseX/scale,mouseY/scale);
         eventHolder.TICK_EVENT.call();
+
     }
 }

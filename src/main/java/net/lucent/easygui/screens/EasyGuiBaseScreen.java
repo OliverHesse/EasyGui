@@ -63,6 +63,7 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+
         eventHolder.CLICK_EVENT.call(mouseX, mouseY, button);
         return true;
     }
@@ -87,11 +88,11 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     @Override
     public void tick() {
         super.tick();
-
+        double scale = Minecraft.getInstance().options.guiScale().get();
         double mouseX = Minecraft.getInstance().mouseHandler.xpos();
         double mouseY = Minecraft.getInstance().mouseHandler.ypos();
 
-        eventHolder.MOUSE_OVER_EVENT.call(mouseX,mouseY);
+        eventHolder.MOUSE_OVER_EVENT.call(mouseX/scale,mouseY/scale);
         eventHolder.TICK_EVENT.call();
     }
 

@@ -19,6 +19,7 @@ public class MouseOverEventHandler extends AbstractGuiEventHandler<Hoverable> {
         boolean firstFound = false;
         while(itr.hasPrevious()){
             Hoverable listener = itr.previous();
+
             if(listener.isMouseOver(mouseX,mouseY) && listener.isActive() && !firstFound){
                 firstFound = true;
             }

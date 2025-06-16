@@ -89,12 +89,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
         return getX();
     }
 
-    @Override
-    public double getGlobalX() {
-        int x = getX();
-        if(parent != null) return x + parent.getGlobalX();
-        return x;
-    }
+
 
     /**
      * already includes the minecraft gui scale
@@ -104,12 +99,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
         if(parent != null) return getY()*parent.getTotalScaleFactorY() + parent.getGlobalScaledY();
         return getY();
     }
-    @Override
-    public double getGlobalY() {
-        int y = getY();
-        if(parent != null) return y + parent.getGlobalY();
-        return y;
-    }
+
     @Override
     public void setX(int x){
         this.x = x;

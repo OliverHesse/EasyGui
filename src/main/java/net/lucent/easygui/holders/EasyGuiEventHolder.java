@@ -62,6 +62,7 @@ public class EasyGuiEventHolder {
     }
 
     public void register(ContainerRenderable obj){
+
         TICK_EVENT.register(obj);
         if(obj instanceof Clickable){
             CLICK_EVENT.register((Clickable) obj);
