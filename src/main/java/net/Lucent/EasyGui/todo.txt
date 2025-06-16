@@ -1,9 +1,0 @@
-- GUI elements -
-☐ container
-☐ Scroll box fixed/dynamic
-☐ text box
-☐ multiline text box
-☐ image button
-
-- current task -
-☐ make sticky generals formula

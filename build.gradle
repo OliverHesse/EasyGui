@@ -165,15 +165,26 @@ neoForge.ideSyncTask generateModMetadata
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {
     publications {
-        register('mavenJava', MavenPublication) {
-            from components.java
+        gpr(MavenPublication) {
+            groupId = group
+            artifactId = archivesBaseName
+            version = version
+            artifact jar
         }
+
     }
     repositories {
         maven {
-            name = "OSSRH"
-            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            url "file://${project.projectDir}/repo"
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/oliverhesse/easygui")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+        maven {
+            name = "LocalMaven"
+            url = uri("file:///${project.projectDir}/mcmodsrepo")
         }
     }
 }
