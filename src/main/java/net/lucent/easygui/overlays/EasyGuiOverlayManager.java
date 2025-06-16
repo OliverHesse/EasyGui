@@ -39,7 +39,7 @@ public class EasyGuiOverlayManager {
 
 
     public static void onRegisterOverlays(RegisterGuiLayersEvent event) {
-        System.out.println("Easy Gui: Registering custom overlays");
+
         for(Map.Entry<ResourceLocation,EasyGuiOverlayHandler> entry :customOverlayLayers.entrySet()){
             event.registerAboveAll(entry.getKey(),entry.getValue());
         }

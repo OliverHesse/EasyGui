@@ -30,6 +30,7 @@ public interface ContainerRenderable {
     default double getRotationY(){return 0;}
     default double getRotationZ(){return 0;}
 
+    default boolean usesMinecraftScaling(){ return  false;}
 
     default double getTotalCustomScaling(){return 1.0;}
     default double getTotalScaleFactorX(){return 1.0;}
@@ -37,10 +38,25 @@ public interface ContainerRenderable {
 
     default double getGlobalScaledX(){return 0.0;}
     default double getGlobalScaledY(){return 0.0;}
+
+    default double getGlobalX(){return 0.0;}
+    default double getGlobalY(){return 0.0;}
     ContainerRenderable getParent();
     ContainerRenderable getRoot();
     List<ContainerRenderable> getChildren();
 
+    default int getWidth(){
+        return 0;
+    }
+    default int getHeight(){
+        return 0;
+    }
+    default int getScaledWidth(){
+        return getWidth();
+    }
+    default int getScaledHeight(){
+        return getHeight();
+    }
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
     void remove();

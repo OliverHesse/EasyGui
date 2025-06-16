@@ -17,7 +17,6 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     public List<View> views = new ArrayList<>();
     public EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
 
-
     public EasyGuiBaseScreen(Component title) {
         super(title);
     }
@@ -81,12 +80,17 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     }
 
     @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+
+    @Override
     public void tick() {
         super.tick();
 
         double mouseX = Minecraft.getInstance().mouseHandler.xpos();
         double mouseY = Minecraft.getInstance().mouseHandler.ypos();
-        System.out.println(mouseX + " , "+ mouseY);
+
         eventHolder.MOUSE_OVER_EVENT.call(mouseX,mouseY);
         eventHolder.TICK_EVENT.call();
     }

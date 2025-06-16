@@ -146,4 +146,12 @@ public class View extends BaseRenderable implements ScreenResizeListener {
         width = Minecraft.getInstance().getWindow().getWidth();
         height = Minecraft.getInstance().getWindow().getHeight();
     }
+
+    @Override
+    public boolean usesMinecraftScaling() {
+        return useMinecraftScale;
+    }
+
+
+
 }

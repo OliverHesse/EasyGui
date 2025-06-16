@@ -1,5 +1,6 @@
 package net.lucent.easygui;
 
+import net.lucent.easygui.elements.other.DisplayTexture;
 import net.lucent.easygui.elements.other.View;
 import net.lucent.easygui.overlays.EasyGuiOverlay;
 import net.lucent.easygui.overlays.EasyGuiOverlayManager;
@@ -7,6 +8,7 @@ import net.lucent.easygui.testing.KeyHandler;
 import net.lucent.easygui.testing.test_elements.HealthProgressBar;
 
 import net.lucent.easygui.util.TextureData;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -52,11 +54,13 @@ public class EasyGui
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-        KeyHandler.register();
+
+        //KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
             //EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"cultivation_progress"),new RandomOverlay());
+            /*
             EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay((eventHolder, overlay) ->{
                 View view = new View(eventHolder,overlay,0,0, Minecraft.getInstance().getWindow().getScreenWidth(),
                     Minecraft.getInstance().getWindow().getScreenHeight());
@@ -72,9 +76,10 @@ public class EasyGui
                         view.getScaledWidth()/2 - 91,
                         view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
                 view.addChild(progressBar);
-
                 overlay.view = view;
                 }));
+
+             */
         }
 
         // Register the item to a creative tab

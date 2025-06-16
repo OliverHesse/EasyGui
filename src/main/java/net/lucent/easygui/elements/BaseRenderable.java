@@ -83,12 +83,17 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public double getGlobalScaledX() {
 
         if(parent != null){
-            System.out.println("---");
-            System.out.println(parent.getTotalScaleFactorX());
-            System.out.println(parent.getGlobalScaledX());
+
             return getX()*parent.getTotalScaleFactorX() + parent.getGlobalScaledX();
         }
         return getX();
+    }
+
+    @Override
+    public double getGlobalX() {
+        int x = getX();
+        if(parent != null) return x + parent.getGlobalX();
+        return x;
     }
 
     /**
@@ -98,6 +103,12 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public double getGlobalScaledY() {
         if(parent != null) return getY()*parent.getTotalScaleFactorY() + parent.getGlobalScaledY();
         return getY();
+    }
+    @Override
+    public double getGlobalY() {
+        int y = getY();
+        if(parent != null) return y + parent.getGlobalY();
+        return y;
     }
     @Override
     public void setX(int x){
@@ -239,15 +250,13 @@ public abstract class BaseRenderable implements ContainerRenderable {
     }
 
     //needed for render calculations for things like scroll containers
-    public int getWidth(){return 0;}
-    public int getHeight(){return 0;}
 
-
+    @Override
     public int getScaledWidth(){
-        System.out.println("scale factor: "+getTotalScaleFactorX());
+
         return (int) (getWidth()*getTotalScaleFactorX());
     }
-
+    @Override
     public int getScaledHeight(){
         return (int) (getHeight()*getTotalScaleFactorY());
     }

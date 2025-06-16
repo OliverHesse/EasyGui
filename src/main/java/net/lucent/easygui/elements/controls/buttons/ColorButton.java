@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 
 import java.awt.*;
 
-public class BaseButton extends AbstractButton{
+public class ColorButton extends AbstractButton{
 
     private final Color defaultColor = new Color(162,162,162,255);
     private final Color hoverColor = new Color(194,194,194,255);
@@ -13,7 +13,7 @@ public class BaseButton extends AbstractButton{
     private final Color focusColor = new Color(162,162,162,255);
 
 
-    public BaseButton(EasyGuiEventHolder eventHandler, int x, int y, int width, int height) {
+    public ColorButton(EasyGuiEventHolder eventHandler, int x, int y, int width, int height) {
         super(eventHandler, x, y, width, height);
     }
 

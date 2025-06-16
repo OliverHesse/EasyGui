@@ -15,12 +15,13 @@ public class HealthProgressBar extends ProgressBar implements Sticky {
     public HealthProgressBar(EasyGuiEventHolder eventHandler, ITextureData progressBarTexture, ITextureData backgroundTexture, int x, int y) {
         super(eventHandler, progressBarTexture,backgroundTexture, x, y);
 
+
     }
 
     @Override
     public void tick() {
 
-        setRotation(getRotationX()+ROTATION_RATE,getRotationY()+ROTATION_RATE,getRotationZ()+ROTATION_RATE);
+        //setRotation(getRotationX()+ROTATION_RATE,getRotationY()+ROTATION_RATE,getRotationZ()+ROTATION_RATE);
     }
 
     @Override
@@ -33,8 +34,19 @@ public class HealthProgressBar extends ProgressBar implements Sticky {
     }
 
     @Override
-    public void recalculatePos(int oldWidth, int oldHeight) {
-        setX(((View)getParent()).getScaledWidth()/2-91);
-        setY(((View) getParent()).getScaledHeight() - 39);
+    public void setSticky(boolean sticky) {
+
     }
+
+    @Override
+    public boolean isSticky() {
+        return true;
+    }
+
+    @Override
+    public void recalculatePos(int oldWidth, int oldHeight) {
+        setX((getRoot()).getScaledWidth()/2-91);
+        setY((getRoot()).getScaledHeight() - 39);
+    }
+
 }

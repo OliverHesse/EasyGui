@@ -71,6 +71,6 @@ public abstract class ProgressBar extends BaseRenderable {
             background.renderTexture(guiGraphics);
         }
         if(vertical) barTexture.renderTexture(guiGraphics,0,0,0,0, barTexture.getWidth(),getProgressLength());
-        else barTexture.renderTexture(guiGraphics,0,0,0,0, getProgressLength(), barTexture.getWidth());
+        else barTexture.renderTexture(guiGraphics,0,0,0,0, getProgressLength(), barTexture.getHeight());
     }
 }
