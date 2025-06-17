@@ -8,6 +8,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.network.chat.Component;
 
+import java.awt.*;
+import java.beans.EventHandler;
+
 public class Label extends BaseRenderable {
 
     public int textColor;
@@ -22,48 +25,31 @@ public class Label extends BaseRenderable {
      */
     public boolean cull;
 
-    public Label(EasyGuiEventHolder eventHandler,Font font, Component string,int x, int y) {
-        this(eventHandler,font,string,x,y, font.width(string),font.lineHeight, false);
-    }
 
-    public Label(EasyGuiEventHolder eventHandler,Font font,Component string,int x, int y,int width,int height) {
-        this(eventHandler,font,string,x,y, width,height, false);
-    }
-    public Label(EasyGuiEventHolder eventHandler, Font font,Component string,int x, int y,boolean centered) {
-        this(eventHandler,font,string,x,y, font.width(string),font.lineHeight, centered);
-    }
-    public Label(EasyGuiEventHolder eventHandler,Font font, Component string,int x, int y,int width,int height,boolean centered) {
-        super(eventHandler);
+
+    private Label(EasyGuiEventHolder eventHolder,Font font,Component text,int x,int y,int width,int height, boolean centered, boolean cull,int textColor){
+        super(eventHolder);
+        this.font = font;
+        this.text = text;
+        setY(y);
+        setX(x);
         this.width = width;
         this.height = height;
-        setX(x);
-        setY(y);
-        setCentered(centered);
-        text = string;
-        setFont(font);
+        this.centered = centered;
+        this.cull = cull;
+        this.textColor = textColor;
     }
 
-    public void setCentered(boolean centered){
-        this.centered = centered;
-    }
     public boolean isCentered() {
         return centered;
     }
 
-    public void setText(Component string){
-        text= string;
-    }
-    public void setTextColor(int color){
-        textColor = color;
-    }
+
 
     public Font getFont() {
         return font;
     }
 
-    public void setFont(Font font){
-        this.font = font;
-    }
     @Override
     public int getWidth() {
         return width;
@@ -92,4 +78,62 @@ public class Label extends BaseRenderable {
         guiGraphics.drawWordWrap(getFont(),text,0,0,getWidth(),textColor);
 
     }
+
+    public static class Builder{
+
+        private EasyGuiEventHolder eventHandler = null;
+
+        private  int textColor = -16777216;
+        private  boolean centered = false;
+        private  Integer width;
+        private  Integer height;
+        private  Component text = Component.literal("");
+        private  Font font = Minecraft.getInstance().font;
+        private  boolean cull = false;
+        private  boolean useCustomScaling = false;
+        private  double customScaling = 1;
+        private  int x;
+        private  int y;
+
+        public  Builder eventHandler(EasyGuiEventHolder eventHandler){this.eventHandler = eventHandler; return this;}
+        public  Builder textColor(int color){textColor = color; return  this;}
+        public  Builder textColor(Color color){textColor = color.getRGB(); return  this;}
+        public  Builder centered(boolean centered){this.centered = centered; return  this;}
+        public  Builder width(int width){this.width = width; return this;}
+        public  Builder height(int height){this.height = height; return this;}
+        public  Builder text(Component component){this.text = component; return this;}
+        public  Builder text(String text){this.text = Component.literal(text); return this;}
+        public  Builder translatableText(String key){this.text = Component.translatable(key); return this;}
+        public  Builder font(Font font){this.font = font; return this;}
+        public  Builder cull(boolean cull){this.cull = cull;return this;}
+        public Builder customScaling(int scale){
+            useCustomScaling = true;
+            customScaling = scale;return this;}
+        public  Builder x(int x){this.x = x;return this;}
+        public  Builder y(int y){this.y = y;return this;}
+
+        public Label build(){
+
+            if(eventHandler == null){
+                throw new IllegalArgumentException("Label must have a valid event handler");
+            }
+
+            if(width == null){
+                width = font.width(text);
+            }
+            if(height == null){
+                height = font.lineHeight;
+            }
+
+            Label label = new Label(eventHandler,font,text,x,y,width,height,centered,cull,textColor);
+            label.useCustomScaling = useCustomScaling;
+            label.customScale = customScaling;
+            return label;
+
+        }
+
+
+
+    }
+
 }

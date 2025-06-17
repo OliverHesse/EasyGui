@@ -37,7 +37,7 @@ neoForge {
     }
 
     // This line is optional. Access Transformers are automatically detected
-    // accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+     accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
@@ -88,7 +88,11 @@ neoForge {
             logLevel = org.slf4j.event.Level.DEBUG
         }
     }
-
+    //minecraft {
+   //     accessTransformers {
+      //      file('src/main/resources/META-INF/accesstransformer.cfg')
+   //     }
+   // }
     mods {
         // define mod <-> source bindings
         // these are used to tell the game which sources are for which mod

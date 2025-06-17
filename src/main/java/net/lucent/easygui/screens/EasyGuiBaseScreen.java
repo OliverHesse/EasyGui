@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,11 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
         views.remove(view);
     }
 
-
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        eventHolder.KEY_PRESS_EVENT.call(keyCode,scanCode,modifiers);
+        return super.keyPressed(keyCode,scanCode,modifiers);
+    }
 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {

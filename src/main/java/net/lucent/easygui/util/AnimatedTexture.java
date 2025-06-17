@@ -12,7 +12,7 @@ import java.util.List;
  * time is in ticks. may change this in the future
  */
 public class AnimatedTexture {
-    List<Pair<ITextureData,Integer>> frameData = new ArrayList<>();
+    public List<Pair<ITextureData,Integer>> frameData = new ArrayList<>();
     private int currentFrame;
 
     private double totalTimeElapsed;
@@ -23,11 +23,9 @@ public class AnimatedTexture {
 
     private final boolean loop;
 
-    public AnimatedTexture(List<Pair<ITextureData,Integer>> frameData){
-        this(frameData,false);
 
-    }
-    public AnimatedTexture(List<Pair<ITextureData,Integer>> frameData,boolean loop){
+
+    private AnimatedTexture(List<Pair<ITextureData,Integer>> frameData,boolean loop){
         this.frameData = frameData;
         this.loop = loop;
 
@@ -70,5 +68,24 @@ public class AnimatedTexture {
         }
     }
 
+    public static class Builder{
 
+        private static final List<Pair<ITextureData,Integer>>  frameData = new ArrayList<>();
+        private static boolean loop = false;
+
+
+        public Builder addFrame(ITextureData frame,int frameTime){
+            frameData.add(new Pair<>(frame,frameTime));
+            return this;
+        }
+        public Builder setLooping(boolean looping){
+            loop = looping;
+            return this;
+        }
+
+        public AnimatedTexture build(){
+            return  new AnimatedTexture(frameData,loop);
+
+        }
+    }
 }

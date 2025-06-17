@@ -58,7 +58,8 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
 
 
     @Override
-    public void onClick(double mouseX, double mouseY, int button) {
+    public void onClick(double mouseX, double mouseY, int button,boolean clicked) {
+        if(!clicked) return;
 
         setPressed(true);
     }

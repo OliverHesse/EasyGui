@@ -12,14 +12,16 @@ public class ClickEventHandler extends AbstractGuiEventHandler<Clickable> {
     public void call(double mouseX,double mouseY,int button) {
 
         ListIterator<Clickable> itr = getLastIterator();
+        boolean firstFound = false;
         while(itr.hasPrevious()){
 
             Clickable listener = itr.previous();
-
-            if(listener.isMouseOver(mouseX,mouseY) && listener.isActive()){
-                listener.onClick(mouseX,mouseY,button);
-                return;
+            
+            if(listener.isMouseOver(mouseX,mouseY) && listener.isActive() && !firstFound){
+                listener.onClick(mouseX,mouseY,button,true);
+                firstFound = true;
             }
+            else listener.onClick(mouseX,mouseY,button,false);
         }
 
 

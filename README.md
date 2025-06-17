@@ -19,8 +19,8 @@ Planned Features
 - text box
     - both multiline and single line
 - make sticky use a general solution
-- add a animation builder for AnimatedTexture
-- add a label builder(so constructor isn't super bloated)
+- let developer create UI from a json file
+- make a wiki with a common task page (examples of commonly made things)
 
 more planned features int the future. but that's all i can think of off the top of my head
 

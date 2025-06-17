@@ -1,0 +1,3 @@
+-Current Feature-
+Text Box - override edit box render code to make it more editable(colors and stuff)
+Text Box - make dragging mouse highlight text

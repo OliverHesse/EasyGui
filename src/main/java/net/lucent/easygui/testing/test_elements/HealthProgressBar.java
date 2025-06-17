@@ -45,6 +45,8 @@ public class HealthProgressBar extends ProgressBar implements Sticky {
 
     @Override
     public void recalculatePos(int oldWidth, int oldHeight) {
+        System.out.println(Minecraft.getInstance().getWindow().getGuiScaledWidth());
+        System.out.println(getRoot().getScaledWidth());
         setX((getRoot()).getScaledWidth()/2-91);
         setY((getRoot()).getScaledHeight() - 39);
     }

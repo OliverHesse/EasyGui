@@ -5,12 +5,13 @@ import com.mojang.blaze3d.platform.Window;
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 
 
-public class View extends BaseRenderable implements ScreenResizeListener {
+public class View extends BaseRenderable implements ScreenResizeListener, GuiScaleListener {
     /**
      * scales items relative to original viewport size
      * so if it was originally 1920x1080 and now 960x540
@@ -86,16 +87,17 @@ public class View extends BaseRenderable implements ScreenResizeListener {
     @Override
     public double getTotalScaleFactorX() {
         //magic shit dont worry about it
-
-        if(useMinecraftScale) return getScaleX();
-        return getScaleX()*Minecraft.getInstance().getWindow().getGuiScale();
+        return getScaleX();
+        //if(useMinecraftScale) return getScaleX()*Minecraft.getInstance().getWindow().getGuiScale();
+        //return getScaleX()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 
     @Override
     public double getTotalScaleFactorY() {
+        return getScaleY();
         //magic shit dont worry about it
-        if(useMinecraftScale) return getScaleY();
-        return getScaleY()*Minecraft.getInstance().getWindow().getGuiScale();
+        //if(useMinecraftScale) return getScaleY();
+        //return getScaleY()*Minecraft.getInstance().getWindow().getGuiScale();
     }
 
     @Override
@@ -127,10 +129,22 @@ public class View extends BaseRenderable implements ScreenResizeListener {
         screen.removeView(this);
     }
 
+    /**
+     *     this could be breaking things..
+     */
     @Override
     public void onResize(int oldWidth, int oldHeight) {
-        width = Minecraft.getInstance().getWindow().getWidth();
-        height = Minecraft.getInstance().getWindow().getHeight();
+        recalculateDimensions();
+    }
+
+    public void recalculateDimensions(){
+        if(useMinecraftScale){
+            width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+            height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+        }else {
+            width = Minecraft.getInstance().getWindow().getWidth();
+            height = Minecraft.getInstance().getWindow().getHeight();
+        }
     }
 
     @Override
@@ -139,5 +153,8 @@ public class View extends BaseRenderable implements ScreenResizeListener {
     }
 
 
-
+    @Override
+    public void onGuiScaleChanged(double oldScale) {
+        recalculateDimensions();
+    }
 }

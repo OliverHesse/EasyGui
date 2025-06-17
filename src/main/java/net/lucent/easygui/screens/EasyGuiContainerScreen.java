@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,11 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         return true;
     }
 
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        eventHolder.KEY_PRESS_EVENT.call(keyCode,scanCode,modifiers);
+        return keyCode != GLFW.GLFW_KEY_ESCAPE;
+    }
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         eventHolder.KEY_RELEASED_EVENT.call(keyCode, scanCode, modifiers);
