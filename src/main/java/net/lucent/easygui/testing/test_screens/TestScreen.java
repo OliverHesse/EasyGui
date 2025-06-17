@@ -12,7 +12,7 @@ public class TestScreen extends EasyGuiBaseScreen {
     public TestScreen(Component title) {
         super(title);
         View view = new View(this.eventHolder,this,0,0);
-
+        /*
         ColorButton button = new ColorButton(this.eventHolder,1920/4,1080/4,200,40);
         button.sticky = true;
 
@@ -25,7 +25,9 @@ public class TestScreen extends EasyGuiBaseScreen {
                 .build());
         view.addChild(button);
 
-        /*
+
+         */
+
         view.addChild(new TextBox(
                 eventHolder,
                 1920/4,
@@ -33,7 +35,7 @@ public class TestScreen extends EasyGuiBaseScreen {
                 200,20
         ));
 
-         */
+
 
 
 

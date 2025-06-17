@@ -4,13 +4,16 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.complex_events.Draggable;
 import net.lucent.easygui.interfaces.events.CharTypedListener;
 import net.lucent.easygui.interfaces.events.Clickable;
 import net.lucent.easygui.interfaces.events.KeyPressedListener;
+import net.lucent.easygui.interfaces.events.MouseDragListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import org.checkerframework.checker.units.qual.C;
 import org.lwjgl.glfw.GLFW;
 
@@ -23,11 +26,13 @@ import java.util.function.Consumer;
  * TexturedTextBox
  */
 
-public class TextBox extends SquareRenderable implements Clickable, CharTypedListener, KeyPressedListener {
+public class TextBox extends SquareRenderable implements Draggable, CharTypedListener, KeyPressedListener {
 
     private boolean editable = false;
     private final EnhancedEditBox editBox;
     private final Font font;
+    private boolean dragging;
+    private int draggingPivot;
 
     /**
      * used whilst unfocused
@@ -63,7 +68,23 @@ public class TextBox extends SquareRenderable implements Clickable, CharTypedLis
     public boolean getEditable(){return editable;}
 
     @Override
+    public void setPivot(int pivot) {
+        draggingPivot = pivot;
+    }
+
+    @Override
+    public boolean isDragged() {
+        return dragging;
+    }
+
+    @Override
+    public void setDragged(boolean state) {
+        dragging = state;
+    }
+
+    @Override
     public void onClick(double mouseX, double mouseY, int button,boolean clicked) {
+
         System.out.println("clicked");
         if(!clicked){
             setEditable(false);
@@ -78,8 +99,7 @@ public class TextBox extends SquareRenderable implements Clickable, CharTypedLis
             setFocused(true);
 
         }
-        System.out.println(getEditable());
-        System.out.println(isFocused());
+        Draggable.super.onClick(mouseX,mouseY,button,true);
     }
 
 
@@ -167,7 +187,7 @@ public class TextBox extends SquareRenderable implements Clickable, CharTypedLis
      */
     @Override
     public void onMouseOver(boolean state) {
-        Clickable.super.onMouseOver(state);
+        Draggable.super.onMouseOver(state);
     }
 
     @Override
@@ -180,5 +200,14 @@ public class TextBox extends SquareRenderable implements Clickable, CharTypedLis
             guiGraphics.drawCenteredString(this.font,hint,getWidth()/2,
                     getHeight()/2,editBox.textColor);
         }
+    }
+
+    @Override
+    public void onDrag(double mouseX, double mouseY, int button, double dragX, double dragY) {
+
+        int distance = (int) ((Mth.floor(mouseX) - getGlobalScaledX())/getTotalScaleFactorX());
+        //if(distance > font.width(editBox.getValue())) return;
+
+        editBox.highlightSubstring(distance);
     }
 }

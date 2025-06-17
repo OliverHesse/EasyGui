@@ -9,6 +9,9 @@ import net.minecraft.util.Mth;
 
 import java.util.function.Consumer;
 
+/**
+ * will be used to override rendering logic
+ */
 public class EnhancedEditBox extends EditBox {
     public EnhancedEditBox(Font font, int width, int height, Component message) {
         super(font, width, height, message);
@@ -28,5 +31,11 @@ public class EnhancedEditBox extends EditBox {
 
         String s = font.plainSubstrByWidth(getValue().substring(displayPos), this.getInnerWidth());
         this.moveCursorTo(this.font.plainSubstrByWidth(s, scaled).length() + this.displayPos, Screen.hasShiftDown());
+    }
+    public void highlightSubstring(int distance){
+
+        String s = font.plainSubstrByWidth(getValue().substring(displayPos), this.getInnerWidth());
+
+        this.moveCursorTo(this.font.plainSubstrByWidth(s, distance).length()+this.displayPos, true);
     }
 }
