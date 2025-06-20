@@ -3,6 +3,7 @@ package net.lucent.easygui.elements.controls.buttons;
 
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.interfaces.events.Clickable;
 
@@ -16,13 +17,14 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
 
     public int width;
     public int height;
+    public boolean sticky = false;
 
     public boolean pressed;
 
     public boolean hovered;
 
-    public AbstractButton(EasyGuiEventHolder eventHandler, int x, int y, int width, int height) {
-        super(eventHandler);
+    public AbstractButton(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
+        super(easyGuiScreen);
         this.setX(x);
         this.setY(y);
         this.width = width;

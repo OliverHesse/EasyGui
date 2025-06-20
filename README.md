@@ -8,7 +8,8 @@ documentation is still in progress please bare with me
 
 Links
 =
-
+[Getting Started](https://github.com/OliverHesse/EasyGui/wiki)<br>
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/easygui)
 
 Planned Features
 =
@@ -18,9 +19,11 @@ Planned Features
     - both axis scrolling(smth like ctrl+scroll for x)
 - text box
     - both multiline and single line
+- drop down
 - make sticky use a general solution
 - let developer create UI from a json file
 - make a wiki with a common task page (examples of commonly made things)
+- JEI compatibility(use easyGui menus for it)
 
 more planned features int the future. but that's all i can think of off the top of my head
 

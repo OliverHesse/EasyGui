@@ -9,6 +9,7 @@ import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import org.joml.Quaternionf;
 
 
 public class View extends BaseRenderable implements ScreenResizeListener, GuiScaleListener {
@@ -23,19 +24,19 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public int width;
     public int height;
 
-    public IEasyGuiScreen screen;
 
-    public View(EasyGuiEventHolder eventHandler, IEasyGuiScreen screen, int x, int y){
-        this(eventHandler,screen,x,y,Minecraft.getInstance().getWindow().getScreenWidth(),Minecraft.getInstance().getWindow().getScreenHeight());
+    public View(IEasyGuiScreen screen, int x, int y) {
+        this(screen, x, y, Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
     }
 
-    public View(EasyGuiEventHolder eventHandler, IEasyGuiScreen screen, int x, int y, int width, int height) {
-        super(eventHandler);
+    public View(IEasyGuiScreen screen, int x, int y, int width, int height) {
+        super(screen);
         this.setX(x);
         this.setY(y);
         this.width = width;
         this.height = height;
         this.screen = screen;
+
     }
 
     /**
@@ -49,7 +50,6 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
      */
 
 
-
     @Override
     public int getWidth() {
         return width;
@@ -61,17 +61,17 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     }
 
     @Override
-    public double getScale(){
+    public double getScale() {
 
         double finalScale = 1;
-        if(useCustomScaling){
-            finalScale *= customScale;
+        if (useCustomScaling) {
+            finalScale *= getCustomScale();
         }
-        if(useMinecraftScale){
+        if (useMinecraftScale) {
             finalScale *= Minecraft.getInstance().getWindow().getGuiScale();
         }
 
-        return finalScale/Minecraft.getInstance().getWindow().getGuiScale();
+        return finalScale / Minecraft.getInstance().getWindow().getGuiScale();
     }
 
 
@@ -81,8 +81,8 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     }
 
     /**
-    this is only for the view object
-    since it is responsible for most of the fucky wucky scaling shit
+     * this is only for the view object
+     * since it is responsible for most of the fucky wucky scaling shit
      */
     @Override
     public double getTotalScaleFactorX() {
@@ -104,11 +104,11 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public double getScaleX() {
 
         double finalScale = getScale();
-        if(useViewportSize) {
+        if (useViewportSize) {
 
             Window win = Minecraft.getInstance().getWindow();
 
-            finalScale *=(double) win.getWidth() / win.getScreenWidth();
+            finalScale *= (double) win.getWidth() / win.getScreenWidth();
         }
         return finalScale;
     }
@@ -117,34 +117,56 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public double getScaleY() {
         Window win = Minecraft.getInstance().getWindow();
         double finalScale = getScale();
-        if(useViewportSize) {
-            finalScale *=(double) win.getHeight() / win.getScreenHeight();
+        if (useViewportSize) {
+            finalScale *= (double) win.getHeight() / win.getScreenHeight();
         }
         return finalScale;
     }
 
     @Override
     public void remove() {
-        eventHandler.unregister(this);
+        screen.unregister(this);
         screen.removeView(this);
     }
 
+    @Override
+    public int getScaledHeight() {
+        return (int) (getHeight()/getTotalScaleFactorY());
+    }
+
+    @Override
+    public int getScaledWidth() {
+        return (int) (getWidth()/getTotalScaleFactorX());
+    }
+
     /**
-     *     this could be breaking things..
+     * this could be breaking things..
      */
     @Override
     public void onResize(int oldWidth, int oldHeight) {
         recalculateDimensions();
     }
 
-    public void recalculateDimensions(){
-        if(useMinecraftScale){
-            width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
-            height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
-        }else {
-            width = Minecraft.getInstance().getWindow().getWidth();
-            height = Minecraft.getInstance().getWindow().getHeight();
+    // bugged when opening menu in fullscreen mode
+    public void recalculateDimensions() {
+        System.out.println("recalculation");
+        if (useMinecraftScale) {
+            width = (int) (Minecraft.getInstance().getWindow().getGuiScaledWidth() );
+            height = (int) (Minecraft.getInstance().getWindow().getGuiScaledHeight());
+        } else {
+            width = (int) (Minecraft.getInstance().getWindow().getWidth());
+            height = (int) (Minecraft.getInstance().getWindow().getHeight());
         }
+    }
+
+    @Override
+    public void setCustomScale(double scale){
+        super.setCustomScale(scale);
+        recalculateDimensions();
+    }
+    public void setUseMinecraftScale(boolean useMinecraftScale) {
+        this.useMinecraftScale = useMinecraftScale;
+        recalculateDimensions();
     }
 
     @Override

@@ -2,6 +2,7 @@ package net.lucent.easygui.screens;
 
 import net.lucent.easygui.elements.other.View;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,18 +17,45 @@ import java.util.List;
 
 public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements IEasyGuiScreen {
 
-    public List<View> views = new ArrayList<>();
+    private final List<View> views = new ArrayList<>();
 
-    public EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
+    private final EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
 
     public EasyGuiContainerScreen(T menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
+    }
+    public EasyGuiEventHolder getEventHolder(){
+        return eventHolder;
+    }
+
+    public void addView(View view){
+        views.add(view);
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        for(View view : views){
+            if(view.isActive()) view.render(guiGraphics,mouseX,mouseY,partialTick);
+        }
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float v, int i, int i1) {
 
     }
+
+
+    @Override
+    public void register(ContainerRenderable renderable) {
+        eventHolder.register(renderable);
+    }
+
+    @Override
+    public void unregister(ContainerRenderable renderable) {
+        eventHolder.unregister(renderable);
+    }
+
     @Override
     public void removeView(View view) {
         views.remove(view);

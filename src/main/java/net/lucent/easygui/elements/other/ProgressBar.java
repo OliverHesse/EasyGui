@@ -2,6 +2,7 @@ package net.lucent.easygui.elements.other;
 
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.ITextureData;
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -12,39 +13,31 @@ public abstract class ProgressBar extends BaseRenderable {
 
     public boolean vertical = false;
 
-    public double progress = 0;
-
     public int x;
     public int y;
 
-    public ProgressBar(EasyGuiEventHolder eventHandler, ITextureData progressBarTexture, int x, int y) {
-        super(eventHandler);
+    public ProgressBar(IEasyGuiScreen easyGuiScreen, ITextureData progressBarTexture, int x, int y) {
+        super(easyGuiScreen);
         setX(x);
         setY(y);
         this.barTexture = progressBarTexture;
 
     }
 
-    public ProgressBar(EasyGuiEventHolder eventHandler, ITextureData progressBarTexture, boolean vertical, int x, int y) {
-        this(eventHandler,progressBarTexture,x,y);
+    public ProgressBar(IEasyGuiScreen easyGuiScreen, ITextureData progressBarTexture, boolean vertical, int x, int y) {
+        this(easyGuiScreen,progressBarTexture,x,y);
         this.barTexture = progressBarTexture;
         this.vertical = vertical;
     }
-    public ProgressBar(EasyGuiEventHolder eventHolder, ITextureData progressBarTexture, ITextureData background, boolean vertical, int x, int y){
-        this(eventHolder,progressBarTexture,vertical,x,y);
+    public ProgressBar(IEasyGuiScreen easyGuiScreen, ITextureData progressBarTexture, ITextureData background, boolean vertical, int x, int y){
+        this(easyGuiScreen,progressBarTexture,vertical,x,y);
         this.background = background;
     }
-    public ProgressBar(EasyGuiEventHolder eventHolder, ITextureData progressBarTexture, ITextureData background, int x, int y){
-        this(eventHolder,progressBarTexture,x,y);
+    public ProgressBar(IEasyGuiScreen easyGuiScreen, ITextureData progressBarTexture, ITextureData background, int x, int y){
+        this(easyGuiScreen,progressBarTexture,x,y);
         this.background = background;
     }
 
-    public void updateProgress(double incr){
-        progress += incr;
-    }
-    public void setProgress(double progress){
-        this.progress = progress;
-    }
 
     public abstract double getProgress();
 

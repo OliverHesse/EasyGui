@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Draggable;
 import net.lucent.easygui.interfaces.events.CharTypedListener;
 import net.lucent.easygui.interfaces.events.Clickable;
@@ -32,20 +33,21 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
     private final EnhancedEditBox editBox;
     private final Font font;
     private boolean dragging;
-    private int draggingPivot;
+    private int draggingX;
 
     /**
      * used whilst unfocused
      */
     private Component hint = null;
 
-    public TextBox(EasyGuiEventHolder eventHandler,int x,int y, int width, int height) {
-        super(eventHandler);
+    public TextBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width) {
+        super(easyGuiScreen);
         setX(x);
         setY(y);
         this.font = Minecraft.getInstance().font;
-        this.editBox = new EnhancedEditBox(this.font,width,height,Component.empty());
+        this.editBox = new EnhancedEditBox(this.font,width,font.lineHeight+2,Component.empty());
     }
+
 
     @Override
     public int getWidth() {
@@ -67,9 +69,10 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
     }
     public boolean getEditable(){return editable;}
 
-    @Override
-    public void setPivot(int pivot) {
-        draggingPivot = pivot;
+
+    public void setPivot(int pivotX) {
+        draggingX = pivotX;
+
     }
 
     @Override
@@ -99,9 +102,19 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
             setFocused(true);
 
         }
-        Draggable.super.onClick(mouseX,mouseY,button,true);
+        if(clicked && button == InputConstants.MOUSE_BUTTON_LEFT) {
+            setDragged(true);
+            setPivot((int) ((Mth.floor(mouseX) - getGlobalScaledX())/getTotalScaleFactorX()));
+        }
     }
 
+    @Override
+    public void onMouseReleased(double mouseX, double mouseY, int button) {
+        if(button == InputConstants.MOUSE_BUTTON_LEFT) {
+            setDragged(false);
+            setPivot(0);
+        }
+    }
 
     @Override
     public void setFocused(boolean focused) {
@@ -192,9 +205,7 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        System.out.println("=========");
-        System.out.println(getWidth());
-        System.out.println(getScaledWidth());
+
         editBox.renderWidget(guiGraphics,mouseX,mouseY,partialTick);
         if(editBox.getValue().isEmpty() && hint != null && !editBox.isFocused()){
             guiGraphics.drawCenteredString(this.font,hint,getWidth()/2,

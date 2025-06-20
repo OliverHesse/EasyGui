@@ -1,6 +1,7 @@
 package net.lucent.easygui.elements.controls.buttons;
 
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.ITextureData;
 import net.minecraft.client.gui.GuiGraphics;
 
@@ -13,14 +14,14 @@ public class TextureButton extends AbstractButton{
 
 
     public TextureButton(
-            EasyGuiEventHolder eventHolder,
+            IEasyGuiScreen easyGuiScreen,
             int x, int y,
             ITextureData defaultTexture,
             ITextureData pressedTexture,
             ITextureData hoveredTexture,
             ITextureData focusedTexture
     ){
-        super(eventHolder,x,y,defaultTexture.getWidth(), defaultTexture.getHeight());
+        super(easyGuiScreen,x,y,defaultTexture.getWidth(), defaultTexture.getHeight());
         this.defaultTexture =defaultTexture;
         this.pressedTexture = pressedTexture;
         this.hoveredTexture = hoveredTexture;
@@ -29,13 +30,13 @@ public class TextureButton extends AbstractButton{
 
 
     public TextureButton(
-            EasyGuiEventHolder eventHolder,
+            IEasyGuiScreen easyGuiScreen,
             int x, int y,
             ITextureData defaultTexture,
             ITextureData pressedTexture,
             ITextureData hoveredTexture
     ){
-        this(eventHolder,x,y,defaultTexture,pressedTexture,hoveredTexture,defaultTexture);
+        this(easyGuiScreen,x,y,defaultTexture,pressedTexture,hoveredTexture,defaultTexture);
     }
 
 

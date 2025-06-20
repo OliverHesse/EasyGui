@@ -60,5 +60,11 @@ public interface ContainerRenderable {
     void addChild(ContainerRenderable child);
     void remove();
 
+    default int screenToLocalX(int x){
+        return (int) ((x-getGlobalScaledX())/getTotalCustomScaling());
+    }
+    default int screenToLocalY(int y){
+        return (int) ((y-getGlobalScaledY())/getTotalCustomScaling());
+    }
     default void tick(){}
 }

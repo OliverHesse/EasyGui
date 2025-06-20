@@ -1,6 +1,7 @@
 package net.lucent.easygui.elements.controls.buttons;
 
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.awt.*;
@@ -13,8 +14,10 @@ public class ColorButton extends AbstractButton{
     private final Color focusColor = new Color(162,162,162,255);
 
 
-    public ColorButton(EasyGuiEventHolder eventHandler, int x, int y, int width, int height) {
-        super(eventHandler, x, y, width, height);
+    public ColorButton(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
+        super(easyGuiScreen, x, y, width, height);
+        System.out.println("=====");
+        System.out.println("x: "+x +" y: "+y);
     }
 
     @Override

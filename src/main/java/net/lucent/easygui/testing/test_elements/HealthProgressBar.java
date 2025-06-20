@@ -3,6 +3,7 @@ package net.lucent.easygui.testing.test_elements;
 import net.lucent.easygui.elements.other.ProgressBar;
 import net.lucent.easygui.elements.other.View;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.ITextureData;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.minecraft.client.Minecraft;
@@ -12,8 +13,8 @@ public class HealthProgressBar extends ProgressBar implements Sticky {
 
     double ROTATION_RATE = (double) 360 /60;
 
-    public HealthProgressBar(EasyGuiEventHolder eventHandler, ITextureData progressBarTexture, ITextureData backgroundTexture, int x, int y) {
-        super(eventHandler, progressBarTexture,backgroundTexture, x, y);
+    public HealthProgressBar(IEasyGuiScreen easyGuiScreen, ITextureData progressBarTexture, ITextureData backgroundTexture, int x, int y) {
+        super(easyGuiScreen, progressBarTexture,backgroundTexture, x, y);
 
 
     }
@@ -45,8 +46,7 @@ public class HealthProgressBar extends ProgressBar implements Sticky {
 
     @Override
     public void recalculatePos(int oldWidth, int oldHeight) {
-        System.out.println(Minecraft.getInstance().getWindow().getGuiScaledWidth());
-        System.out.println(getRoot().getScaledWidth());
+
         setX((getRoot()).getScaledWidth()/2-91);
         setY((getRoot()).getScaledHeight() - 39);
     }

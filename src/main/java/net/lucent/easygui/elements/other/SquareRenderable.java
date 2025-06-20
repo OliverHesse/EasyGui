@@ -3,12 +3,13 @@ package net.lucent.easygui.elements.other;
 
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.Hoverable;
 import net.minecraft.client.Minecraft;
 
 public abstract class SquareRenderable extends BaseRenderable implements Hoverable {
-    public SquareRenderable(EasyGuiEventHolder eventHandler) {
-        super(eventHandler);
+    public SquareRenderable(IEasyGuiScreen easyGuiScreen) {
+        super(easyGuiScreen);
     }
 
 

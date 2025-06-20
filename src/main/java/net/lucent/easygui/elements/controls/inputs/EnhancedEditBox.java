@@ -6,7 +6,10 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -18,8 +21,7 @@ public class EnhancedEditBox extends EditBox {
     }
 
 
-
-    public void enhancedOnClick(double mouseX, double mouseY, int button,int globalX,double totalScalingX){
+    public void enhancedOnClick(double mouseX, double mouseY, int button, int globalX, double totalScalingX){
         if(button != InputConstants.MOUSE_BUTTON_LEFT) return;
 
         int i = Mth.floor(mouseX) - globalX;

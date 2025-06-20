@@ -3,6 +3,7 @@ package net.lucent.easygui.overlays;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.elements.other.View;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -26,7 +27,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
     public int windowWidth = Minecraft.getInstance().getWindow().getWidth();
     public int windowHeight = Minecraft.getInstance().getWindow().getHeight();
     public double guiScale = Minecraft.getInstance().options.guiScale().get();
-    public View view;
+    private View view;
     public EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     public BiConsumer<EasyGuiEventHolder,EasyGuiOverlay> runnable;
     public EasyGuiOverlay(BiConsumer<EasyGuiEventHolder,EasyGuiOverlay>  initialize){
@@ -88,6 +89,16 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
         view.render(guiGraphics,mouseX,mouseY,partialTick);
     }
 
+
+    @Override
+    public void register(ContainerRenderable renderable) {
+        eventHolder.register(renderable);
+    }
+
+    @Override
+    public void unregister(ContainerRenderable renderable) {
+        eventHolder.unregister(renderable);
+    }
 
     @Override
     public void removeView(View view) {

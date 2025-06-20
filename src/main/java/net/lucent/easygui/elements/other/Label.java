@@ -2,6 +2,7 @@ package net.lucent.easygui.elements.other;
 
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -27,8 +28,8 @@ public class Label extends BaseRenderable {
 
 
 
-    private Label(EasyGuiEventHolder eventHolder,Font font,Component text,int x,int y,int width,int height, boolean centered, boolean cull,int textColor){
-        super(eventHolder);
+    private Label(IEasyGuiScreen easyGuiScreen, Font font, Component text, int x, int y, int width, int height, boolean centered, boolean cull, int textColor){
+        super(easyGuiScreen);
         this.font = font;
         this.text = text;
         setY(y);
@@ -81,7 +82,7 @@ public class Label extends BaseRenderable {
 
     public static class Builder{
 
-        private EasyGuiEventHolder eventHandler = null;
+        private IEasyGuiScreen easyGuiScreen = null;
 
         private  int textColor = -16777216;
         private  boolean centered = false;
@@ -95,7 +96,7 @@ public class Label extends BaseRenderable {
         private  int x;
         private  int y;
 
-        public  Builder eventHandler(EasyGuiEventHolder eventHandler){this.eventHandler = eventHandler; return this;}
+        public  Builder screen(IEasyGuiScreen easyGuiScreen){this.easyGuiScreen = easyGuiScreen; return this;}
         public  Builder textColor(int color){textColor = color; return  this;}
         public  Builder textColor(Color color){textColor = color.getRGB(); return  this;}
         public  Builder centered(boolean centered){this.centered = centered; return  this;}
@@ -114,7 +115,7 @@ public class Label extends BaseRenderable {
 
         public Label build(){
 
-            if(eventHandler == null){
+            if(easyGuiScreen == null){
                 throw new IllegalArgumentException("Label must have a valid event handler");
             }
 
@@ -125,9 +126,9 @@ public class Label extends BaseRenderable {
                 height = font.lineHeight;
             }
 
-            Label label = new Label(eventHandler,font,text,x,y,width,height,centered,cull,textColor);
+            Label label = new Label(easyGuiScreen,font,text,x,y,width,height,centered,cull,textColor);
             label.useCustomScaling = useCustomScaling;
-            label.customScale = customScaling;
+            label.setCustomScale(customScaling);
             return label;
 
         }

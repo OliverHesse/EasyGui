@@ -3,6 +3,7 @@ package net.lucent.easygui.elements;
 
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
+import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import org.joml.Quaternionf;
@@ -27,22 +28,21 @@ public abstract class BaseRenderable implements ContainerRenderable {
     /**
      * after resize does it maintain its relative position
      */
-    public boolean sticky = false;
 
-    public double customScale = 1;
+    private double customScale = 1;
 
 
     public double xRotation = 0;
     public double yRotation = 0;
     public double zRotation = 0;
 
-    public EasyGuiEventHolder eventHandler;
+    public IEasyGuiScreen screen;
     public ContainerRenderable parent;
     public List<ContainerRenderable> children = new ArrayList<>();
 
-    public BaseRenderable(EasyGuiEventHolder eventHandler){
-        this.eventHandler = eventHandler;
-        eventHandler.register(this);
+    public BaseRenderable(IEasyGuiScreen screen){
+        this.screen = screen;
+        screen.register(this);
     }
 
     @Override
@@ -130,7 +130,9 @@ public abstract class BaseRenderable implements ContainerRenderable {
     @Override
     public void setFocused(boolean focused) {
         this.focused = focused;
+
     }
+
 
 
     @Override
@@ -254,10 +256,14 @@ public abstract class BaseRenderable implements ContainerRenderable {
 
     @Override
     public void remove() {
-        eventHandler.unregister(this);
+        screen.unregister(this);
         if(getParent() != null){
             parent.getChildren().remove(this);
         }
+    }
+
+    public void setCustomScale(double customScale) {
+        this.customScale = customScale;
     }
 
     @Override
@@ -269,6 +275,10 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public void addChild(ContainerRenderable child) {
         this.children.add(child);
         child.setParent(this);
+    }
+
+    public double getCustomScale() {
+        return customScale;
     }
 
     @Override
