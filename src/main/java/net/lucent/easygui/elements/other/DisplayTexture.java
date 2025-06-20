@@ -17,6 +17,7 @@ public class DisplayTexture extends BaseRenderable {
     }
 
 
+
     public ITextureData getTextureData(){return textureData;}
     public void setTextureData(ITextureData textureData){this.textureData = textureData;}
 

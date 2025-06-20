@@ -3,6 +3,7 @@ package net.lucent.easygui.testing.test_screens;
 import net.lucent.easygui.elements.controls.buttons.ColorButton;
 import net.lucent.easygui.elements.controls.inputs.MultiLineTextBox;
 import net.lucent.easygui.elements.other.AbstractScrollBox;
+import net.lucent.easygui.elements.other.DynamicScrollBox;
 import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.other.View;
 import net.lucent.easygui.screens.EasyGuiBaseScreen;
@@ -29,9 +30,10 @@ public class TestScreen extends EasyGuiBaseScreen {
         view.addChild(button);
 
         */
+        /*
         AbstractScrollBox scrollBox = new AbstractScrollBox(this,
-                view.getScaledWidth()/2,
-                view.getScaledHeight()/2,
+                view.getScaledWidth()/4,
+                view.getScaledHeight()/4,
                 200,200) {
             @Override
             public double getScrollHeight() {
@@ -48,18 +50,19 @@ public class TestScreen extends EasyGuiBaseScreen {
                 return 9;
             }
 
-            @Override
-            public void onDrag(double mouseX, double mouseY, int button, double dragX, double dragY) {
-
-            }
         };
 
+         */
+        DynamicScrollBox scrollBox = new DynamicScrollBox(this,
+                view.getScaledWidth()/4,
+                view.getScaledHeight()/4,
+                200,200);
         scrollBox.addChild(new Label.Builder().screen(this).text("some text").textColor(-1).build());
         scrollBox.addChild(new Label.Builder().screen(this).text("some text2").textColor(-1).y(400).build());
          scrollBox.addChild(new Label.Builder()
                 .screen(this)
                 .text("some text3").textColor(-1)
-                .y((int) (scrollBox.getInnerHeight()+scrollBox.getScrollHeight()-Minecraft.getInstance().font.lineHeight))
+                .y(190)
                 .build());
         view.addChild(scrollBox);
 

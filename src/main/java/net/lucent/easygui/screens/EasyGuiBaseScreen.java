@@ -98,6 +98,7 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+
         eventHolder.MOUSE_DRAG_EVENT.call(mouseX, mouseY, button,dragX,dragY);
         return true;
     }

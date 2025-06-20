@@ -60,10 +60,10 @@ public interface ContainerRenderable {
     void addChild(ContainerRenderable child);
     void remove();
 
-    default int screenToLocalX(int x){
+    default int screenToLocalX(double x){
         return (int) ((x-getGlobalScaledX())/getTotalCustomScaling());
     }
-    default int screenToLocalY(int y){
+    default int screenToLocalY(double y){
         return (int) ((y-getGlobalScaledY())/getTotalCustomScaling());
     }
     default void tick(){}

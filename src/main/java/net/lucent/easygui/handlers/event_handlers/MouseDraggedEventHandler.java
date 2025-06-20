@@ -20,6 +20,7 @@ public class MouseDraggedEventHandler extends AbstractGuiEventHandler<MouseDragL
         ListIterator<MouseDragListener> itr = getLastIterator();
         while(itr.hasPrevious()){
             MouseDragListener listener = itr.previous();
+
             if(listener.isActive()) listener.onDrag(mouseX,mouseY,button,dragX,dragY);
         }
 

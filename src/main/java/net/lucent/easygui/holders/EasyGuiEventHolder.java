@@ -81,6 +81,7 @@ public class EasyGuiEventHolder {
             MOUSE_RELEASE_EVENT.register((MouseReleaseListener) obj);
         }
         if(obj instanceof MouseDragListener){
+
             MOUSE_DRAG_EVENT.register((MouseDragListener) obj);
         }
         if(obj instanceof CharTypedListener){

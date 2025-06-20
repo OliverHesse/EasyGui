@@ -1,17 +1,20 @@
 package net.lucent.easygui.elements.other;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.lucent.easygui.interfaces.events.Clickable;
 import net.lucent.easygui.interfaces.events.MouseDragListener;
+import net.lucent.easygui.interfaces.events.MouseReleaseListener;
 import net.lucent.easygui.interfaces.events.MouseScrollListener;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 
-public abstract class AbstractScrollBox extends SquareRenderable implements MouseScrollListener, MouseDragListener {
+public abstract class AbstractScrollBox extends SquareRenderable implements MouseScrollListener, Clickable, MouseReleaseListener {
 
     private int scrollBarColor = -8026747;
     private int backgroundColor = -16777216;
-    private int scrollBarThickness = 2;
+    private int scrollBarThickness = 4;
     private boolean scrollBarVisible = true;
 
     private int width;
@@ -22,6 +25,10 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     private int borderColor = -8026747;
     private boolean borderVisible = true;
     private int borderWidth = 1;
+
+    private boolean dragging;
+    private int draggingAxis = 0;
+
     public AbstractScrollBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen);
         setX(x);
@@ -78,6 +85,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
 
     public void setYOffset(double yOffset) {
         if(yOffset == this.yOffset) return;
+
         updatePositions(0,yOffset-this.yOffset);
         this.yOffset = yOffset;
     }
@@ -137,4 +145,33 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
             guiGraphics.fill((int)progress,getInnerHeight(),(int) (progress+width),(int) (getInnerHeight()+height),scrollBarColor);
         }
     }
+
+
+    @Override
+    public void onClick(double mouseX, double mouseY, int button, boolean clicked) {
+        if(clicked){
+            //check if it was the X or y
+            if(screenToLocalX(mouseX) > getInnerWidth()){
+                //y scroll
+                dragging = true;
+                draggingAxis = 0;
+                double progress = getScrollHeight()*((double) screenToLocalY(mouseY) /getInnerHeight());
+                setYOffset(getScrollAmount(progress,0,getScrollHeight()));
+            }else if(screenToLocalY(mouseY)>getInnerHeight()){
+                //x scroll
+                dragging = true;
+                draggingAxis = 1;
+                double progress = getScrollWidth()*((double) screenToLocalX(mouseX) /getInnerWidth());
+
+                setXOffset(getScrollAmount(progress,0,getScrollWidth()));
+            }
+
+        }
+    }
+
+    @Override
+    public void onMouseReleased(double mouseX, double mouseY, int button) {
+        if(button == InputConstants.MOUSE_BUTTON_LEFT) dragging = false;
+    }
+
 }
