@@ -4,6 +4,7 @@ import net.lucent.easygui.elements.other.DisplayTexture;
 import net.lucent.easygui.elements.other.View;
 import net.lucent.easygui.overlays.EasyGuiOverlay;
 import net.lucent.easygui.overlays.EasyGuiOverlayManager;
+import net.lucent.easygui.parsers.ShuntingYardExprParser;
 import net.lucent.easygui.testing.KeyHandler;
 import net.lucent.easygui.testing.test_elements.HealthProgressBar;
 
@@ -46,7 +47,7 @@ public class EasyGui
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public EasyGui(IEventBus modEventBus, ModContainer modContainer)
     {
-
+        System.out.println(new ShuntingYardExprParser().parseInput(" 37+43*2/(parent.width-5)^22^3"));
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 

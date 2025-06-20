@@ -1,9 +1,11 @@
 package net.lucent.easygui.elements.other;
 
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.Window;
 
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
+import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
@@ -179,4 +181,5 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public void onGuiScaleChanged(double oldScale) {
         recalculateDimensions();
     }
+
 }

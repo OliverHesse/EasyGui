@@ -1,0 +1,84 @@
+package net.lucent.easygui.parsers;
+
+import com.electronwill.nightconfig.core.io.ParsingException;
+
+import java.util.*;
+
+//TODO im starting to debate if i actualy want this or not... since most UI requires some amount of programming...
+//this seems kind of pointless now
+
+//TODO add variables. like parent.width, parent.height ,parent.scaledWidth, parent.scaledHeight
+//TODO even allow parent.parent.width
+//TODO potentially add functions
+//i miss peek...
+//todo update to use number() variable() and operand() obj
+public class ShuntingYardExprParser {
+    List<String> operandStack = new ArrayList<>();
+    List<String> output = new ArrayList<>();
+    //gets it in reverse Polish notation
+    public String parseInput(String input){
+        Set<String> digits = Set.of("1","2","3","4","5","6","7","8","9","0");
+        HashMap<String,Integer> operandPriority = new HashMap<>(){{
+           put("+",2);
+           put("-",2);
+           put("*",3);
+           put("/",3);
+           put("^",4);
+           put("(",1);
+        }};
+        input = input.replaceAll("\\s","");
+        //if not in this set assumed to be right associative
+        Set<String> leftAssociative = Set.of("+","-","*","/");
+        List<String> inputList = new ArrayList<>();
+        for (Character ch : input.toCharArray()){
+            inputList.add(ch.toString());
+        }
+        Iterator<String> iterator = inputList.iterator();
+        while(iterator.hasNext()){
+            String ch = iterator.next();
+            System.out.println(ch);
+            if(digits.contains(ch)){
+                StringBuilder builder = new StringBuilder();
+                do {
+                    builder.append(ch);
+                } while (iterator.hasNext() && digits.contains(ch = iterator.next()));
+                output.add(builder.toString());
+            }
+            char chC = ch.toCharArray()[0];
+            if(Character.isAlphabetic(chC) || ch.equals(".")){
+                StringBuilder builder = new StringBuilder();
+                do {
+                    builder.append(ch);
+                    if(iterator.hasNext()){
+                        ch = iterator.next();
+                        chC = ch.toCharArray()[0];
+                    }
+                } while (iterator.hasNext() && Character.isAlphabetic(chC) || ch.equals("."));
+                output.add(builder.toString());
+            }
+            System.out.println(ch);
+            System.out.println(operandStack);
+
+            if(operandPriority.containsKey(ch)){
+                while(!operandStack.isEmpty() && (operandPriority.get(operandStack.getLast()) >= operandPriority.get(ch) && leftAssociative.contains(ch))){
+                    output.add(operandStack.removeLast());
+                }
+                operandStack.add(ch);
+            }
+
+            if(Objects.equals(ch, ")")){
+
+
+                while(!operandStack.isEmpty() && !Objects.equals(operandStack.getLast(), "(")){
+                    System.out.println(operandStack);
+                    output.add(operandStack.removeLast());
+                }
+
+                if(!operandStack.isEmpty()) operandStack.removeLast();
+
+            }
+        }
+        if(!operandStack.isEmpty()) output.addAll(operandStack.reversed());
+        return output.toString();
+    }
+}

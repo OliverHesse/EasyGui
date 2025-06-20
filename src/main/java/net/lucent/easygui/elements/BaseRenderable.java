@@ -1,6 +1,8 @@
 package net.lucent.easygui.elements;
 
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
@@ -290,4 +292,21 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public ContainerRenderable getParent() {
         return parent;
     }
+
+    //TODO not in development right now
+    public abstract static class Serializer{
+
+        public int parseX(JsonElement element){
+            //first try to parse as int
+            try{
+                return element.getAsInt();
+            }catch (Exception e){
+                return 0;
+            }
+        }
+        public int parseY(JsonElement element){return 0;}
+        public abstract ContainerRenderable readJson(JsonObject obj);
+
+    }
+
 }

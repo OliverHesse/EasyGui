@@ -21,7 +21,7 @@ Planned Features
     - both multiline and single line
 - drop down
 - make sticky use a general solution
-- let developer create UI from a json file
+- let developer create UI from a json file(not 100% sure abt this yet since you cant create interactive elements like this)
 - make a wiki with a common task page (examples of commonly made things)
 - JEI compatibility(use easyGui menus for it)
 
