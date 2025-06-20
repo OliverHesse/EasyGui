@@ -1,6 +1,7 @@
 -Current Feature-
+-scroll boxes
+
+small things
+-go back and add width and height to baseRenderable
 
 bug fixes needed
--when in small window hover seems to be always on. click behaves naturally
--when opening a view in fullscreen items are not positioned properly. but are when windowed
--text box shift down/up key broken

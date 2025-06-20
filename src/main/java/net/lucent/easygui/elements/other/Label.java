@@ -93,8 +93,8 @@ public class Label extends BaseRenderable {
         private  boolean cull = false;
         private  boolean useCustomScaling = false;
         private  double customScaling = 1;
-        private  int x;
-        private  int y;
+        private  int x = 0;
+        private  int y = 0;
 
         public  Builder screen(IEasyGuiScreen easyGuiScreen){this.easyGuiScreen = easyGuiScreen; return this;}
         public  Builder textColor(int color){textColor = color; return  this;}

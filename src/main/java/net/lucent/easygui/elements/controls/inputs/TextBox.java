@@ -88,14 +88,14 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
     @Override
     public void onClick(double mouseX, double mouseY, int button,boolean clicked) {
 
-        System.out.println("clicked");
+
         if(!clicked){
             setEditable(false);
             setFocused(false);
             return;
         }
         if(isFocused()){
-            System.out.println("enhanced click");
+
             editBox.enhancedOnClick(mouseX,mouseY,button,(int) getGlobalScaledX(),getTotalScaleFactorX());
         }else {
             setEditable(true);

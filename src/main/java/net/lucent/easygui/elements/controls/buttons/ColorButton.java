@@ -16,8 +16,7 @@ public class ColorButton extends AbstractButton{
 
     public ColorButton(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen, x, y, width, height);
-        System.out.println("=====");
-        System.out.println("x: "+x +" y: "+y);
+
     }
 
     @Override

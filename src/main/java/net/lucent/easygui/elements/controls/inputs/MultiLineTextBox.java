@@ -338,7 +338,7 @@ public class MultiLineTextBox extends SquareRenderable implements
         if(pageText.isEmpty()){
             return DisplayData.EMPTY;
         }
-        System.out.println(pageText);
+
         //calculate render data
         int cursorPos = boxData.getCursorPos();
         int selectionPos = boxData.getSelectionPos();
@@ -355,14 +355,14 @@ public class MultiLineTextBox extends SquareRenderable implements
 
             String s2 = pageText.substring(i, i1);
             mutableboolean.setValue(s2.endsWith("\n") );
-            System.out.println(mutableboolean.getValue());
+
             String s3 = StringUtils.stripEnd(s2, " \n");
 
             intlist.add(i);
             lines.add(Component.literal(s3));
         });
         int[] lineStarts = intlist.toIntArray();
-        System.out.println(cursorPos+","+pageText.length());
+
         boolean endOfPage = cursorPos == pageText.length();
         int cursorX = 0;
         int cursorY = 0;

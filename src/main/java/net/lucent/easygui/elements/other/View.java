@@ -149,13 +149,13 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
 
     // bugged when opening menu in fullscreen mode
     public void recalculateDimensions() {
-        System.out.println("recalculation");
+
         if (useMinecraftScale) {
-            width = (int) (Minecraft.getInstance().getWindow().getGuiScaledWidth() );
-            height = (int) (Minecraft.getInstance().getWindow().getGuiScaledHeight());
+            width = Minecraft.getInstance().getWindow().getGuiScaledWidth() ;
+            height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
         } else {
-            width = (int) (Minecraft.getInstance().getWindow().getWidth());
-            height = (int) (Minecraft.getInstance().getWindow().getHeight());
+            width = Minecraft.getInstance().getWindow().getWidth();
+            height = Minecraft.getInstance().getWindow().getHeight();
         }
     }
 
