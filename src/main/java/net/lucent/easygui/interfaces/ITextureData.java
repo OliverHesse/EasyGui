@@ -28,6 +28,7 @@ public interface ITextureData {
         renderTexture(guiGraphics,x,y,u,v,getTextureWidth(),getTextureHeight());
     }
     default void renderTexture(GuiGraphics guiGraphics,int x, int y,int u,int v,int uOffset,int vOffset){
+        if(getTexture() == null) return;
         guiGraphics.blit(getTexture(),x,y,u,v,uOffset,vOffset,getTextureWidth(), getTextureHeight());
     }
 

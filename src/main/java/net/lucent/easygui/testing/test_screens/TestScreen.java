@@ -3,6 +3,7 @@ package net.lucent.easygui.testing.test_screens;
 import net.lucent.easygui.elements.containers.panels.DraggablePanel;
 import net.lucent.easygui.elements.controls.buttons.ColorButton;
 import net.lucent.easygui.elements.containers.scroll_boxes.DynamicScrollBox;
+import net.lucent.easygui.elements.controls.buttons.ToggleButton;
 import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.screens.EasyGuiBaseScreen;
@@ -15,9 +16,22 @@ public class TestScreen extends EasyGuiBaseScreen {
         addView(view);
         view.setCustomScale(1);
         view.setUseMinecraftScale(true);
+
+        ToggleButton toggleButton = new ToggleButton(this,0,0);
+        toggleButton.setCustomScale(4);
+        toggleButton.setSticky(true);
+        toggleButton.setX(view.getScaledWidth()/2 - 15*4);
+        toggleButton.setY(view.getScaledHeight()/2 - 15*4);
+        view.addChild(
+            toggleButton
+        );
+        /*
         view.addChild(
                 new DraggablePanel(this,(view.getScaledWidth()/2)-100,(view.getScaledHeight()/2)-50,200,100)
         );
+
+
+         */
         //ColorButton button = new ColorButton(this,view.getScaledWidth()/2,view.getScaledHeight()/2,200,40);
 
        /*

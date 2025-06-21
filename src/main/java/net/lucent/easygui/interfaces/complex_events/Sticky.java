@@ -19,15 +19,16 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
     default void recalculatePos(int oldWidth, int oldHeight){
         System.out.println("old Width: "+ oldWidth);
         System.out.println("old Height" + oldHeight);
+        System.out.println(getScaleX());
         oldWidth = (int) (oldWidth/getRoot().getTotalScaleFactorX());
         oldHeight = (int) (oldHeight/getRoot().getTotalScaleFactorY());
-        int x = getX()+getWidth()/2;
-        int y = getY()+getHeight()/2;
+        int x = (int) (getX()+getWidth()*getScaleX()/2);
+        int y = (int) (getY()+getHeight()*getScaleY()/2);
         double mX = (double) x /oldWidth;
         double mY = (double) y /oldHeight;
 
-        int newX = (int) (getRoot().getScaledWidth()*mX - getWidth()/2);
-        int newY = (int) (getRoot().getScaledHeight()*mY - getHeight()/2);
+        int newX = (int) (getRoot().getScaledWidth()*mX - getWidth()*getScaleX()/2);
+        int newY = (int) (getRoot().getScaledHeight()*mY - getHeight()*getScaleY()/2);
         setX(newX);
         setY(newY);
     };

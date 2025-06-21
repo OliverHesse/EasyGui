@@ -204,16 +204,18 @@ public abstract class BaseRenderable implements ContainerRenderable {
      * by default does not remove minecraft internal scaling. that is done by a view
      * @return
      */
+    @Override
     public double getScale(){
         if(useCustomScaling){
             return customScale;
         }
         return 1;
     }
-
+    @Override
     public double getScaleX(){
         return getScale();
     }
+    @Override
     public double getScaleY(){
         return getScale();
     }

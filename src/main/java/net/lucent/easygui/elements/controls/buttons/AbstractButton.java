@@ -62,14 +62,12 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
         setHovered(state);
     }
 
-    @Override
-    public void recalculatePos(int oldWidth, int oldHeight) {
 
-    }
 
     @Override
     public void tick() {
         super.tick();
+        if(!unPressNaturally) return;
         time_pressed += 1;
         if (time_pressed >= PRESSED_TIME) {
             pressed = false;

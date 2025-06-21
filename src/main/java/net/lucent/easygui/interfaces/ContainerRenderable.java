@@ -57,6 +57,11 @@ public interface ContainerRenderable {
     default int getHeight(){
         return 0;
     }
+
+    default double getScale(){return 0;}
+    default double getScaleX(){return getScale();}
+    default double getScaleY(){return getScale();}
+
     default int getScaledWidth(){
         return getWidth();
     }

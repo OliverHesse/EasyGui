@@ -14,7 +14,7 @@ import java.util.*;
 //todo update to use number() variable() and operand() obj
 public class ShuntingYardExprParser {
     List<String> operandStack = new ArrayList<>();
-    List<String> output = new ArrayList<>();
+    List<Token> output = new ArrayList<>();
     //gets it in reverse Polish notation
     public String parseInput(String input){
         Set<String> digits = Set.of("1","2","3","4","5","6","7","8","9","0");
@@ -42,7 +42,7 @@ public class ShuntingYardExprParser {
                 do {
                     builder.append(ch);
                 } while (iterator.hasNext() && digits.contains(ch = iterator.next()));
-                output.add(builder.toString());
+                output.add(new Value(builder.toString()));
             }
             char chC = ch.toCharArray()[0];
             if(Character.isAlphabetic(chC) || ch.equals(".")){
@@ -54,14 +54,14 @@ public class ShuntingYardExprParser {
                         chC = ch.toCharArray()[0];
                     }
                 } while (iterator.hasNext() && Character.isAlphabetic(chC) || ch.equals("."));
-                output.add(builder.toString());
+                output.add(new Variable(builder.toString()));
             }
             System.out.println(ch);
             System.out.println(operandStack);
 
             if(operandPriority.containsKey(ch)){
                 while(!operandStack.isEmpty() && (operandPriority.get(operandStack.getLast()) >= operandPriority.get(ch) && leftAssociative.contains(ch))){
-                    output.add(operandStack.removeLast());
+                    output.add(new Operator(operandStack.removeLast()));
                 }
                 operandStack.add(ch);
             }
@@ -71,14 +71,25 @@ public class ShuntingYardExprParser {
 
                 while(!operandStack.isEmpty() && !Objects.equals(operandStack.getLast(), "(")){
                     System.out.println(operandStack);
-                    output.add(operandStack.removeLast());
+                    output.add(new Operator(operandStack.removeLast()));
                 }
 
                 if(!operandStack.isEmpty()) operandStack.removeLast();
 
             }
         }
-        if(!operandStack.isEmpty()) output.addAll(operandStack.reversed());
+        if(!operandStack.isEmpty()) {
+            for(String op : operandStack){
+                output.add(new Operator(op));
+            }
+        }
         return output.toString();
     }
+
+    public interface Token{}
+
+    public record Function(String value)implements Token {};
+    public record Variable(String value)implements Token {};
+    public record Operator(String value)implements Token {};
+    public record Value(String value)implements Token {};
 }
