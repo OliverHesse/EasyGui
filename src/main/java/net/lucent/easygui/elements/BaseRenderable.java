@@ -22,6 +22,9 @@ public abstract class BaseRenderable implements ContainerRenderable {
     private int x;
     private int y;
 
+    public int width;
+    public int height;
+
     public boolean active = true;
     public boolean visible = true;
     public boolean focused = false;
@@ -42,9 +45,58 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public ContainerRenderable parent;
     public List<ContainerRenderable> children = new ArrayList<>();
 
+    public String id = "";
+    public List<String> classList = new ArrayList<>();
+
     public BaseRenderable(IEasyGuiScreen screen){
         this.screen = screen;
         screen.register(this);
+    }
+
+    @Override
+    public String getID() {
+        return id;
+    }
+
+    @Override
+    public List<String> getClassList() {
+        return List.copyOf(classList);
+    }
+    @Override
+    public void setID(String id) {
+        this.id = id;
+        screen.childIdSet(this,id);
+    }
+
+    @Override
+    public void addClass(String className) {
+        classList.add(className);
+        screen.childClassAdded(this,className);
+    }
+
+    @Override
+    public void removeClass(String className) {
+        classList.remove(className);
+        screen.childClassRemoved(this,className);
+
+    }
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     @Override

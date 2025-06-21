@@ -16,8 +16,7 @@ public class Label extends BaseRenderable {
 
     public int textColor;
     public boolean centered;
-    public int width;
-    public int height;
+
     public Component text;
     public Font font;
 
@@ -34,8 +33,8 @@ public class Label extends BaseRenderable {
         this.text = text;
         setY(y);
         setX(x);
-        this.width = width;
-        this.height = height;
+        setWidth(width);
+        setHeight(height);
         this.centered = centered;
         this.cull = cull;
         this.textColor = textColor;
@@ -51,15 +50,6 @@ public class Label extends BaseRenderable {
         return font;
     }
 
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
 
     @Override
     public void setRenderScale(GuiGraphics guiGraphics) {

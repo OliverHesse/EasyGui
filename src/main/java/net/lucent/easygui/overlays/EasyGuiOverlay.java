@@ -1,7 +1,7 @@
 package net.lucent.easygui.overlays;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.lucent.easygui.elements.other.View;
+import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
@@ -12,10 +12,12 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.function.BiConsumer;
 
 /**
@@ -30,6 +32,8 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
     private View view;
     public EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     public BiConsumer<EasyGuiEventHolder,EasyGuiOverlay> runnable;
+    private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();
+    private final HashMap<String,List<ContainerRenderable>> classMap = new HashMap<>();
     public EasyGuiOverlay(BiConsumer<EasyGuiEventHolder,EasyGuiOverlay>  initialize){
         this.runnable = initialize;
 
@@ -76,12 +80,12 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
 
         //Annoyingly overlays don't get a resize event...
         if(mc.getWindow().getHeight() != windowHeight || windowWidth != mc.getWindow().getWidth()){
-            eventHolder.SCREEN_RESIZE_EVENT.call(windowWidth,windowHeight);
+            eventHolder.SCREEN_RESIZE_EVENT.call(windowWidth,windowHeight,guiScale);
             windowWidth = mc.getWindow().getWidth();
             windowHeight = mc.getWindow().getHeight();
+            guiScale = mc.getWindow().getGuiScale();
 
-        }
-        if(mc.getWindow().getGuiScale() != guiScale){
+        }else if(mc.getWindow().getGuiScale() != guiScale){
             eventHolder.GUI_SCALE_CHANGED_EVENT.call(guiScale);
             guiScale = mc.getWindow().getGuiScale();
 
@@ -103,5 +107,34 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
     @Override
     public void removeView(View view) {
 
+    }
+
+    @Override
+    public void childIdSet(ContainerRenderable obj, String id) {
+        idMap.put(id,obj);
+    }
+
+    @Override
+    public void childClassAdded(ContainerRenderable obj, String className) {
+        if(!classMap.containsKey(className)) classMap.put(className,new ArrayList<>());
+        classMap.get(className).add(obj);
+    }
+
+    @Override
+    public void childClassRemoved(ContainerRenderable obj, String className) {
+        if(!classMap.containsKey(className)) return;
+
+        classMap.get(className).remove(obj);
+    }
+
+    @Override
+    public ContainerRenderable getElementByID(String id) {
+        return idMap.get(id);
+    }
+
+    @Override
+    public List<ContainerRenderable> getElementsByClassName(String className) {
+        if(!classMap.containsKey(className)) return List.of();
+        return List.copyOf(classMap.get(className));
     }
 }

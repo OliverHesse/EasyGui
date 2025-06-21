@@ -1,9 +1,9 @@
-package net.lucent.easygui.elements.other;
+package net.lucent.easygui.elements.containers.scroll_boxes;
 
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 
-public class DynamicScrollBox extends AbstractScrollBox{
+public class DynamicScrollBox extends AbstractScrollBox {
     private double  maxScrollY;
     private double maxScrollX;
     public DynamicScrollBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {

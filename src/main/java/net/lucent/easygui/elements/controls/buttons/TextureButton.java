@@ -45,14 +45,8 @@ public class TextureButton extends AbstractButton{
         ITextureData finalTexture = defaultTexture;
         if(isFocused()) finalTexture = focusedTexture;
         if(isHovered()) finalTexture = hoveredTexture;
-        if(isPressed()){
-            finalTexture = pressedTexture;
-            time_pressed += partialTick;
-            if (time_pressed >= PRESSED_TIME) {
-                setPressed(false);
-                time_pressed = 0;
-            }
-        }
+        if(isPressed()) finalTexture = pressedTexture;
+
         finalTexture.renderTexture(guiGraphics,getX(),getY());
     }
 }

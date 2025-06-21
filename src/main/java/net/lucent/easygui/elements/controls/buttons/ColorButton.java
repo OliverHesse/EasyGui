@@ -27,17 +27,9 @@ public class ColorButton extends AbstractButton{
             finalColor = focusColor;
             guiGraphics.fill(-1,-1,getWidth()+2,getHeight()+2,(new Color(255,255,255,255)).getRGB());
         }
-        if(hovered){
-            finalColor = hoverColor;
-        }
-        if(pressed){
-            finalColor = pressColor;
-            time_pressed += partialTick;
-            if (time_pressed >= PRESSED_TIME) {
-                pressed = false;
-                time_pressed = 0;
-            }
-        }
+        if(hovered)finalColor = hoverColor;
+        if(pressed)finalColor = pressColor;
+
 
         guiGraphics.fill(0,0,getWidth(),getHeight(),finalColor.getRGB());
 

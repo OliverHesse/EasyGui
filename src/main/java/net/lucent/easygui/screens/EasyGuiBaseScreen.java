@@ -1,6 +1,6 @@
 package net.lucent.easygui.screens;
 
-import net.lucent.easygui.elements.other.View;
+import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
@@ -8,17 +8,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
-
+    public int windowWidth = Minecraft.getInstance().getWindow().getWidth();
+    public int windowHeight = Minecraft.getInstance().getWindow().getHeight();
+    public double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
     private final List<View> views = new ArrayList<>();
     private final EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
-
+    private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();
+    private final HashMap<String,List<ContainerRenderable>> classMap = new HashMap<>();
     public EasyGuiBaseScreen(Component title) {
         super(title);
     }
@@ -32,7 +35,26 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     }
 
     @Override
+    protected void init() {
+        Minecraft mc = Minecraft.getInstance();
+
+        if(mc.getWindow().getHeight() != windowHeight || windowWidth != mc.getWindow().getWidth()){
+            eventHolder.SCREEN_RESIZE_EVENT.call(windowWidth,windowHeight,guiScale);
+            windowWidth = mc.getWindow().getWidth();
+            windowHeight = mc.getWindow().getHeight();
+            guiScale = mc.getWindow().getGuiScale();
+            System.out.println(minecraft.getWindow().getGuiScale());
+
+        }else if(mc.getWindow().getGuiScale() != guiScale){
+            //if(guiScale == 0) eventHolder.GUI_SCALE_CHANGED_EVENT.call(mc.getWindow().getGuiScale());
+            guiScale = mc.getWindow().getGuiScale();
+
+        }
+    }
+
+    @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         for(View view : views){
             if(view.isActive()) view.render(guiGraphics,mouseX,mouseY,partialTick);
@@ -52,6 +74,35 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     @Override
     public void removeView(View view) {
         views.remove(view);
+    }
+
+    @Override
+    public void childIdSet(ContainerRenderable obj, String id) {
+        idMap.put(id,obj);
+    }
+
+    @Override
+    public void childClassAdded(ContainerRenderable obj, String className) {
+        if(!classMap.containsKey(className)) classMap.put(className,new ArrayList<>());
+        classMap.get(className).add(obj);
+    }
+
+    @Override
+    public void childClassRemoved(ContainerRenderable obj, String className) {
+        if(!classMap.containsKey(className)) return;
+
+        classMap.get(className).remove(obj);
+    }
+
+    @Override
+    public ContainerRenderable getElementByID(String id) {
+        return idMap.get(id);
+    }
+
+    @Override
+    public List<ContainerRenderable> getElementsByClassName(String className) {
+        if(!classMap.containsKey(className)) return List.of();
+        return List.copyOf(classMap.get(className));
     }
 
     @Override

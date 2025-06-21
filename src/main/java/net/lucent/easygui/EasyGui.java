@@ -1,18 +1,10 @@
 package net.lucent.easygui;
 
-import net.lucent.easygui.elements.other.DisplayTexture;
-import net.lucent.easygui.elements.other.View;
-import net.lucent.easygui.overlays.EasyGuiOverlay;
 import net.lucent.easygui.overlays.EasyGuiOverlayManager;
 import net.lucent.easygui.parsers.ShuntingYardExprParser;
-import net.lucent.easygui.testing.KeyHandler;
-import net.lucent.easygui.testing.test_elements.HealthProgressBar;
 
-import net.lucent.easygui.util.TextureData;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.resources.ResourceLocation;
+import net.lucent.easygui.testing.KeyHandler;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -56,7 +48,7 @@ public class EasyGui
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
-        //KeyHandler.register();
+        KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);

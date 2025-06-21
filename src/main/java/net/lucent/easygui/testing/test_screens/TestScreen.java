@@ -1,15 +1,12 @@
 package net.lucent.easygui.testing.test_screens;
 
+import net.lucent.easygui.elements.containers.panels.DraggablePanel;
 import net.lucent.easygui.elements.controls.buttons.ColorButton;
-import net.lucent.easygui.elements.controls.inputs.MultiLineTextBox;
-import net.lucent.easygui.elements.other.AbstractScrollBox;
-import net.lucent.easygui.elements.other.DynamicScrollBox;
+import net.lucent.easygui.elements.containers.scroll_boxes.DynamicScrollBox;
 import net.lucent.easygui.elements.other.Label;
-import net.lucent.easygui.elements.other.View;
+import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.screens.EasyGuiBaseScreen;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.vehicle.Minecart;
 
 public class TestScreen extends EasyGuiBaseScreen {
     public TestScreen(Component title) {
@@ -18,7 +15,11 @@ public class TestScreen extends EasyGuiBaseScreen {
         addView(view);
         view.setCustomScale(1);
         view.setUseMinecraftScale(true);
-        ColorButton button = new ColorButton(this,view.getScaledWidth()/2,view.getScaledHeight()/2,200,40);
+        view.addChild(
+                new DraggablePanel(this,(view.getScaledWidth()/2)-100,(view.getScaledHeight()/2)-50,200,100)
+        );
+        //ColorButton button = new ColorButton(this,view.getScaledWidth()/2,view.getScaledHeight()/2,200,40);
+
        /*
         button.addChild(new Label.Builder()
                 .screen(this)
@@ -53,6 +54,7 @@ public class TestScreen extends EasyGuiBaseScreen {
         };
 
          */
+        /*
         DynamicScrollBox scrollBox = new DynamicScrollBox(this,
                 view.getScaledWidth()/4,
                 view.getScaledHeight()/4,
@@ -65,6 +67,8 @@ public class TestScreen extends EasyGuiBaseScreen {
                 .y(190)
                 .build());
         view.addChild(scrollBox);
+
+         */
 
         /*
         view.addChild(new MultiLineTextBox(

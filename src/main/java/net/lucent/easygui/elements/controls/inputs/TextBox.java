@@ -86,6 +86,11 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
     }
 
     @Override
+    public void setClickPosition(double mouseX, double mouseY) {
+
+    }
+
+    @Override
     public void onClick(double mouseX, double mouseY, int button,boolean clicked) {
 
 

@@ -14,9 +14,8 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
      */
     public int PRESSED_TIME = 60;
     public double time_pressed = 0; //measured in ticks
+    public boolean unPressNaturally = true;
 
-    public int width;
-    public int height;
     public boolean sticky = false;
 
     public boolean pressed;
@@ -27,8 +26,8 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
         super(easyGuiScreen);
         this.setX(x);
         this.setY(y);
-        this.width = width;
-        this.height = height;
+        setWidth(width);
+        setHeight(height);
     }
 
     @Override
@@ -48,15 +47,7 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
         pressed = state;
     }
     public void setHovered(boolean state){hovered = state;}
-    @Override
-    public int getWidth() {
-        return width;
-    }
 
-    @Override
-    public int getHeight() {
-        return height;
-    }
 
 
     @Override
@@ -74,5 +65,15 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
     @Override
     public void recalculatePos(int oldWidth, int oldHeight) {
 
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        time_pressed += 1;
+        if (time_pressed >= PRESSED_TIME) {
+            pressed = false;
+            time_pressed = 0;
+        }
     }
 }

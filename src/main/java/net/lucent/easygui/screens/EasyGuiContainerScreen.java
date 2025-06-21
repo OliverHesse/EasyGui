@@ -1,6 +1,6 @@
 package net.lucent.easygui.screens;
 
-import net.lucent.easygui.elements.other.View;
+import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
@@ -13,13 +13,16 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+//TODO ACTUALY TEST
 public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements IEasyGuiScreen {
 
     private final List<View> views = new ArrayList<>();
 
     private final EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
+    private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();
+    private final HashMap<String,List<ContainerRenderable>> classMap = new HashMap<>();
 
     public EasyGuiContainerScreen(T menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -121,5 +124,33 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         eventHolder.MOUSE_OVER_EVENT.call(mouseX/scale,mouseY/scale);
         eventHolder.TICK_EVENT.call();
 
+    }
+    @Override
+    public void childIdSet(ContainerRenderable obj, String id) {
+        idMap.put(id,obj);
+    }
+
+    @Override
+    public void childClassAdded(ContainerRenderable obj, String className) {
+        if(!classMap.containsKey(className)) classMap.put(className,new ArrayList<>());
+        classMap.get(className).add(obj);
+    }
+
+    @Override
+    public void childClassRemoved(ContainerRenderable obj, String className) {
+        if(!classMap.containsKey(className)) return;
+
+        classMap.get(className).remove(obj);
+    }
+
+    @Override
+    public ContainerRenderable getElementByID(String id) {
+        return idMap.get(id);
+    }
+
+    @Override
+    public List<ContainerRenderable> getElementsByClassName(String className) {
+        if(!classMap.containsKey(className)) return List.of();
+        return List.copyOf(classMap.get(className));
     }
 }

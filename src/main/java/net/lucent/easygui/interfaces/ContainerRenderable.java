@@ -3,8 +3,15 @@ package net.lucent.easygui.interfaces;
 import net.minecraft.client.gui.GuiGraphics;
 
 import java.util.List;
-
+//TODO annotate for better documentation
 public interface ContainerRenderable {
+
+    String getID();
+    List<String> getClassList();
+    void setID(String id);
+    void addClass(String className);
+    void removeClass(String className);
+
     void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick);
     void renderSelf(GuiGraphics guiGraphics,int mouseX, int mouseY,float partialTick);
     void renderChildren(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick);

@@ -1,10 +1,10 @@
-package net.lucent.easygui.elements.other;
+package net.lucent.easygui.elements.containers.scroll_boxes;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.Clickable;
-import net.lucent.easygui.interfaces.events.MouseDragListener;
 import net.lucent.easygui.interfaces.events.MouseReleaseListener;
 import net.lucent.easygui.interfaces.events.MouseScrollListener;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,8 +17,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     private int scrollBarThickness = 4;
     private boolean scrollBarVisible = true;
 
-    private int width;
-    private int height;
+
     private double xOffset;
     private double yOffset;
 
@@ -42,7 +41,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     public abstract double getScrollRate();
     @Override
     public int getWidth() {
-        return width+(isScrollBarYVisible() ? scrollBarThickness :0);
+        return getInnerWidth()+(isScrollBarYVisible() ? scrollBarThickness :0);
     }
 
     public int getInnerWidth(){
@@ -68,7 +67,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
 
     @Override
     public int getHeight() {
-        return height+(isScrollBarXVisible() ? scrollBarThickness :0);
+        return getInnerHeight()+(isScrollBarXVisible() ? scrollBarThickness :0);
     }
     public int getInnerHeight(){
         return height;

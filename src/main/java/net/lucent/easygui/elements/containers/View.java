@@ -1,17 +1,13 @@
-package net.lucent.easygui.elements.other;
+package net.lucent.easygui.elements.containers;
 
-import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.Window;
 
 import net.lucent.easygui.elements.BaseRenderable;
-import net.lucent.easygui.holders.EasyGuiEventHolder;
-import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import org.joml.Quaternionf;
 
 
 public class View extends BaseRenderable implements ScreenResizeListener, GuiScaleListener {
@@ -23,8 +19,7 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public boolean useViewportSize = false;
     public boolean useMinecraftScale = false;
 
-    public int width;
-    public int height;
+
 
 
     public View(IEasyGuiScreen screen, int x, int y) {
@@ -35,8 +30,8 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
         super(screen);
         this.setX(x);
         this.setY(y);
-        this.width = width;
-        this.height = height;
+        this.setWidth(width);;
+        this.setHeight(height);
         this.screen = screen;
 
     }
@@ -52,15 +47,6 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
      */
 
 
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
 
     @Override
     public double getScale() {
@@ -145,7 +131,7 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
      * this could be breaking things..
      */
     @Override
-    public void onResize(int oldWidth, int oldHeight) {
+    public void onResize(int oldWidth, int oldHeight,double oldScale) {
         recalculateDimensions();
     }
 
@@ -153,11 +139,11 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public void recalculateDimensions() {
 
         if (useMinecraftScale) {
-            width = Minecraft.getInstance().getWindow().getGuiScaledWidth() ;
-            height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
+            setWidth(Minecraft.getInstance().getWindow().getGuiScaledWidth());
+            setHeight(Minecraft.getInstance().getWindow().getGuiScaledHeight());
         } else {
-            width = Minecraft.getInstance().getWindow().getWidth();
-            height = Minecraft.getInstance().getWindow().getHeight();
+            setWidth(Minecraft.getInstance().getWindow().getWidth());
+            setHeight(Minecraft.getInstance().getWindow().getHeight());
         }
     }
 

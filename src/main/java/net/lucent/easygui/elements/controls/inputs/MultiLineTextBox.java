@@ -42,8 +42,7 @@ public class MultiLineTextBox extends SquareRenderable implements
 
     private int lastIndex = -1;
     private long lastClickTime;
-    public int width = 0;
-    public int height = 0;
+
     private final TextFieldHelper boxData;
     private int textColor = 14737632;
     private int textColorUnFocused= 7368816;
@@ -58,14 +57,14 @@ public class MultiLineTextBox extends SquareRenderable implements
         super(easyGuiScreen);
         setX(x);
         setY(y);
-        this.width = width;
-        this.height = height;
+        setWidth(width);
+        setHeight(height);
         this.boxData = new TextFieldHelper(
                 this::getCurrentPageText,
                 this::setCurrentPageText,
                 this::getClipboard,
                 this::setClipboard,
-                value -> font.wordWrapHeight(value,width) <= (height-font.lineHeight-1));
+                value -> font.wordWrapHeight(value,getWidth()) <= (getHeight()-font.lineHeight-1));
 
     }
 
@@ -91,15 +90,7 @@ public class MultiLineTextBox extends SquareRenderable implements
     public void setBordered(boolean bordered){
         this.bordered = bordered;
     }
-    @Override
-    public int getWidth() {
-        return width;
-    }
 
-    @Override
-    public int getHeight() {
-        return height;
-    }
 
 
     private String getCurrentPageText() {

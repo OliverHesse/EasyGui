@@ -1,8 +1,6 @@
 package net.lucent.easygui.testing.test_elements;
 
 import net.lucent.easygui.elements.other.ProgressBar;
-import net.lucent.easygui.elements.other.View;
-import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.ITextureData;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
