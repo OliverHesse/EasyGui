@@ -97,19 +97,20 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
         if(!clicked){
             setEditable(false);
             setFocused(false);
-            return;
-        }
-        if(isFocused()){
 
-            editBox.enhancedOnClick(mouseX,mouseY,button,(int) getGlobalScaledX(),getTotalScaleFactorX());
-        }else {
-            setEditable(true);
-            setFocused(true);
+        }else{
+            if(isFocused()){
 
-        }
-        if(clicked && button == InputConstants.MOUSE_BUTTON_LEFT) {
-            setDragged(true);
-            setPivot((int) ((Mth.floor(mouseX) - getGlobalScaledX())/getTotalScaleFactorX()));
+                editBox.enhancedOnClick(mouseX,mouseY,button,(int) getGlobalScaledX(),getTotalScaleFactorX());
+            }else {
+                setEditable(true);
+                setFocused(true);
+
+            }
+            if(clicked && button == InputConstants.MOUSE_BUTTON_LEFT) {
+                setDragged(true);
+                setPivot((int) ((Mth.floor(mouseX) - getGlobalScaledX())/getTotalScaleFactorX()));
+            }
         }
     }
 
@@ -188,10 +189,10 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
     @Override
     public void onKeyPressed(int keyCode, int scanCode, int modifier) {
 
-        if(!isFocused())return;
-        editBox.keyPressed(keyCode,scanCode,modifier);
-        if(keyCode == GLFW.GLFW_KEY_ENTER) onEnter();
-
+        if (isFocused()) {
+            editBox.keyPressed(keyCode, scanCode, modifier);
+            if (keyCode == GLFW.GLFW_KEY_ENTER) onEnter();
+        }
     }
 
     /**
@@ -199,14 +200,7 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
      */
     public void onEnter(){}
 
-    /**
-     * nod needed but useful for rendering
-     * @param state is mouse over this(even if mouse is over if it is not on top(not z index but child depth))
-     */
-    @Override
-    public void onMouseOver(boolean state) {
-        Draggable.super.onMouseOver(state);
-    }
+
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {

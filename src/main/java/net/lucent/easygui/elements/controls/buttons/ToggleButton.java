@@ -59,6 +59,7 @@ public class ToggleButton extends AbstractButton{
         if(clicked && button == InputConstants.MOUSE_BUTTON_LEFT){
             setPressed(!isPressed());
         }
+
     }
 
     public boolean getState(){

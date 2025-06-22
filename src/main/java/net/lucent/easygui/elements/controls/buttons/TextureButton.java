@@ -20,6 +20,7 @@ public class TextureButton extends AbstractButton{
             ITextureData pressedTexture,
             ITextureData hoveredTexture,
             ITextureData focusedTexture
+
     ){
         super(easyGuiScreen,x,y,defaultTexture.getWidth(), defaultTexture.getHeight());
         this.defaultTexture =defaultTexture;
@@ -35,6 +36,7 @@ public class TextureButton extends AbstractButton{
             ITextureData defaultTexture,
             ITextureData pressedTexture,
             ITextureData hoveredTexture
+
     ){
         this(easyGuiScreen,x,y,defaultTexture,pressedTexture,hoveredTexture,defaultTexture);
     }

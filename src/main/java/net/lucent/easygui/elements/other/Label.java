@@ -54,7 +54,9 @@ public class Label extends BaseRenderable {
     @Override
     public void setRenderScale(GuiGraphics guiGraphics) {
         super.setRenderScale(guiGraphics);
-        if(cull){guiGraphics.enableScissor(0,0,getScaledWidth(),getScaledHeight());}
+        if(cull){
+            //guiGraphics.enableScissor(0,0,getScaledWidth(),getScaledHeight());}
+        }
     }
 
     @Override

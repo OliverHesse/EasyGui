@@ -7,6 +7,10 @@ import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.interfaces.events.Clickable;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 public abstract class AbstractButton extends SquareRenderable implements Clickable, Sticky {
 
     /**
@@ -22,12 +26,15 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
 
     public boolean hovered;
 
+
+
     public AbstractButton(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen);
         this.setX(x);
         this.setY(y);
         setWidth(width);
         setHeight(height);
+
     }
 
     @Override
@@ -52,9 +59,8 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
 
     @Override
     public void onClick(double mouseX, double mouseY, int button,boolean clicked) {
-        if(!clicked) return;
+        if(clicked)  setPressed(true);;
 
-        setPressed(true);
     }
 
     @Override
@@ -67,11 +73,12 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
     @Override
     public void tick() {
         super.tick();
-        if(!unPressNaturally) return;
-        time_pressed += 1;
-        if (time_pressed >= PRESSED_TIME) {
-            pressed = false;
-            time_pressed = 0;
+        if(unPressNaturally){
+            time_pressed += 1;
+            if (time_pressed >= PRESSED_TIME) {
+                pressed = false;
+                time_pressed = 0;
+            }
         }
     }
 }

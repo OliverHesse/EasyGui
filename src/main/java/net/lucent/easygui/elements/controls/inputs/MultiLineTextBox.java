@@ -26,6 +26,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
 /*
     mostly uses code from BookEditScreen since MultiLineEditBox did not render text for some reason
@@ -52,6 +53,8 @@ public class MultiLineTextBox extends SquareRenderable implements
     private boolean bordered = false;
     private int borderWidth = 1;
     private int frameTick;
+
+    private Consumer<String> responder = null;
 
     public MultiLineTextBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen);
@@ -163,6 +166,7 @@ public class MultiLineTextBox extends SquareRenderable implements
     public void onCharTyped(char codePoint, int modifiers) {
         if(isFocused() && StringUtil.isAllowedChatCharacter(codePoint)){
             this.boxData.insertText(Character.toString(codePoint));
+            if(responder != null) responder.accept(getCurrentPageText());
             this.clearDisplayData();
         }
     }
@@ -199,7 +203,10 @@ public class MultiLineTextBox extends SquareRenderable implements
     public void onKeyPressed(int keyCode, int scanCode, int modifier) {
         if(isFocused()){
             boolean flag = this.textBoxKeyPressed(keyCode, scanCode, modifier);
-            if (flag) clearDisplayData();
+            if (flag) {
+                if(responder != null) this.responder.accept(getCurrentPageText());
+                clearDisplayData();
+            }
         }
     }
 
@@ -297,6 +304,9 @@ public class MultiLineTextBox extends SquareRenderable implements
     }
 
 
+    public void setResponder(Consumer<String> responder){
+        this.responder = responder;
+    }
     @Override
     public void onDrag(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if(isFocused() && button == InputConstants.MOUSE_BUTTON_LEFT){

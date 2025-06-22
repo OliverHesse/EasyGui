@@ -220,7 +220,10 @@ public abstract class BaseRenderable implements ContainerRenderable {
         return getScale();
     }
 
-
+    @Override
+    public IEasyGuiScreen getScreen() {
+        return screen;
+    }
 
     @Override
     public void setRenderScale(GuiGraphics guiGraphics){

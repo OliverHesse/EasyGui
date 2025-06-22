@@ -1,17 +1,20 @@
 package net.lucent.easygui.interfaces;
 
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 
 import java.util.List;
 //TODO annotate for better documentation
-public interface ContainerRenderable {
+public interface ContainerRenderable extends Renderable {
+
+
 
     String getID();
     List<String> getClassList();
     void setID(String id);
     void addClass(String className);
     void removeClass(String className);
-
+    @Override
     void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick);
     void renderSelf(GuiGraphics guiGraphics,int mouseX, int mouseY,float partialTick);
     void renderChildren(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick);
@@ -68,6 +71,9 @@ public interface ContainerRenderable {
     default int getScaledHeight(){
         return getHeight();
     }
+
+    IEasyGuiScreen getScreen();
+
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
     void remove();
