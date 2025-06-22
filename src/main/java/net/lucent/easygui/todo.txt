@@ -5,7 +5,13 @@
 
 things to work on
 -make combo box look nicer
+-replace square renderable with default isMouseOver
+-convert as many BaseRenderable functions as possible to default
 
 bug fixes needed
-panel drag bug. if i start dragging from a far corner it jumps when using guiScale
 
+
+-bugs fixed
+-isMouseOver still called on items culled by enableScissor fixed
+-gui scaling using option.guiScaling instead of instance scaling
+-fixed sticky complex event not checking isSticky

@@ -17,11 +17,14 @@ public abstract class SquareRenderable extends BaseRenderable implements Hoverab
     public boolean isMouseOver(double mouseX, double mouseY) {
         /* used for debugging
         System.out.println("x: " + getGlobalScaledX() + " y: "+ getGlobalScaledY());
-        System.out.println("mx: " + mouseX + " my: "+ mouseY);
         System.out.println("sw: "+ getScaledWidth() + " sh: "+getScaledHeight());
+        System.out.println("vx "+ getGlobalScaledVisibleX()+ " vy: "+getGlobalScaledVisibleY());
+        System.out.println("vw: "+ getScaledVisibleWidth() + " vh: "+getScaledVisibleHeight());
+
+
          */
-        return mouseX > getGlobalScaledX() && mouseX < getGlobalScaledX() + getScaledWidth() &&
-                mouseY > getGlobalScaledY() && mouseY < getGlobalScaledY()+ getScaledHeight();
+        return mouseX > getGlobalScaledVisibleX() && mouseX < getGlobalScaledVisibleX() + getScaledVisibleWidth() &&
+                mouseY > getGlobalScaledVisibleY() && mouseY < getGlobalScaledVisibleY()+ getScaledVisibleHeight();
     }
 
 

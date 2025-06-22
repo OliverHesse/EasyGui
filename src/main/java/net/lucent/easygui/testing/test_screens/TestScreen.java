@@ -23,7 +23,7 @@ public class TestScreen extends EasyGuiScreen {
         view.setCustomScale(1);
         view.setUseMinecraftScale(true);
         //createToggleButton(view);
-        //createDraggablePanel(view);
+        createDraggablePanel(view);
         //createColorButton(view);
         //createFixedSizedScrollBox(view);
         //createDynamicScrollBox(view);
@@ -101,12 +101,21 @@ public class TestScreen extends EasyGuiScreen {
     public void createDraggablePanel(View view){
         DraggablePanel panel =  new DraggablePanel(this,(view.getScaledWidth()/2)-100,(view.getScaledHeight()/2)-50,200,100);
         view.addChild(panel);
-        panel.setCustomScale(2);
-        panel.addChild(new Label.Builder().screen(this).x(-200).y(-200).text("test culling").build());
+        panel.setCull(true);
+        panel.setCustomScale(1);
+        panel.addChild(new ColorButton(this,-20,-20,100,40));
+        panel.addChild(new ColorButton(this,-20,panel.getHeight()-20,100,40){
+            @Override
+            public void tick() {
+                super.tick();
+                System.out.println(getX() + ","+getY());
+            }
+        });
+        //panel.addChild(new Label.Builder().screen(this).x(-50).y(-50).text("test culling").build());
         panel.addChild(new Label.Builder().screen(this).x(panel.getWidth()/2).y(panel.height/2).text("test stuff").centered(true).build());
     }
     public void createColorButton(View view){
-        ColorButton button = new ColorButton(this,view.getScaledWidth()/2,view.getScaledHeight()/2,200,40);
+        ColorButton button = new ColorButton(this,view.getScaledWidth()/4,view.getScaledHeight()/4,200,40);
 
 
         button.addChild(new Label.Builder()
@@ -140,8 +149,27 @@ public class TestScreen extends EasyGuiScreen {
             }
 
         };
-        scrollBox.setCustomScale(2);
-        scrollBox.addChild(new Label.Builder().screen(this).text("some textahyuhsguihaeruigharehuaierhioauraighri").textColor(-1).build());
+        scrollBox.setCustomScale(1);
+        ColorButton button = new ColorButton(this,0,0,100,40){
+            @Override
+            public void onClick(double mouseX, double mouseY, int button, boolean clicked) {
+                super.onClick(mouseX, mouseY, button, clicked);
+                System.out.println("reacted to event");
+                System.out.println(clicked);
+            }
+        };
+
+
+        button.addChild(new Label.Builder()
+                .screen(this)
+                .text( Component.literal("Some random text. cool right?"))
+                .x(button.getWidth()/2)
+                .y(button.getHeight()/2)
+                .centered(true)
+                .customScaling(0.5)
+                .build());
+
+        scrollBox.addChild(button);
         scrollBox.addChild(new Label.Builder().screen(this).text("some text2").textColor(-1).y(400).build());
         scrollBox.addChild(new Label.Builder()
                 .screen(this)

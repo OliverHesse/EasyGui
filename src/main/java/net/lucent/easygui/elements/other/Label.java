@@ -85,7 +85,7 @@ public class Label extends BaseRenderable {
         public  Builder translatableText(String key){this.text = Component.translatable(key); return this;}
         public  Builder font(Font font){this.font = font; return this;}
         public  Builder cull(boolean cull){this.cull = cull;return this;}
-        public Builder customScaling(int scale){
+        public Builder customScaling(double scale){
             useCustomScaling = true;
             customScaling = scale;return this;}
         public  Builder x(int x){this.x = x;return this;}

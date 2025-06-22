@@ -8,6 +8,7 @@ import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
@@ -22,8 +23,15 @@ public abstract class BaseRenderable implements ContainerRenderable {
     private int x;
     private int y;
 
+    private int visibleX;
+    private int visibleY;
+
     public int width;
     public int height;
+
+
+    public int visibleWidth;
+    public int visibleHeight;
 
     public boolean active = true;
     public boolean visible = true;
@@ -117,8 +125,28 @@ public abstract class BaseRenderable implements ContainerRenderable {
         this.width = width;
     }
 
+
+
+    public void setVisibleWidth(int visibleWidth) {
+        this.visibleWidth = visibleWidth;
+    }
+
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public void setVisibleHeight(int visibleHeight) {
+        this.visibleHeight = visibleHeight;
+    }
+
+    @Override
+    public int getVisibleHeight() {
+        return visibleHeight;
+    }
+
+    @Override
+    public int getVisibleWidth() {
+        return visibleWidth;
     }
 
     @Override
@@ -152,15 +180,24 @@ public abstract class BaseRenderable implements ContainerRenderable {
         return y;
     }
 
+    @Override
+    public int getVisibleX() {
+        return visibleX;
+    }
+
+    @Override
+    public int getVisibleY() {
+        return visibleY;
+    }
+
     /**
      * already includes the minecraft gui scale
      */
     @Override
     public double getGlobalScaledX() {
 
-        if(parent != null){
-
-            return getX()*parent.getTotalScaleFactorX() + parent.getGlobalScaledX();
+        if(getParent() != null){
+            return getX()*getParent().getTotalScaleFactorX() + getParent().getGlobalScaledX();
         }
         return getX();
     }
@@ -172,8 +209,22 @@ public abstract class BaseRenderable implements ContainerRenderable {
      */
     @Override
     public double getGlobalScaledY() {
-        if(parent != null) return getY()*parent.getTotalScaleFactorY() + parent.getGlobalScaledY();
+        if(getParent() != null) return getY()*getParent().getTotalScaleFactorY() + getParent().getGlobalScaledY();
         return getY();
+    }
+
+    @Override
+    public double getGlobalScaledVisibleX() {
+        if(getParent() != null){
+            return getVisibleX()*getParent().getTotalScaleFactorX() + getParent().getGlobalScaledX();
+        }
+        return getVisibleX();
+    }
+
+    @Override
+    public double getGlobalScaledVisibleY() {
+        if(getParent() != null) return getVisibleY()*getParent().getTotalScaleFactorY() + getParent().getGlobalScaledY();
+        return getVisibleY();
     }
 
     @Override
@@ -250,8 +301,59 @@ public abstract class BaseRenderable implements ContainerRenderable {
     @Override
     public void setRenderScale(GuiGraphics guiGraphics){
 
+
+        ScreenRectangle scissorRect =  guiGraphics.scissorStack.stack.peek();
+        visibleHeight = getHeight();
+        visibleWidth = getWidth();
+        visibleX = getX();
+        visibleY = getY();
+
+        double x = getGlobalScaledX();
+        double y = getGlobalScaledY();
+        int width = getScaledWidth();
+        int height = getScaledHeight();
+
+
+        //System.out.println("calculating things "+ getClass().getName());
+        //TODO add safety for if parent is null
+        if(scissorRect != null){
+            //may not be the most efficient
+            //if x or y are outside of box+length then it is not visible
+
+            if(x > scissorRect.position().x()+scissorRect.width()
+                || y>scissorRect.position().y()+scissorRect.height()){
+                visibleWidth = 0;
+                visibleHeight = 0;
+            }else if(x+width < scissorRect.position().x()
+                    || y+height < scissorRect.position().y() ){
+                //y+height or x+width outside of area so none visible
+                visibleHeight = 0;
+                visibleWidth = 0;
+            } else{
+                if(x+width>scissorRect.position().x()+scissorRect.width()) width = (int) (scissorRect.position().x()+scissorRect.width()-x);
+                if(y+height>scissorRect.position().y()+scissorRect.height()) height = (int) (scissorRect.position().y()+scissorRect.height()-y);
+
+                if(y<scissorRect.position().y()){
+                    height = (int) (height-(scissorRect.position().y()-y));
+                    y = scissorRect.position().y();
+                }
+                if(x<scissorRect.position().x()){
+                    width = (int) (width-(scissorRect.position().x()-x));
+                    x = scissorRect.position().x();
+                }
+
+                visibleX = getParent().screenToLocalX(x);
+                visibleY = getParent().screenToLocalY(y);
+
+                visibleWidth = (int) (width/getTotalScaleFactorX());
+                //System.out.println(getHeight());
+                visibleHeight = (int) (height/getTotalScaleFactorY());
+                //System.out.println(visibleHeight);
+            }
+        }
+
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(x,y,0);
+        guiGraphics.pose().translate(getX(),getY(),0);
         Quaternionf rotation = new Quaternionf()
                 .rotateZ((float) Math.toRadians(getRotationZ()))
                 .rotateY((float) Math.toRadians(getRotationY()))
@@ -261,7 +363,11 @@ public abstract class BaseRenderable implements ContainerRenderable {
             guiGraphics.pose().scale((float) getScaleX(), (float) getScaleY(),1);
         }
 
-        if(cull) guiGraphics.enableScissor((int) (getGlobalScaledX()-cullBorder), (int) (getGlobalScaledY()-cullBorder),getWidth()+cullBorder,getHeight()+cullBorder);
+        if(cull) guiGraphics.enableScissor(
+                (int) (getGlobalScaledX()-cullBorder),
+                (int) (getGlobalScaledY()-cullBorder),
+                (int) (getGlobalScaledX()+getScaledWidth()+cullBorder),
+                (int) (getGlobalScaledY()+getScaledHeight()+cullBorder));
     }
     @Override
     public void resetRenderScale(GuiGraphics guiGraphics){
@@ -327,15 +433,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
 
     //needed for render calculations for things like scroll containers
 
-    @Override
-    public int getScaledWidth(){
 
-        return (int) (getWidth()*getTotalScaleFactorX());
-    }
-    @Override
-    public int getScaledHeight(){
-        return (int) (getHeight()*getTotalScaleFactorY());
-    }
 
 
     @Override

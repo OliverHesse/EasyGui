@@ -16,7 +16,7 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
     /**
      * how many ticks the button remains pressed for(render property)
      */
-    public int PRESSED_TIME = 60;
+    public int PRESSED_TIME = 10;
     public double time_pressed = 0; //measured in ticks
     public boolean unPressNaturally = true;
 
@@ -67,7 +67,6 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
     public void onMouseOver(boolean state) {
         setHovered(state);
     }
-
 
 
     @Override

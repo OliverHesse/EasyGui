@@ -176,11 +176,11 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     @Override
     public void tick() {
         super.tick();
-        double scale = Minecraft.getInstance().options.guiScale().get();
+
         double mouseX = Minecraft.getInstance().mouseHandler.xpos();
         double mouseY = Minecraft.getInstance().mouseHandler.ypos();
 
-        eventHolder.MOUSE_OVER_EVENT.call(mouseX/scale,mouseY/scale);
+        eventHolder.MOUSE_OVER_EVENT.call(mouseX/guiScale,mouseY/guiScale);
         eventHolder.TICK_EVENT.call();
     }
 

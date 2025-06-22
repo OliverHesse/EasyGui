@@ -28,7 +28,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
 
     public int windowWidth = Minecraft.getInstance().getWindow().getWidth();
     public int windowHeight = Minecraft.getInstance().getWindow().getHeight();
-    public double guiScale = Minecraft.getInstance().options.guiScale().get();
+    public double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
     private View view;
     public EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     public BiConsumer<EasyGuiEventHolder,EasyGuiOverlay> runnable;

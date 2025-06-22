@@ -17,18 +17,19 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
      * @param oldHeight old height. includes minecraft gui scaling if root uses it
      */
     default void recalculatePos(int oldWidth, int oldHeight){
+        if(isSticky()) {
+            oldWidth = (int) (oldWidth/getRoot().getTotalScaleFactorX());
+            oldHeight = (int) (oldHeight/getRoot().getTotalScaleFactorY());
+            int x = (int) (getX()+getWidth()*getScaleX()/2);
+            int y = (int) (getY()+getHeight()*getScaleY()/2);
+            double mX = (double) x /oldWidth;
+            double mY = (double) y /oldHeight;
 
-        oldWidth = (int) (oldWidth/getRoot().getTotalScaleFactorX());
-        oldHeight = (int) (oldHeight/getRoot().getTotalScaleFactorY());
-        int x = (int) (getX()+getWidth()*getScaleX()/2);
-        int y = (int) (getY()+getHeight()*getScaleY()/2);
-        double mX = (double) x /oldWidth;
-        double mY = (double) y /oldHeight;
-
-        int newX = (int) (getRoot().getScaledWidth()*mX - getWidth()*getScaleX()/2);
-        int newY = (int) (getRoot().getScaledHeight()*mY - getHeight()*getScaleY()/2);
-        setX(newX);
-        setY(newY);
+            int newX = (int) (getRoot().getScaledWidth()*mX - getWidth()*getScaleX()/2);
+            int newY = (int) (getRoot().getScaledHeight()*mY - getHeight()*getScaleY()/2);
+            setX(newX);
+            setY(newY);
+        }
     };
     @Override
     default void onGuiScaleChanged(double oldScale){

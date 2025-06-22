@@ -34,6 +34,9 @@ public interface ContainerRenderable extends Renderable {
     void setX(int x);
     void setY(int y);
 
+    int getVisibleX();
+    int getVisibleY();
+
     default void setRotation(double x,double y,double z){}
 
     default double getRotationX(){return 0;}
@@ -49,6 +52,8 @@ public interface ContainerRenderable extends Renderable {
     default double getGlobalScaledX(){return 0.0;}
     default double getGlobalScaledY(){return 0.0;}
 
+    default double getGlobalScaledVisibleX(){return 0.0;}
+    default double getGlobalScaledVisibleY(){return 0.0;}
 
     ContainerRenderable getParent();
     ContainerRenderable getRoot();
@@ -57,22 +62,57 @@ public interface ContainerRenderable extends Renderable {
     default int getWidth(){
         return 0;
     }
+    default int getVisibleWidth(){
+        return getWidth();
+    }
     default int getHeight(){
         return 0;
     }
+    default int getVisibleHeight(){
+        return getHeight();
+    }
+    //TODO
+    //relative position
+    default Integer getMostRecentScissorX(){
+        if(getParent() == null) return null;
+        if(getParent().shouldCull()) return -getParent().getCullBorderWidth();
+        Integer parentScissor = getParent().getMostRecentScissorX();
+        if(parentScissor == null) return  getParent().screenToLocalX(getParent().getGlobalScaledX());
+        return  getParent().screenToLocalX(getParent().getGlobalScaledX()) + parentScissor;
+    }
+    default Integer getMostRecentScissorY(){
+        if(getParent() == null) return null;
+        if(getParent().shouldCull()) return -getParent().getCullBorderWidth();
+        Integer parentScissor = getParent().getMostRecentScissorY();
+        if(parentScissor == null) return  getParent().screenToLocalY(getParent().getGlobalScaledY());
+        return  getParent().screenToLocalY(getParent().getGlobalScaledY()) + parentScissor;
+
+    }
+    default int getCullBorderWidth(){return 0;}
 
     default double getScale(){return 0;}
     default double getScaleX(){return getScale();}
     default double getScaleY(){return getScale();}
 
     default int getScaledWidth(){
-        return getWidth();
+        return (int) (getWidth()*getTotalScaleFactorX());
     }
     default int getScaledHeight(){
-        return getHeight();
+        return (int) (getHeight()*getTotalScaleFactorY());
+    }
+
+
+    default int getScaledVisibleWidth(){
+        return (int) (getVisibleWidth()*getTotalScaleFactorX());
+    }
+    default int getScaledVisibleHeight(){
+        return (int) (getVisibleHeight()*getTotalScaleFactorY());
     }
 
     IEasyGuiScreen getScreen();
+
+
+
 
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
