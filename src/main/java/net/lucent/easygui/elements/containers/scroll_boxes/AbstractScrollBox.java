@@ -34,6 +34,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
         setY(y);
         this.width = width;
         this.height = height;
+        setCull(true);
 
     }
     public abstract double getScrollHeight();
@@ -55,8 +56,14 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
 
     }
     public void setBorderColor(int color){ this.borderColor= color;}
-    public void setBorderWidth(int width){this.borderWidth = width;}
-    public void setBorderVisible(boolean visible){this.borderVisible = visible;}
+    public void setBorderWidth(int width){
+        this.borderWidth = width;
+        this.setCullBorder(width);
+    }
+    public void setBorderVisible(boolean visible){
+        if(!visible) setCullBorder(0);
+        else setCullBorder(borderWidth);
+        this.borderVisible = visible;}
     public void setScrollBarVisible(boolean visible){
         scrollBarVisible  =visible;
     }
@@ -118,13 +125,11 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(borderVisible) guiGraphics.fill(-borderWidth,-borderWidth,getWidth()+borderWidth,getHeight()+borderWidth,borderColor);
         guiGraphics.fill(0,0,getWidth(),getHeight(),backgroundColor);
-        guiGraphics.enableScissor((int) getGlobalScaledX(), (int) getGlobalScaledY(), (int) (getGlobalScaledX()+getInnerWidth()), (int) (getGlobalScaledY()+getInnerHeight()));
-    }
+     }
 
     @Override
     public void renderChildren(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderChildren(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.disableScissor();
         renderScrollBar(guiGraphics);
     }
 
@@ -134,7 +139,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
             double height = getScrollBarHeight();
             double progress = (getInnerHeight()-height)*(yOffset/getScrollHeight());
             double width = getScrollBarThickness();
-            guiGraphics.fill(getInnerWidth(),(int) progress,(int) (getInnerWidth()+width),(int) (progress+height),scrollBarColor);
+            guiGraphics.fill(getInnerWidth(), (int) (progress),(int) (getInnerWidth()+width),(int) (progress+height),scrollBarColor);
         }
         if(isScrollBarXVisible()){
 
@@ -154,6 +159,9 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
                 //y scroll
                 dragging = true;
                 draggingAxis = 0;
+                /*
+                screenToLocalY(mouseY) /getInnerHeight() percentage location of the mouse click
+                 */
                 double progress = getScrollHeight()*((double) screenToLocalY(mouseY) /getInnerHeight());
                 setYOffset(getScrollAmount(progress,0,getScrollHeight()));
             }else if(screenToLocalY(mouseY)>getInnerHeight()){

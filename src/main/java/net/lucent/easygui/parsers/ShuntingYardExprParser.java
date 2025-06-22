@@ -36,7 +36,7 @@ public class ShuntingYardExprParser {
         Iterator<String> iterator = inputList.iterator();
         while(iterator.hasNext()){
             String ch = iterator.next();
-            System.out.println(ch);
+
             if(digits.contains(ch)){
                 StringBuilder builder = new StringBuilder();
                 do {
@@ -56,8 +56,6 @@ public class ShuntingYardExprParser {
                 } while (iterator.hasNext() && Character.isAlphabetic(chC) || ch.equals("."));
                 output.add(new Variable(builder.toString()));
             }
-            System.out.println(ch);
-            System.out.println(operandStack);
 
             if(operandPriority.containsKey(ch)){
                 while(!operandStack.isEmpty() && (operandPriority.get(operandStack.getLast()) >= operandPriority.get(ch) && leftAssociative.contains(ch))){
@@ -70,7 +68,7 @@ public class ShuntingYardExprParser {
 
 
                 while(!operandStack.isEmpty() && !Objects.equals(operandStack.getLast(), "(")){
-                    System.out.println(operandStack);
+
                     output.add(new Operator(operandStack.removeLast()));
                 }
 

@@ -29,6 +29,10 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public boolean visible = true;
     public boolean focused = false;
 
+    private int cullBorder = 0; //for borders
+
+    private boolean cull = false;
+
     public boolean useCustomScaling = true;
     /**
      * after resize does it maintain its relative position
@@ -79,6 +83,24 @@ public abstract class BaseRenderable implements ContainerRenderable {
         classList.remove(className);
         screen.childClassRemoved(this,className);
 
+    }
+
+    public void setCullBorder(int cullBorder) {
+        this.cullBorder = cullBorder;
+    }
+
+    public int getCullBorder() {
+        return cullBorder;
+    }
+
+    @Override
+    public void setCull(boolean cull) {
+        this.cull = cull;
+    }
+
+    @Override
+    public boolean shouldCull() {
+        return false;
     }
 
     @Override
@@ -166,7 +188,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
     @Override
     public boolean isActive() {
         if(!active) return false;
-        if(parent == null) return active;
+        if(parent == null) return true;
         return parent.isActive();
     }
 
@@ -238,10 +260,13 @@ public abstract class BaseRenderable implements ContainerRenderable {
         if(useCustomScaling){
             guiGraphics.pose().scale((float) getScaleX(), (float) getScaleY(),1);
         }
+
+        if(cull) guiGraphics.enableScissor((int) (getGlobalScaledX()-cullBorder), (int) (getGlobalScaledY()-cullBorder),getWidth()+cullBorder,getHeight()+cullBorder);
     }
     @Override
     public void resetRenderScale(GuiGraphics guiGraphics){
         guiGraphics.pose().popPose();
+        if(cull) guiGraphics.disableScissor();
     }
 
 

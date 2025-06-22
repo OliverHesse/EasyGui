@@ -23,11 +23,10 @@ public class Label extends BaseRenderable {
     /**
      * extra text gets culled
      */
-    public boolean cull;
 
 
 
-    private Label(IEasyGuiScreen easyGuiScreen, Font font, Component text, int x, int y, int width, int height, boolean centered, boolean cull, int textColor){
+    private Label(IEasyGuiScreen easyGuiScreen, Font font, Component text, int x, int y, int width, int height, boolean centered, int textColor){
         super(easyGuiScreen);
         this.font = font;
         this.text = text;
@@ -36,7 +35,7 @@ public class Label extends BaseRenderable {
         setWidth(width);
         setHeight(height);
         this.centered = centered;
-        this.cull = cull;
+
         this.textColor = textColor;
     }
 
@@ -51,19 +50,6 @@ public class Label extends BaseRenderable {
     }
 
 
-    @Override
-    public void setRenderScale(GuiGraphics guiGraphics) {
-        super.setRenderScale(guiGraphics);
-        if(cull){
-            //guiGraphics.enableScissor(0,0,getScaledWidth(),getScaledHeight());}
-        }
-    }
-
-    @Override
-    public void resetRenderScale(GuiGraphics guiGraphics) {
-        super.resetRenderScale(guiGraphics);
-        if(cull){guiGraphics.disableScissor();}
-    }
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
@@ -108,7 +94,7 @@ public class Label extends BaseRenderable {
         public Label build(){
 
             if(easyGuiScreen == null){
-                throw new IllegalArgumentException("Label must have a valid event handler");
+                throw new IllegalArgumentException("Label must have a valid screen");
             }
 
             if(width == null){
@@ -118,9 +104,10 @@ public class Label extends BaseRenderable {
                 height = font.lineHeight;
             }
 
-            Label label = new Label(easyGuiScreen,font,text,x,y,width,height,centered,cull,textColor);
+            Label label = new Label(easyGuiScreen,font,text,x,y,width,height,centered,textColor);
             label.useCustomScaling = useCustomScaling;
             label.setCustomScale(customScaling);
+            label.setCull(cull);
             return label;
 
         }

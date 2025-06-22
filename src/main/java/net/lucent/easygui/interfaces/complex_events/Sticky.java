@@ -17,9 +17,7 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
      * @param oldHeight old height. includes minecraft gui scaling if root uses it
      */
     default void recalculatePos(int oldWidth, int oldHeight){
-        System.out.println("old Width: "+ oldWidth);
-        System.out.println("old Height" + oldHeight);
-        System.out.println(getScaleX());
+
         oldWidth = (int) (oldWidth/getRoot().getTotalScaleFactorX());
         oldHeight = (int) (oldHeight/getRoot().getTotalScaleFactorY());
         int x = (int) (getX()+getWidth()*getScaleX()/2);
@@ -34,14 +32,14 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
     };
     @Override
     default void onGuiScaleChanged(double oldScale){
-        System.out.println("scale changed");
+
         //old height = current height. because only scale factor changed
         recalculatePos((int) (Minecraft.getInstance().getWindow().getWidth()/oldScale), (int) (Minecraft.getInstance().getWindow().getHeight()/oldScale));
     }
 
     @Override
     default void onResize(int oldWidth, int oldHeight,double oldScale){
-        System.out.println("screen resized");
+
         if(getRoot().usesMinecraftScaling()){
             recalculatePos((int) (oldWidth/oldScale), (int) (oldHeight/oldScale));
         }

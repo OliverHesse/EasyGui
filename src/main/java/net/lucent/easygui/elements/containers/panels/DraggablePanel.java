@@ -38,8 +38,8 @@ public class DraggablePanel extends Panel implements Draggable,Sticky {
 
     @Override
     public void setClickPosition(double mouseX, double mouseY) {
-        this.clickedX = (int) (screenToLocalX(mouseX)*getParent().getTotalScaleFactorX());
-        this.clickedY = (int) (screenToLocalY(mouseY)*getParent().getTotalScaleFactorY());
+        this.clickedX = (int) (screenToLocalX(mouseX)*getTotalScaleFactorX());
+        this.clickedY = (int) (screenToLocalY(mouseY)*getTotalScaleFactorY());
     }
 
 

@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
+public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     public int windowWidth = Minecraft.getInstance().getWindow().getWidth();
     public int windowHeight = Minecraft.getInstance().getWindow().getHeight();
     public double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
@@ -22,7 +22,10 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     private final EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();
     private final HashMap<String,List<ContainerRenderable>> classMap = new HashMap<>();
-    public EasyGuiBaseScreen(Component title) {
+
+    private View activeView = null;
+
+    public EasyGuiScreen(Component title) {
         super(title);
     }
 
@@ -31,7 +34,7 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     }
 
     public void addView(View view){
-        views.add(view);
+        views.add(view); view.setActive(false);
     }
 
     @Override
@@ -43,7 +46,7 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
             windowWidth = mc.getWindow().getWidth();
             windowHeight = mc.getWindow().getHeight();
             guiScale = mc.getWindow().getGuiScale();
-            System.out.println(minecraft.getWindow().getGuiScale());
+
 
         }else if(mc.getWindow().getGuiScale() != guiScale){
             //if(guiScale == 0) eventHolder.GUI_SCALE_CHANGED_EVENT.call(mc.getWindow().getGuiScale());
@@ -53,12 +56,22 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
     }
 
     @Override
+    public void setActiveView(View view) {
+
+        for(View disableView : views){
+           disableView.setActive(false);
+        }
+        view.setActive(true);
+        activeView = view;
+    }
+
+    @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        for(View view : views){
-            if(view.isActive()) view.render(guiGraphics,mouseX,mouseY,partialTick);
-        }
+        if(activeView == null) setActiveView(views.getFirst());
+        activeView.render(guiGraphics,mouseX,mouseY,partialTick);
+
     }
 
     @Override
@@ -96,6 +109,7 @@ public class EasyGuiBaseScreen extends Screen implements IEasyGuiScreen {
 
     @Override
     public ContainerRenderable getElementByID(String id) {
+
         return idMap.get(id);
     }
 

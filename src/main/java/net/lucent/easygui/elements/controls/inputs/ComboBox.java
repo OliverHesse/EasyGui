@@ -65,7 +65,10 @@ public class ComboBox extends SquareRenderable implements Clickable {
     public String getValue(int index){
         return entries.get(index);
     }
-
+    /*
+        uses different scissor than normal since individual options don't want to overlap.
+        this could be fixed with labels however since they have cull
+     */
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         //firs render box

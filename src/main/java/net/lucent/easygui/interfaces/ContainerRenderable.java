@@ -85,4 +85,7 @@ public interface ContainerRenderable extends Renderable {
         return (int) ((y-getGlobalScaledY())/getTotalCustomScaling());
     }
     default void tick(){}
+
+    void setCull(boolean state);
+    boolean shouldCull();
 }

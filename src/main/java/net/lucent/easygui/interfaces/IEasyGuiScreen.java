@@ -9,6 +9,9 @@ public interface IEasyGuiScreen {
     void register(ContainerRenderable renderable);
     void unregister(ContainerRenderable renderable);
 
+    default void setActiveView(View view){}
+
+
     void removeView(View view);
 
     void childIdSet(ContainerRenderable obj,String id);

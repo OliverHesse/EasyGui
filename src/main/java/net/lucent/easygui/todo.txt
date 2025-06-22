@@ -1,7 +1,11 @@
 -Current Feature-
--scroll boxes
+- add Textured combo Box
+- add Scroll comboBox for both Textured and normal
+- add Drop down menu(basically combo box but each val triggers a consumer)
 
-small things
--go back and add width and height to baseRenderable
+things to work on
+-make combo box look nicer
 
 bug fixes needed
+panel drag bug. if i start dragging from a far corner it jumps when using guiScale
+
