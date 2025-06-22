@@ -13,15 +13,8 @@ Links
 
 Planned Features
 =
-
-- Scroll Box
-    - fixed/dynamic size
-    - both axis scrolling(smth like ctrl+scroll for x)
-- text box
-    - both multiline and single line
-- drop down
-- make sticky use a general solution
-- let developer create UI from a json file(not 100% sure abt this yet since you cant create interactive elements like this)
+- Drop down menu
+- build Ui from either json or markup(not sure which yet)
 - make a wiki with a common task page (examples of commonly made things)
 - JEI compatibility(use easyGui menus for it)
 
