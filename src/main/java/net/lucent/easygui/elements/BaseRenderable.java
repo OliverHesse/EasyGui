@@ -6,11 +6,17 @@ import com.google.gson.JsonObject;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.lucent.easygui.interfaces.complex_events.Sticky;
+import net.lucent.easygui.templating.actions.Action;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.network.chat.Component;
+import org.joml.Matrix4f;
 import org.joml.Quaternionf;
+import org.joml.Vector4f;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +24,14 @@ import java.util.List;
  * handles all the scaling stuff
  */
 
-public abstract class BaseRenderable implements ContainerRenderable {
+public abstract class BaseRenderable implements ContainerRenderable, Sticky {
+
+    private int renderedX;
+    private int renderedY;
+
+
+    private Matrix4f positionTransformation;
+    private Matrix4f localTransformation;
 
     private int x;
     private int y;
@@ -36,6 +49,8 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public boolean active = true;
     public boolean visible = true;
     public boolean focused = false;
+    public boolean sticky = false;
+    public Action tickAction;
 
     private int cullBorder = 0; //for borders
 
@@ -60,6 +75,25 @@ public abstract class BaseRenderable implements ContainerRenderable {
     public String id = "";
     public List<String> classList = new ArrayList<>();
 
+    public BaseRenderable(){
+
+    }
+    @Override
+    public Matrix4f getTotalPositionTransformation(){
+        if(getParent() == null) return new Matrix4f(this.positionTransformation);
+        return new Matrix4f(getParent().getTotalTransformation()).mul(this.positionTransformation);
+    }
+
+    @Override
+    public Matrix4f getTotalTransformation() {
+        if(getParent() == null) return new Matrix4f(this.localTransformation);
+        return new Matrix4f(getParent().getTotalTransformation()).mul(this.localTransformation);
+    }
+
+    @Override
+    public void setTickAction(Action action){
+        this.tickAction = action;
+    }
     public BaseRenderable(IEasyGuiScreen screen){
         this.screen = screen;
         screen.register(this);
@@ -121,6 +155,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
         return width;
     }
 
+    @Override
     public void setWidth(int width) {
         this.width = width;
     }
@@ -131,6 +166,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
         this.visibleWidth = visibleWidth;
     }
 
+    @Override
     public void setHeight(int height) {
         this.height = height;
     }
@@ -201,7 +237,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
         }
         return getX();
     }
-
+    //return (new Vector4f(0,0,0,1).mul(getTotalPositionTransformation())).x();
 
 
     /**
@@ -299,7 +335,14 @@ public abstract class BaseRenderable implements ContainerRenderable {
     }
 
     @Override
+    public void setScreen(IEasyGuiScreen screen) {
+        this.screen = screen;
+        screen.register(this);
+    }
+
+    @Override
     public void setRenderScale(GuiGraphics guiGraphics){
+
 
 
         ScreenRectangle scissorRect =  guiGraphics.scissorStack.stack.peek();
@@ -308,17 +351,17 @@ public abstract class BaseRenderable implements ContainerRenderable {
         visibleX = getX();
         visibleY = getY();
 
-        double x = getGlobalScaledX();
-        double y = getGlobalScaledY();
-        int width = getScaledWidth();
-        int height = getScaledHeight();
-
 
         //System.out.println("calculating things "+ getClass().getName());
         //TODO add safety for if parent is null
-        if(scissorRect != null){
+        if(scissorRect != null && (localTransformation != null && positionTransformation != null)){
             //may not be the most efficient
             //if x or y are outside of box+length then it is not visible
+
+            double x = getGlobalScaledX();
+            double y = getGlobalScaledY();
+            int width = getScaledWidth();
+            int height = getScaledHeight();
 
             if(x > scissorRect.position().x()+scissorRect.width()
                 || y>scissorRect.position().y()+scissorRect.height()){
@@ -354,6 +397,9 @@ public abstract class BaseRenderable implements ContainerRenderable {
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(getX(),getY(),0);
+
+        this.positionTransformation = new Matrix4f(guiGraphics.pose().last().pose());
+
         Quaternionf rotation = new Quaternionf()
                 .rotateZ((float) Math.toRadians(getRotationZ()))
                 .rotateY((float) Math.toRadians(getRotationY()))
@@ -362,6 +408,8 @@ public abstract class BaseRenderable implements ContainerRenderable {
         if(useCustomScaling){
             guiGraphics.pose().scale((float) getScaleX(), (float) getScaleY(),1);
         }
+
+        this.localTransformation = new Matrix4f(guiGraphics.pose().last().pose());
 
         if(cull) guiGraphics.enableScissor(
                 (int) (getGlobalScaledX()-cullBorder),
@@ -372,6 +420,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
     @Override
     public void resetRenderScale(GuiGraphics guiGraphics){
         guiGraphics.pose().popPose();
+
         if(cull) guiGraphics.disableScissor();
     }
 
@@ -385,7 +434,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
 
     @Override
     public final void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-
+        if(!isVisible()) return;
         setRenderScale(guiGraphics);
         renderSelf(guiGraphics,mouseX,mouseY,partialTick);
         renderChildren(guiGraphics,mouseX,mouseY,partialTick);
@@ -455,6 +504,7 @@ public abstract class BaseRenderable implements ContainerRenderable {
 
     @Override
     public void addChild(ContainerRenderable child) {
+        System.out.println("child: "+child);
         this.children.add(child);
         child.setParent(this);
     }
@@ -489,4 +539,18 @@ public abstract class BaseRenderable implements ContainerRenderable {
 
     }
 
+    @Override
+    public void tick() {
+        if(tickAction != null) tickAction.accept(this);
+    }
+
+    @Override
+    public boolean isSticky() {
+        return sticky;
+    }
+
+    @Override
+    public void setSticky(boolean sticky) {
+        this.sticky = sticky;
+    }
 }

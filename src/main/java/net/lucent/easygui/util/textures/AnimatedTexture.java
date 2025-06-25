@@ -1,4 +1,4 @@
-package net.lucent.easygui.util;
+package net.lucent.easygui.util.textures;
 
 import com.mojang.datafixers.util.Pair;
 import net.lucent.easygui.interfaces.ITextureData;

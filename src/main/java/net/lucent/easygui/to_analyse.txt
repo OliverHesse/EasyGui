@@ -1,0 +1,15 @@
+// Assume poseStack is the current PoseStack
+Matrix4f matrix = poseStack.last().pose();
+
+// Your local coordinates (x=10, y=10)
+Vector4f localPos = new Vector4f(10, 10, 0, 1);  // z = 0, w = 1 for 2D
+
+// Transform the point using the current matrix
+localPos.transform(matrix);
+
+// Now localPos contains the global coordinates
+float globalX = localPos.x();
+float globalY = localPos.y();
+
+
+

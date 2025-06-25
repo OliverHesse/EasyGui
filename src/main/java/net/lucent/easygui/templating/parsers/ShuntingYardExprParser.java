@@ -1,6 +1,4 @@
-package net.lucent.easygui.parsers;
-
-import com.electronwill.nightconfig.core.io.ParsingException;
+package net.lucent.easygui.templating.parsers;
 
 import java.util.*;
 
@@ -13,22 +11,25 @@ import java.util.*;
 //i miss peek...
 //todo update to use number() variable() and operand() obj
 public class ShuntingYardExprParser {
-    List<String> operandStack = new ArrayList<>();
-    List<Token> output = new ArrayList<>();
+
+    public static final Set<String> digits = Set.of("1","2","3","4","5","6","7","8","9","0");
+    public static final HashMap<String,Integer> operandPriority = new HashMap<>(){{
+        put("+",2);
+        put("-",2);
+        put("*",3);
+        put("/",3);
+        put("^",4);
+        put("(",1);
+    }};
+    public static final Set<String> leftAssociative = Set.of("+","-","*","/");
     //gets it in reverse Polish notation
-    public String parseInput(String input){
-        Set<String> digits = Set.of("1","2","3","4","5","6","7","8","9","0");
-        HashMap<String,Integer> operandPriority = new HashMap<>(){{
-           put("+",2);
-           put("-",2);
-           put("*",3);
-           put("/",3);
-           put("^",4);
-           put("(",1);
-        }};
+
+    public static List<Token> parseInput(String input){
+        List<String> operandStack = new ArrayList<>();
+        List<Token> output = new ArrayList<>();
+
         input = input.replaceAll("\\s","");
         //if not in this set assumed to be right associative
-        Set<String> leftAssociative = Set.of("+","-","*","/");
         List<String> inputList = new ArrayList<>();
         for (Character ch : input.toCharArray()){
             inputList.add(ch.toString());
@@ -48,12 +49,16 @@ public class ShuntingYardExprParser {
             if(Character.isAlphabetic(chC) || ch.equals(".")){
                 StringBuilder builder = new StringBuilder();
                 do {
+
                     builder.append(ch);
                     if(iterator.hasNext()){
                         ch = iterator.next();
                         chC = ch.toCharArray()[0];
+                    }else{
+                        break;
                     }
-                } while (iterator.hasNext() && Character.isAlphabetic(chC) || ch.equals("."));
+
+                } while (Character.isAlphabetic(chC) || ch.equals("."));
                 output.add(new Variable(builder.toString()));
             }
 
@@ -77,11 +82,11 @@ public class ShuntingYardExprParser {
             }
         }
         if(!operandStack.isEmpty()) {
-            for(String op : operandStack){
+            for(String op : operandStack.reversed()){
                 output.add(new Operator(op));
             }
         }
-        return output.toString();
+        return output;
     }
 
     public interface Token{}

@@ -12,6 +12,7 @@ public class DraggablePanel extends Panel implements Draggable,Sticky {
     boolean dragged = false;
     int clickedX = 0;
     int clickedY = 0;
+    public DraggablePanel(){}
     public DraggablePanel(IEasyGuiScreen easyGuiScreen,int x,int y,int width, int height) {
         super(easyGuiScreen,x,y,width,height);
     }

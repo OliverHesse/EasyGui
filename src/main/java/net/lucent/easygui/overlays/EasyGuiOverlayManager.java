@@ -22,8 +22,6 @@ public class EasyGuiOverlayManager {
 
     public static final Map<ResourceLocation,EasyGuiOverlayHandler> customOverlayLayers = new HashMap<>();
 
-    public static final List<EasyGuiOverlay> overlays = new ArrayList<>();
-
     public static final Map<ResourceLocation,EasyGuiOverlay> vanillaOverlayOverrides = new HashMap<>();
 
     public static void registerVanillaOverlayOverride(ResourceLocation name,EasyGuiOverlay overlay){

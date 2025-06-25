@@ -1,9 +1,15 @@
 package net.lucent.easygui;
 
 import net.lucent.easygui.overlays.EasyGuiOverlayManager;
-import net.lucent.easygui.parsers.ShuntingYardExprParser;
+import net.lucent.easygui.screens.EasyGuiScreen;
+import net.lucent.easygui.templating.EasyGuiBuilder;
+import net.lucent.easygui.templating.parsers.RPNParser;
+import net.lucent.easygui.templating.parsers.ShuntingYardExprParser;
 
+import net.lucent.easygui.templating.registry.EasyGuiRegistries;
 import net.lucent.easygui.testing.KeyHandler;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
@@ -25,6 +31,8 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
+import java.util.List;
+
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(EasyGui.MOD_ID)
 public class EasyGui
@@ -32,14 +40,14 @@ public class EasyGui
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "easy_gui";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public EasyGui(IEventBus modEventBus, ModContainer modContainer)
     {
-        System.out.println(new ShuntingYardExprParser().parseInput(" 37+43*2/(parent.width-5)^22^3"));
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -47,7 +55,7 @@ public class EasyGui
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-
+        EasyGuiRegistries.register(modEventBus);
         KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {

@@ -1,0 +1,31 @@
+{
+  "views": [
+    {
+      "type": "easy_gui:view",
+      "id" : "view1",
+
+      "on_tick" : {
+        "function": "easy_gui:generic_tick"
+      },
+      "children": [
+        {
+          "type": "easy_gui:panel",
+          "id": "panel1",
+          "width": 200,
+          "height": 200,
+          "x": "parent.scaledWidth/2 - width/2",
+          "y": "parent.scaledHeight/2 - height/2"
+        }
+      ]
+    },
+    {
+      "type": "easy_gui:view",
+      "id": "view2",
+      "scale": 4,
+      "x": "(32-2)*2",
+      "rotation": {
+        "x": 90
+      }
+    }
+  ]
+}

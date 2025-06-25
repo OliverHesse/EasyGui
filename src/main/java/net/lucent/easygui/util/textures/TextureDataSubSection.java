@@ -1,4 +1,4 @@
-package net.lucent.easygui.util;
+package net.lucent.easygui.util.textures;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;

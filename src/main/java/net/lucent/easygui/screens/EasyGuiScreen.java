@@ -15,9 +15,9 @@ import java.util.List;
 
 
 public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
-    public int windowWidth = Minecraft.getInstance().getWindow().getWidth();
-    public int windowHeight = Minecraft.getInstance().getWindow().getHeight();
-    public double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+    public int windowWidth = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getWidth() : 0;
+    public int windowHeight = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getHeight() : 0;;
+    public double guiScale = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getGuiScale() : 0;;
     private final List<View> views = new ArrayList<>();
     private final EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();
@@ -33,8 +33,12 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
         return eventHolder;
     }
 
+    @Override
     public void addView(View view){
-        views.add(view); view.setActive(false);
+
+        views.add(view);
+        view.setActive(false);
+        System.out.println(this.views);
     }
 
     @Override
@@ -69,7 +73,10 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        if(activeView == null) setActiveView(views.getFirst());
+        if(activeView == null) {
+            System.out.println(views);
+            System.out.println(views.getFirst());
+            setActiveView(views.getFirst());}
         activeView.render(guiGraphics,mouseX,mouseY,partialTick);
 
     }

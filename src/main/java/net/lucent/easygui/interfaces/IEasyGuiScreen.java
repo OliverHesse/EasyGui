@@ -11,6 +11,7 @@ public interface IEasyGuiScreen {
 
     default void setActiveView(View view){}
 
+    void addView(View view);
 
     void removeView(View view);
 

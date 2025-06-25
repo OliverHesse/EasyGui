@@ -31,6 +31,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         return eventHolder;
     }
 
+    @Override
     public void addView(View view){
         views.add(view);
     }

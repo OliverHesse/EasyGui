@@ -20,7 +20,9 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public boolean useMinecraftScale = false;
 
 
-
+    public View() {
+        super();
+    }
 
     public View(IEasyGuiScreen screen, int x, int y) {
         this(screen, x, y, Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
@@ -53,10 +55,11 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
 
         double finalScale = 1;
         if (useCustomScaling) {
-            finalScale *= getCustomScale();
+            finalScale = finalScale* getCustomScale();
         }
-        if (useMinecraftScale) {
-            finalScale *= Minecraft.getInstance().getWindow().getGuiScale();
+        if (usesMinecraftScaling()) {
+
+            finalScale = finalScale * Minecraft.getInstance().getWindow().getGuiScale();
         }
 
         return finalScale / Minecraft.getInstance().getWindow().getGuiScale();
@@ -65,6 +68,7 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+
 
     }
 
@@ -119,12 +123,19 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
 
     @Override
     public int getScaledHeight() {
-        return (int) (getHeight()/getTotalScaleFactorY());
+        double scaleFactor = useCustomScaling ? getCustomScale() : 1;
+        return (int) (getHeight()/scaleFactor);
     }
 
     @Override
     public int getScaledWidth() {
-        return (int) (getWidth()/getTotalScaleFactorX());
+        double scaleFactor = useCustomScaling ? getCustomScale() : 1;
+        return (int) (getWidth()/scaleFactor);
+    }
+
+    @Override
+    public boolean isSticky() {
+        return false;
     }
 
     /**
@@ -153,6 +164,7 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
         recalculateDimensions();
     }
     public void setUseMinecraftScale(boolean useMinecraftScale) {
+
         this.useMinecraftScale = useMinecraftScale;
         recalculateDimensions();
     }

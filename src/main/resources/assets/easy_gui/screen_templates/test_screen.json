@@ -1,0 +1,56 @@
+{
+  "views": [
+    {
+      "type": "easy_gui:view",
+      "id": "view1",
+      "children": [
+        {
+          "type": "easy_gui:color_button",
+          "x": "parent.scaledWidth/2-25",
+          "y": "parent.scaledHeight/2-10",
+          "width": 50,
+          "height": 20,
+          "sticky": true,
+          "onClick": {
+            "function": "changeView",
+            "args": {
+              "id": "view2"
+            }
+          },
+          "children": [
+            {
+              "type": "easy_gui:image",
+              "x": 10,
+              "y": "parent.width/2-height/2",
+              "image": {
+                "mod_id": "easy_gui",
+                "file": "built_in_textures/test_texture.png",
+                "textureWidth": 64,
+                "textureHeight": 64,
+                "u": 32,
+                "v": 32
+              },
+              "width": 32,
+              "height": 32
+
+            },
+            {
+              "type": "easy_gui:label",
+              "centered": true,
+              "x": "parent.width/2",
+              "y": "parent.height/2",
+              "text": {
+                "type": "key",
+                "value": "easy_gui:generic_label_text"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type" : "easy_gui:view",
+      "id": "view2"
+    }
+  ]
+}

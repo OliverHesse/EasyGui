@@ -1,7 +1,10 @@
 package net.lucent.easygui.interfaces;
 
+import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.templating.actions.IAction;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
+import org.joml.Matrix4f;
 
 import java.util.List;
 //TODO annotate for better documentation
@@ -110,10 +113,11 @@ public interface ContainerRenderable extends Renderable {
     }
 
     IEasyGuiScreen getScreen();
+    void setScreen(IEasyGuiScreen screen);
 
 
-
-
+    Matrix4f getTotalPositionTransformation();
+    Matrix4f getTotalTransformation();
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
     void remove();
@@ -128,4 +132,15 @@ public interface ContainerRenderable extends Renderable {
 
     void setCull(boolean state);
     boolean shouldCull();
+    void setWidth(int width);
+    void setHeight(int height);
+
+    void setTickAction(Action action);
+    interface TickAction extends IAction{
+        @Override
+        default void accept(ContainerRenderable renderable, Object[] eventArgs, Object[] customArgs) {
+            run(renderable,customArgs);
+        }
+        void run(ContainerRenderable renderable, Object[] customArgs);
+    }
 }

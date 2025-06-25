@@ -7,11 +7,13 @@ things to work on
 -make combo box look nicer
 -replace square renderable with default isMouseOver
 -convert as many BaseRenderable functions as possible to default
-
+-add getters and setters for all modifiable properties
+-update visible cord system to work with new rotation math
+-make system work with rotations
+    - right now stuff like getGlobalScaledX dont take into account the rotation
+    - same with bounds checking
 bug fixes needed
-
+- rotated view buggy. differnt gui scales change it
+- isMouseOver does not account for rotated stack
 
 -bugs fixed
--isMouseOver still called on items culled by enableScissor fixed
--gui scaling using option.guiScaling instead of instance scaling
--fixed sticky complex event not checking isSticky

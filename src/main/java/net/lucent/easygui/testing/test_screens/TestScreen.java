@@ -1,5 +1,6 @@
 package net.lucent.easygui.testing.test_screens;
 
+import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.elements.containers.panels.DraggablePanel;
 import net.lucent.easygui.elements.containers.scroll_boxes.AbstractScrollBox;
 import net.lucent.easygui.elements.controls.buttons.ColorButton;
@@ -11,8 +12,13 @@ import net.lucent.easygui.elements.controls.inputs.TextBox;
 import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.screens.EasyGuiScreen;
+import net.lucent.easygui.templating.EasyGuiBuilder;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
 
 public class TestScreen extends EasyGuiScreen {
     public TestScreen(Component title) {
@@ -20,9 +26,11 @@ public class TestScreen extends EasyGuiScreen {
         View view = new View(this,0,0);
         view.setID("view");
         addView(view);
-        view.setCustomScale(1);
+
+        //view.setCustomScale(1);
         view.setUseMinecraftScale(true);
         //createToggleButton(view);
+
         createDraggablePanel(view);
         //createColorButton(view);
         //createFixedSizedScrollBox(view);
@@ -31,6 +39,7 @@ public class TestScreen extends EasyGuiScreen {
         //createTextBox(view);
         //createComboBox(view);
         //createViewManagerTest(view);
+        //genFromFile();
 
 
 
@@ -39,7 +48,18 @@ public class TestScreen extends EasyGuiScreen {
 
 
 
+    }
 
+    public void genFromFile(){
+
+        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/test_parser.json"));
+
+        try{
+            System.out.println("trying to build");
+            builder.build(this);
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     public void createViewManagerTest(View view){
@@ -88,6 +108,7 @@ public class TestScreen extends EasyGuiScreen {
         view.addChild(comboBox);
     }
 
+
     public void createToggleButton(View view){
         ToggleButton toggleButton = new ToggleButton(this,0,0);
         toggleButton.setCustomScale(4);
@@ -99,9 +120,12 @@ public class TestScreen extends EasyGuiScreen {
         );
     }
     public void createDraggablePanel(View view){
+
+        view.setCustomScale(2);
         DraggablePanel panel =  new DraggablePanel(this,(view.getScaledWidth()/2)-100,(view.getScaledHeight()/2)-50,200,100);
+        panel.setRotation(0,0,90);
         view.addChild(panel);
-        panel.setCull(true);
+        //panel.setCull(true);
         panel.setCustomScale(1);
         panel.addChild(new ColorButton(this,-20,-20,100,40));
         panel.addChild(new ColorButton(this,-20,panel.getHeight()-20,100,40){
