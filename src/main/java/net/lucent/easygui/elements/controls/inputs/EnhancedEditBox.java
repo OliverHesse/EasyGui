@@ -1,6 +1,8 @@
 package net.lucent.easygui.elements.controls.inputs;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.lucent.easygui.interfaces.ContainerRenderable;
+import net.lucent.easygui.templating.actions.Action;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -16,10 +18,17 @@ import java.util.function.Consumer;
  * will be used to override rendering logic
  */
 public class EnhancedEditBox extends EditBox {
+    public Action valueChangedAction;
+    public ContainerRenderable parent;
     public EnhancedEditBox(Font font, int width, int height, Component message) {
         super(font, width, height, message);
     }
 
+    @Override
+    public void onValueChange(String newText) {
+        super.onValueChange(newText);
+        if(valueChangedAction != null) valueChangedAction.accept(parent);
+    }
 
     public void enhancedOnClick(double mouseX, double mouseY, int button, int globalX, double totalScalingX){
         if(button != InputConstants.MOUSE_BUTTON_LEFT) return;

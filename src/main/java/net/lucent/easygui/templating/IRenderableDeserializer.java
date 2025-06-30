@@ -59,11 +59,19 @@ public interface IRenderableDeserializer {
         if(object.get(key) == null) return defaultValue;
         return object.get(key).getAsBoolean();
     }
-
+    default Integer getOrDefault(JsonObject object,String key,Integer defaultValue){
+        if(object.get(key) == null) return defaultValue;
+        return object.get(key).getAsInt();
+    }
+    default Double getOrDefault(JsonObject object,String key,Double defaultValue){
+        if(object.get(key) == null) return defaultValue;
+        return object.get(key).getAsDouble();
+    }
     default Object[] getList(JsonObject object,String key){
-        if(object.get(key) == null) return  new Object[0];
-        if(!object.get(key).isJsonArray()) return new Object[0];
-        return object.get(key).getAsJsonArray().asList().toArray();
+        System.out.println(object.get(key));
+        System.out.println(object.getAsJsonArray(key));
+        if(object.getAsJsonArray(key) == null) return new Object[0];
+        return object.getAsJsonArray(key).asList().toArray();
     }
 
     IRenderableDeserializer getParent();

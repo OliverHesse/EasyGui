@@ -1,12 +1,22 @@
 package net.lucent.easygui.elements.controls.inputs;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.lucent.easygui.elements.containers.panels.Panel;
+import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.Clickable;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
+import org.checkerframework.checker.units.qual.C;
+import org.jetbrains.annotations.NotNull;
 import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
@@ -14,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
+import java.util.function.Supplier;
 
 public class ComboBox extends SquareRenderable implements Clickable {
     public int borderColor = -16777216;
@@ -25,9 +36,12 @@ public class ComboBox extends SquareRenderable implements Clickable {
 
     public Font font = Minecraft.getInstance().font;
 
+    public Action valueChangedAction;
+    public Action clickAction;
 
+    public ComboBox(){}
     int selectedIndex = 0;
-    int maxDropDownHeight = 100; //arbitrary
+    //arbitrary
     Consumer<String> consumer;
     boolean hovered = false;
     public ComboBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height, Consumer<String> valueChanged) {
@@ -52,7 +66,9 @@ public class ComboBox extends SquareRenderable implements Clickable {
     public void setValue(int index){
         this.selectedIndex = index;
     }
-
+    public String getSelectedValue(){
+        return entries.get(selectedIndex);
+    }
     public void addValue(String value){
         entries.add(value);
     }
@@ -123,10 +139,71 @@ public class ComboBox extends SquareRenderable implements Clickable {
             double y = screenToLocalY(mouseY);
             if(y > height){
                 int index = (int) Math.floor( (y-height) /height);
-                setValue(index);
-                consumer.accept(getValue(index));
+                if(index != selectedIndex){
+                    setValue(index);
+                    consumer.accept(getValue(index));
+                    if(valueChangedAction != null) valueChangedAction.accept(this);
+                }
+
             }
             setFocused(false);
         }else   setFocused(false);
+        if(clickAction != null) clickAction.accept(this,mouseX,mouseY,button,clicked);
     }
+
+    public void setBorderWidth(int borderWidth) {
+        this.borderWidth = borderWidth;
+    }
+
+    public void setBorderColor(int borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public void setHoverColor(int hoverColor) {
+        this.hoverColor = hoverColor;
+    }
+
+    public static class Deserializer extends SquareRenderableDeserializer{
+
+        public Deserializer(Supplier<? extends ComboBox> supplier) {
+            super(supplier);
+        }
+
+        public void parseStringList(String key,JsonObject obj){
+            if(obj.getAsJsonArray(key) == null) throwMissingField("expected field entries for combo box");
+            JsonArray entries = obj.getAsJsonArray(key);
+            for(JsonElement entry:entries){
+                ((ComboBox)getRenderable()).addValue(entry.getAsString());
+            }
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+            Integer backgroundColor = getOrDefault(obj,"background_color",-7631989);
+            Integer borderColor = getOrDefault(obj,"border_color", -1677721);
+            Integer borderWidth = getOrDefault(obj, "border_width",2);
+
+            ((ComboBox)getRenderable()).setBackgroundColor(backgroundColor);
+            ((ComboBox)getRenderable()).setBorderColor(borderColor);
+            ((ComboBox)getRenderable()).setBorderWidth(borderWidth);
+            ((ComboBox) getRenderable()).textColor = getOrDefault(obj,"text_color",-16777216);
+            ((ComboBox)getRenderable()).setHoverColor(getOrDefault(obj,"hovered_color",-6250336));
+            parseStringList("entries",obj);
+            ((ComboBox) getRenderable()).setValue(getOrDefault(obj,"default_entry",0));
+            ((ComboBox) getRenderable()).clickAction =  parseAction("on_click",obj);
+
+            ((ComboBox) getRenderable()).valueChangedAction =  parseAction("on_value_changed",obj);
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends ComboBox>) supplier);
+        }
+    }
+
 }

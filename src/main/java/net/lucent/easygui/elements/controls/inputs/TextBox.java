@@ -1,5 +1,6 @@
 package net.lucent.easygui.elements.controls.inputs;
 
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.elements.other.SquareRenderable;
@@ -10,16 +11,21 @@ import net.lucent.easygui.interfaces.events.CharTypedListener;
 import net.lucent.easygui.interfaces.events.Clickable;
 import net.lucent.easygui.interfaces.events.KeyPressedListener;
 import net.lucent.easygui.interfaces.events.MouseDragListener;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.checkerframework.checker.units.qual.C;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
 
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * this is more or less a wrapper around the edit box
@@ -31,7 +37,7 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
 
     private boolean editable = false;
     private final EnhancedEditBox editBox;
-    private final Font font;
+    private final Font font = Minecraft.getInstance().font;
     private boolean dragging;
     private int draggingX;
 
@@ -40,14 +46,34 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
      */
     private Component hint = null;
 
+    public Action charTypedAction;
+
+    public Action keyPressedAction;
+    public Action mouseDraggedAction;
+    public Action clickedAction;
+    public Action mouseReleasedAction;
+
+    public TextBox(){
+
+        this.editBox = new EnhancedEditBox(this.font,0,font.lineHeight+2,Component.empty());
+        this.editBox.parent = this;
+
+    }
+
     public TextBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width) {
         super(easyGuiScreen);
         setX(x);
         setY(y);
-        this.font = Minecraft.getInstance().font;
         this.editBox = new EnhancedEditBox(this.font,width,font.lineHeight+2,Component.empty());
+        this.editBox.parent = this;
+
     }
 
+    @Override
+    public void setWidth(int width) {
+        super.setWidth(width);
+        editBox.setWidth(width);
+    }
 
     @Override
     public int getWidth() {
@@ -112,6 +138,7 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
                 setPivot((int) ((Mth.floor(mouseX) - getGlobalScaledX())/getTotalScaleFactorX()));
             }
         }
+        if(clickedAction != null) clickedAction.accept(this,mouseX,mouseY,button,clicked);
     }
 
     @Override
@@ -120,6 +147,7 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
             setDragged(false);
             setPivot(0);
         }
+        if(mouseReleasedAction != null) mouseReleasedAction.accept(this,mouseX,mouseY,button);
     }
 
     @Override
@@ -184,6 +212,7 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
     @Override
     public void onCharTyped(char codePoint, int modifiers) {
         editBox.charTyped(codePoint,modifiers);
+        if(charTypedAction != null) charTypedAction.accept(this,codePoint,modifiers);
     }
 
     @Override
@@ -193,6 +222,7 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
             editBox.keyPressed(keyCode, scanCode, modifier);
             if (keyCode == GLFW.GLFW_KEY_ENTER) onEnter();
         }
+        if(keyPressedAction != null) keyPressedAction.accept(this,keyCode,scanCode,modifier);
     }
 
     /**
@@ -219,5 +249,41 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
         //if(distance > font.width(editBox.getValue())) return;
 
         editBox.highlightSubstring(distance);
+        if(mouseDraggedAction != null) mouseDraggedAction.accept(this,mouseX,mouseY,button,dragX,dragY);
+    }
+
+
+
+    public static class Deserializer extends SquareRenderableDeserializer{
+
+        @Override
+        public void parseHeight(String expr) {
+            return;
+        }
+
+        public Deserializer(Supplier<? extends TextBox> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+            ((TextBox)getRenderable()).setHint(parseComponent("hint",obj));
+
+            ((TextBox) getRenderable()).clickedAction =  parseAction("on_click",obj);
+            ((TextBox) getRenderable()).mouseReleasedAction =  parseAction("on_click_release",obj);
+            ((TextBox) getRenderable()).mouseDraggedAction =  parseAction("on_mouse_drag",obj);
+            ((TextBox) getRenderable()).charTypedAction =  parseAction("on_char_typed",obj);
+            ((TextBox) getRenderable()).keyPressedAction =  parseAction("on_key_pressed",obj);
+            ((TextBox) getRenderable()).editBox.valueChangedAction =  parseAction("on_value_changed",obj);
+
+
+
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends TextBox>) supplier);
+        }
     }
 }

@@ -1,0 +1,62 @@
+{
+  "views": [
+    {
+      "type": "easy_gui:view",
+      "id": "view1",
+      "children": [
+        {
+          "type": "easy_gui:color_button",
+          "width": 100,
+          "height": 20,
+          "on_click": {
+            "function": "easy_gui:change_view",
+            "args": [
+              "view2"
+            ]
+          },
+          "children": [
+            {
+              "type": "easy_gui:label",
+              "text": {
+                "type": "raw",
+                "data": "change to view 2"
+              },
+              "centered": true,
+              "x": "parent.width/2",
+              "y": "parent.height/2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "easy_gui:view",
+      "id": "view2",
+      "children": [
+        {
+          "type": "easy_gui:color_button",
+          "width": 100,
+          "height": 40,
+          "on_click": {
+            "function": "easy_gui:change_view",
+            "args": [
+              "view1"
+            ]
+          },
+          "children": [
+            {
+              "type": "easy_gui:label",
+              "text": {
+                "type": "raw",
+                "data": "change to view 1"
+              },
+              "centered": true,
+              "x": "parent.width/2",
+              "y": "parent.height/2"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,14 +1,22 @@
 package net.lucent.easygui.elements.containers.scroll_boxes;
 
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.lucent.easygui.elements.controls.inputs.TextBox;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.Clickable;
 import net.lucent.easygui.interfaces.events.MouseReleaseListener;
 import net.lucent.easygui.interfaces.events.MouseScrollListener;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 public abstract class AbstractScrollBox extends SquareRenderable implements MouseScrollListener, Clickable, MouseReleaseListener {
 
@@ -24,9 +32,14 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     private int borderColor = -8026747;
     private boolean borderVisible = true;
     private int borderWidth = 1;
+    public boolean dragging;
+    public int draggingAxis;
 
-    private boolean dragging;
-    private int draggingAxis = 0;
+    public Action clickedAction;
+    public Action mouseReleasedAction;
+    public Action mouseScrollAction;
+    public AbstractScrollBox() {
+    }
 
     public AbstractScrollBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen);
@@ -110,6 +123,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
         if(isMouseOver(mouseX,mouseY)){
             setYOffset(getScrollAmount(yOffset,-scrollY*getScrollRate(),getScrollHeight()));
         }
+        if(mouseScrollAction != null) mouseScrollAction.accept(this,mouseX,mouseY,scrollX,scrollY);
     }
 
     private int getScrollBarHeight() {
@@ -174,11 +188,59 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
             }
 
         }
+        if(clickedAction != null) clickedAction.accept(this,mouseX,mouseY,button,clicked);
     }
 
     @Override
     public void onMouseReleased(double mouseX, double mouseY, int button) {
         if(button == InputConstants.MOUSE_BUTTON_LEFT) dragging = false;
+        if(mouseReleasedAction != null) mouseReleasedAction.accept(this,mouseX,mouseY,button);
+    }
+
+    public void setScrollBarColor(int scrollBarColor) {
+        this.scrollBarColor = scrollBarColor;
+    }
+
+    public void setScrollBarThickness(int scrollBarThickness) {
+        this.scrollBarThickness = scrollBarThickness;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+
+    public static class Deserializer extends SquareRenderableDeserializer{
+
+        public Deserializer(Supplier<? extends AbstractScrollBox> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+            ((AbstractScrollBox) getRenderable()).setBackgroundColor(getOrDefault(obj,"background_color",-16777216));
+            ((AbstractScrollBox) getRenderable()).setScrollBarColor(getOrDefault(obj,"scroll_bar_color", -8026747));
+            ((AbstractScrollBox) getRenderable()).setScrollBarThickness(getOrDefault(obj,"scroll_bar_width", 2));
+            ((AbstractScrollBox) getRenderable()).setScrollBarVisible(getOrDefault(obj,"scroll_bar_visible", true));
+            ((AbstractScrollBox) getRenderable()).setBorderColor(getOrDefault(obj,"border_color", -8026747));
+            ((AbstractScrollBox) getRenderable()).setBorderWidth(getOrDefault(obj,"border_width", 1));
+            ((AbstractScrollBox) getRenderable()).setBorderVisible(getOrDefault(obj,"border_visible", true));
+            (getRenderable()).setCull(getOrDefault(obj,"cull", true));
+
+            ((AbstractScrollBox) getRenderable()).clickedAction =  parseAction("on_click",obj);
+            ((AbstractScrollBox) getRenderable()).mouseReleasedAction =  parseAction("on_click_release",obj);
+            ((AbstractScrollBox) getRenderable()).mouseScrollAction =  parseAction("on_scroll",obj);
+
+
+
+
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends AbstractScrollBox>) supplier);
+        }
     }
 
 }

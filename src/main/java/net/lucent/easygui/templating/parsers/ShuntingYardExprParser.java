@@ -25,6 +25,7 @@ public class ShuntingYardExprParser {
     //gets it in reverse Polish notation
 
     public static List<Token> parseInput(String input){
+        System.out.println("shunting yard");
         List<String> operandStack = new ArrayList<>();
         List<Token> output = new ArrayList<>();
 

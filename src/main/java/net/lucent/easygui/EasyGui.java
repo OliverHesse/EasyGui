@@ -8,9 +8,14 @@ import net.lucent.easygui.templating.parsers.ShuntingYardExprParser;
 
 import net.lucent.easygui.templating.registry.EasyGuiRegistries;
 import net.lucent.easygui.testing.KeyHandler;
+import net.lucent.easygui.testing.ModMenuTypes;
+import net.lucent.easygui.testing.network.ModPayloads;
+import net.lucent.easygui.testing.test_screens.TestInventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -56,6 +61,7 @@ public class EasyGui
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
         EasyGuiRegistries.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
         KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
@@ -129,6 +135,16 @@ public class EasyGui
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        }
+        @SubscribeEvent
+        public static void registerScreens(RegisterMenuScreensEvent event) {
+            event.register(ModMenuTypes.GUI_TESTING_MENU.get(), TestInventoryScreen::new);
+
+        }
+        @SubscribeEvent
+        public static void registerPayloads(RegisterPayloadHandlersEvent event){
+            System.out.println("=================PAYLOADS REGISTER===============");
+            ModPayloads.registerPayloads(event);
         }
     }
 }

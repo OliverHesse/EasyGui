@@ -1,6 +1,7 @@
 package net.lucent.easygui.elements.controls.inputs;
 
 import com.google.common.collect.Lists;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.InputConstants;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -8,6 +9,9 @@ import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.ITextureData;
 import net.lucent.easygui.interfaces.events.*;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.StringSplitter;
@@ -22,11 +26,13 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /*
     mostly uses code from BookEditScreen since MultiLineEditBox did not render text for some reason
@@ -44,7 +50,12 @@ public class MultiLineTextBox extends SquareRenderable implements
     private int lastIndex = -1;
     private long lastClickTime;
 
-    private final TextFieldHelper boxData;
+    private final TextFieldHelper boxData = new TextFieldHelper(
+                this::getCurrentPageText,
+                this::setCurrentPageText,
+                this::getClipboard,
+                this::setClipboard,
+                value -> font.wordWrapHeight(value,getWidth()) <= (getHeight()-font.lineHeight-1));
     private int textColor = 14737632;
     private int textColorUnFocused= 7368816;
     private ITextureData backgroundTexture=  null;
@@ -56,18 +67,22 @@ public class MultiLineTextBox extends SquareRenderable implements
 
     private Consumer<String> responder = null;
 
+    public Action charTypedAction;
+    public Action valueChangedAction;
+    public Action keyPressedAction;
+    public Action mouseDraggedAction;
+    public Action clickedAction;
+
+    public MultiLineTextBox(){
+
+    }
+
     public MultiLineTextBox(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen);
         setX(x);
         setY(y);
         setWidth(width);
         setHeight(height);
-        this.boxData = new TextFieldHelper(
-                this::getCurrentPageText,
-                this::setCurrentPageText,
-                this::getClipboard,
-                this::setClipboard,
-                value -> font.wordWrapHeight(value,getWidth()) <= (getHeight()-font.lineHeight-1));
 
     }
 
@@ -167,6 +182,8 @@ public class MultiLineTextBox extends SquareRenderable implements
         if(isFocused() && StringUtil.isAllowedChatCharacter(codePoint)){
             this.boxData.insertText(Character.toString(codePoint));
             if(responder != null) responder.accept(getCurrentPageText());
+            if(charTypedAction != null) charTypedAction.accept(this);
+            if(valueChangedAction != null) valueChangedAction.accept(this);
             this.clearDisplayData();
         }
     }
@@ -197,6 +214,7 @@ public class MultiLineTextBox extends SquareRenderable implements
         }else {
             setFocused(false);
         }
+        if(clickedAction != null) clickedAction.accept(this,mouseX,mouseY,button,clicked);
     }
 
     @Override
@@ -205,6 +223,8 @@ public class MultiLineTextBox extends SquareRenderable implements
             boolean flag = this.textBoxKeyPressed(keyCode, scanCode, modifier);
             if (flag) {
                 if(responder != null) this.responder.accept(getCurrentPageText());
+                if(keyPressedAction != null)keyPressedAction.accept(this);
+                if(valueChangedAction != null) valueChangedAction.accept(this);
                 clearDisplayData();
             }
         }
@@ -317,7 +337,7 @@ public class MultiLineTextBox extends SquareRenderable implements
             this.clearDisplayData();
 
         }
-
+        if(mouseDraggedAction != null) mouseDraggedAction.accept(this,mouseX,mouseY,button,dragX,dragX);
     }
     @Override
     public void tick() {
@@ -498,5 +518,38 @@ public class MultiLineTextBox extends SquareRenderable implements
             return this.lineStarts[i] + this.lines[i].getString().length();
         }
     }
+    public static class Deserializer extends SquareRenderableDeserializer {
 
+        @Override
+        public void parseHeight(String expr) {
+            return;
+        }
+
+        public Deserializer(Supplier<? extends MultiLineTextBox> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+
+            ((MultiLineTextBox) getRenderable()).setTextColor(getOrDefault(obj,"text_color",14737632));
+            ((MultiLineTextBox) getRenderable()).setTextColorUnFocused(getOrDefault(obj,"unfocused_text_color",7368816));
+            ((MultiLineTextBox) getRenderable()).setBackgroundColor(getOrDefault(obj,"background_color", -16777216));
+            ((MultiLineTextBox) getRenderable()).setBorderColor(getOrDefault(obj,"border_color", -1));
+            ((MultiLineTextBox) getRenderable()).setBorderWidth(getOrDefault(obj,"border_width", 1));
+            ((MultiLineTextBox) getRenderable()).setBordered(getOrDefault(obj,"border_visible",true));
+            ((MultiLineTextBox) getRenderable()).charTypedAction = parseAction("on_char_typed",obj);
+
+            ((MultiLineTextBox) getRenderable()).clickedAction =  parseAction("on_click",obj);
+            ((MultiLineTextBox) getRenderable()).mouseDraggedAction =  parseAction("on_mouse_drag",obj);
+            ((MultiLineTextBox) getRenderable()).keyPressedAction =  parseAction("on_key_pressed",obj);
+            ((MultiLineTextBox) getRenderable()).valueChangedAction =  parseAction("on_value_changed",obj);
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends MultiLineTextBox>) supplier);
+        }
+    }
 }

@@ -3,20 +3,18 @@ package net.lucent.easygui.elements;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.network.chat.Component;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
-import org.joml.Vector4f;
+import org.joml.Vector3f;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +28,10 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     private int renderedY;
 
 
-    private Matrix4f positionTransformation;
-    private Matrix4f localTransformation;
+    BoundChecker.Rec2d cullRegion;
+
+    public Matrix4f positionTransform;
+    public Matrix4f transform;
 
     private int x;
     private int y;
@@ -51,7 +51,8 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     public boolean focused = false;
     public boolean sticky = false;
     public Action tickAction;
-
+    public Action resizeAction;
+    public Action guiChangeAction;
     private int cullBorder = 0; //for borders
 
     private boolean cull = false;
@@ -78,17 +79,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     public BaseRenderable(){
 
     }
-    @Override
-    public Matrix4f getTotalPositionTransformation(){
-        if(getParent() == null) return new Matrix4f(this.positionTransformation);
-        return new Matrix4f(getParent().getTotalTransformation()).mul(this.positionTransformation);
-    }
 
-    @Override
-    public Matrix4f getTotalTransformation() {
-        if(getParent() == null) return new Matrix4f(this.localTransformation);
-        return new Matrix4f(getParent().getTotalTransformation()).mul(this.localTransformation);
-    }
 
     @Override
     public void setTickAction(Action action){
@@ -175,15 +166,6 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
         this.visibleHeight = visibleHeight;
     }
 
-    @Override
-    public int getVisibleHeight() {
-        return visibleHeight;
-    }
-
-    @Override
-    public int getVisibleWidth() {
-        return visibleWidth;
-    }
 
     @Override
     public void setRotation(double x, double y, double z) {
@@ -216,52 +198,40 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
         return y;
     }
 
-    @Override
-    public int getVisibleX() {
-        return visibleX;
-    }
 
-    @Override
-    public int getVisibleY() {
-        return visibleY;
-    }
 
     /**
      * already includes the minecraft gui scale
      */
     @Override
     public double getGlobalScaledX() {
-
         if(getParent() != null){
             return getX()*getParent().getTotalScaleFactorX() + getParent().getGlobalScaledX();
         }
         return getX();
+        //return (new Vector4f(0,0,0,1).mul(getTotalPositionTransformation())).x()*getApplicableMinecraftScale()/getTotalCustomScaling();
     }
     //return (new Vector4f(0,0,0,1).mul(getTotalPositionTransformation())).x();
-
+    /*
+         if(getParent() != null){
+            return getX()*getParent().getTotalScaleFactorX() + getParent().getGlobalScaledX();
+        }
+        return getX();
+     */
 
     /**
      * already includes the minecraft gui scale
      */
     @Override
     public double getGlobalScaledY() {
-        if(getParent() != null) return getY()*getParent().getTotalScaleFactorY() + getParent().getGlobalScaledY();
-        return getY();
-    }
-
-    @Override
-    public double getGlobalScaledVisibleX() {
         if(getParent() != null){
-            return getVisibleX()*getParent().getTotalScaleFactorX() + getParent().getGlobalScaledX();
+            return getY()*getParent().getTotalScaleFactorY() + getParent().getGlobalScaledY();
         }
-        return getVisibleX();
+        return getY();
+        //return (new Vector4f(0,0,0,1).mul(getTotalPositionTransformation())).y()*getApplicableMinecraftScale()/getTotalCustomScaling();
     }
 
-    @Override
-    public double getGlobalScaledVisibleY() {
-        if(getParent() != null) return getVisibleY()*getParent().getTotalScaleFactorY() + getParent().getGlobalScaledY();
-        return getVisibleY();
-    }
+
 
     @Override
     public void setX(int x){
@@ -345,60 +315,12 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
 
 
-        ScreenRectangle scissorRect =  guiGraphics.scissorStack.stack.peek();
-        visibleHeight = getHeight();
-        visibleWidth = getWidth();
-        visibleX = getX();
-        visibleY = getY();
 
-
-        //System.out.println("calculating things "+ getClass().getName());
-        //TODO add safety for if parent is null
-        if(scissorRect != null && (localTransformation != null && positionTransformation != null)){
-            //may not be the most efficient
-            //if x or y are outside of box+length then it is not visible
-
-            double x = getGlobalScaledX();
-            double y = getGlobalScaledY();
-            int width = getScaledWidth();
-            int height = getScaledHeight();
-
-            if(x > scissorRect.position().x()+scissorRect.width()
-                || y>scissorRect.position().y()+scissorRect.height()){
-                visibleWidth = 0;
-                visibleHeight = 0;
-            }else if(x+width < scissorRect.position().x()
-                    || y+height < scissorRect.position().y() ){
-                //y+height or x+width outside of area so none visible
-                visibleHeight = 0;
-                visibleWidth = 0;
-            } else{
-                if(x+width>scissorRect.position().x()+scissorRect.width()) width = (int) (scissorRect.position().x()+scissorRect.width()-x);
-                if(y+height>scissorRect.position().y()+scissorRect.height()) height = (int) (scissorRect.position().y()+scissorRect.height()-y);
-
-                if(y<scissorRect.position().y()){
-                    height = (int) (height-(scissorRect.position().y()-y));
-                    y = scissorRect.position().y();
-                }
-                if(x<scissorRect.position().x()){
-                    width = (int) (width-(scissorRect.position().x()-x));
-                    x = scissorRect.position().x();
-                }
-
-                visibleX = getParent().screenToLocalX(x);
-                visibleY = getParent().screenToLocalY(y);
-
-                visibleWidth = (int) (width/getTotalScaleFactorX());
-                //System.out.println(getHeight());
-                visibleHeight = (int) (height/getTotalScaleFactorY());
-                //System.out.println(visibleHeight);
-            }
-        }
 
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(getX(),getY(),0);
 
-        this.positionTransformation = new Matrix4f(guiGraphics.pose().last().pose());
+        this.positionTransform = new Matrix4f(guiGraphics.pose().last().pose());
 
         Quaternionf rotation = new Quaternionf()
                 .rotateZ((float) Math.toRadians(getRotationZ()))
@@ -409,14 +331,34 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
             guiGraphics.pose().scale((float) getScaleX(), (float) getScaleY(),1);
         }
 
-        this.localTransformation = new Matrix4f(guiGraphics.pose().last().pose());
+        this.transform = new Matrix4f(guiGraphics.pose().last().pose());
 
-        if(cull) guiGraphics.enableScissor(
-                (int) (getGlobalScaledX()-cullBorder),
-                (int) (getGlobalScaledY()-cullBorder),
-                (int) (getGlobalScaledX()+getScaledWidth()+cullBorder),
-                (int) (getGlobalScaledY()+getScaledHeight()+cullBorder));
+        if(shouldCull()){
+
+            guiGraphics.enableScissor(
+                    (getGlobalPoint().x - cullBorder),
+                    (getGlobalPoint().y - cullBorder),
+                    (getGlobalHeightWidthPoint().x + cullBorder),
+                    (getGlobalHeightWidthPoint().y + cullBorder));
+
+            this.cullRegion = new BoundChecker.Rec2d(
+                    getGlobalPoint(),
+                    getGlobalWidthPoint(),
+                    getGlobalHeightWidthPoint(),
+                    getGlobalHeightPoint());
+
+        }
     }
+
+    public void setCullRegion(BoundChecker.Rec2d cullRegion) {
+        this.cullRegion = cullRegion;
+    }
+
+    @Override
+    public int getCullBorderWidth() {
+        return cullBorder;
+    }
+
     @Override
     public void resetRenderScale(GuiGraphics guiGraphics){
         guiGraphics.pose().popPose();
@@ -509,6 +451,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
         child.setParent(this);
     }
 
+    @Override
     public double getCustomScale() {
         return customScale;
     }
@@ -552,5 +495,51 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     @Override
     public void setSticky(boolean sticky) {
         this.sticky = sticky;
+    }
+
+
+    public BoundChecker.Vec2 getGlobalPoint(){
+        Vector3f position =   getTransform().transformPosition(new Vector3f(0,0,0));
+        return new BoundChecker.Vec2((int) position.x, (int) position.y);
+    }
+    public BoundChecker.Vec2 getGlobalWidthPoint(){
+        Vector3f position =   getTransform().transformPosition(new Vector3f(getWidth(),0,0));
+        return new BoundChecker.Vec2((int) position.x, (int) position.y);
+    }
+    public BoundChecker.Vec2  getGlobalHeightPoint(){
+        Vector3f position =   getTransform().transformPosition(new Vector3f(0,getHeight(),0));
+        return new BoundChecker.Vec2((int) position.x, (int) position.y);
+    }
+    public BoundChecker.Vec2 getGlobalHeightWidthPoint(){
+        Vector3f position = getTransform().transformPosition(new Vector3f(getWidth(),getHeight(),0));
+        return new BoundChecker.Vec2((int) position.x, (int) position.y);
+    }
+
+    public Matrix4f getPositionTransform() {
+        return positionTransform;
+    }
+
+    public Matrix4f getTransform() {
+        return transform;
+    }
+
+    public BoundChecker.Rec2d getCullRegion() {
+        return cullRegion;
+    }
+    public BoundChecker.Rec2d getActiveCullRegion(){
+        if(cullRegion != null || getParent() == null) return cullRegion;
+        return getParent().getActiveCullRegion();
+    }
+
+    @Override
+    public void onResize(int oldWidth, int oldHeight, double oldScale) {
+        Sticky.super.onResize(oldWidth, oldHeight, oldScale);
+        if(resizeAction != null) resizeAction.accept(this,oldWidth,oldHeight,oldScale);
+    }
+
+    @Override
+    public void onGuiScaleChanged(double oldScale) {
+        Sticky.super.onGuiScaleChanged(oldScale);
+        if(guiChangeAction != null) guiChangeAction.accept(this,oldScale);
     }
 }

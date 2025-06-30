@@ -2,9 +2,12 @@ package net.lucent.easygui.interfaces;
 
 import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.templating.actions.IAction;
+import net.lucent.easygui.util.math.BoundChecker;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.List;
 //TODO annotate for better documentation
@@ -37,9 +40,6 @@ public interface ContainerRenderable extends Renderable {
     void setX(int x);
     void setY(int y);
 
-    int getVisibleX();
-    int getVisibleY();
-
     default void setRotation(double x,double y,double z){}
 
     default double getRotationX(){return 0;}
@@ -55,9 +55,6 @@ public interface ContainerRenderable extends Renderable {
     default double getGlobalScaledX(){return 0.0;}
     default double getGlobalScaledY(){return 0.0;}
 
-    default double getGlobalScaledVisibleX(){return 0.0;}
-    default double getGlobalScaledVisibleY(){return 0.0;}
-
     ContainerRenderable getParent();
     ContainerRenderable getRoot();
     List<ContainerRenderable> getChildren();
@@ -65,32 +62,14 @@ public interface ContainerRenderable extends Renderable {
     default int getWidth(){
         return 0;
     }
-    default int getVisibleWidth(){
-        return getWidth();
-    }
+
     default int getHeight(){
         return 0;
     }
-    default int getVisibleHeight(){
-        return getHeight();
-    }
+
     //TODO
     //relative position
-    default Integer getMostRecentScissorX(){
-        if(getParent() == null) return null;
-        if(getParent().shouldCull()) return -getParent().getCullBorderWidth();
-        Integer parentScissor = getParent().getMostRecentScissorX();
-        if(parentScissor == null) return  getParent().screenToLocalX(getParent().getGlobalScaledX());
-        return  getParent().screenToLocalX(getParent().getGlobalScaledX()) + parentScissor;
-    }
-    default Integer getMostRecentScissorY(){
-        if(getParent() == null) return null;
-        if(getParent().shouldCull()) return -getParent().getCullBorderWidth();
-        Integer parentScissor = getParent().getMostRecentScissorY();
-        if(parentScissor == null) return  getParent().screenToLocalY(getParent().getGlobalScaledY());
-        return  getParent().screenToLocalY(getParent().getGlobalScaledY()) + parentScissor;
 
-    }
     default int getCullBorderWidth(){return 0;}
 
     default double getScale(){return 0;}
@@ -105,30 +84,37 @@ public interface ContainerRenderable extends Renderable {
     }
 
 
-    default int getScaledVisibleWidth(){
-        return (int) (getVisibleWidth()*getTotalScaleFactorX());
-    }
-    default int getScaledVisibleHeight(){
-        return (int) (getVisibleHeight()*getTotalScaleFactorY());
-    }
 
     IEasyGuiScreen getScreen();
     void setScreen(IEasyGuiScreen screen);
 
 
-    Matrix4f getTotalPositionTransformation();
-    Matrix4f getTotalTransformation();
+    Matrix4f getTransform();
+    Matrix4f getPositionTransform();
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
     void remove();
 
     default int screenToLocalX(double x){
-        return (int) ((x-getGlobalScaledX())/getTotalCustomScaling());
+        return (int)new Matrix4f(getTransform()).invert().transformPosition(new Vector3f((float) (x),0,0)).x();
     }
     default int screenToLocalY(double y){
-        return (int) ((y-getGlobalScaledY())/getTotalCustomScaling());
+        return (int) new Matrix4f(getTransform()).invert().transformPosition(new Vector3f( 0,(float)(y),0)).y();
     }
+
     default void tick(){}
+
+    double getCustomScale();
+
+    default double getTotalCustomScale(){
+        if(getParent() == null) return getCustomScale();
+        return getParent().getTotalCustomScale()*getCustomScale();
+    }
+
+    default double getApplicableMinecraftScale(){
+        if(getRoot() != null && getRoot().usesMinecraftScaling()) return Minecraft.getInstance().getWindow().getGuiScale();
+        return 1;
+    }
 
     void setCull(boolean state);
     boolean shouldCull();
@@ -143,4 +129,6 @@ public interface ContainerRenderable extends Renderable {
         }
         void run(ContainerRenderable renderable, Object[] customArgs);
     }
+
+    BoundChecker.Rec2d getActiveCullRegion();
 }

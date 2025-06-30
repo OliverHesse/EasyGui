@@ -9,14 +9,20 @@ import net.lucent.easygui.elements.controls.buttons.ToggleButton;
 import net.lucent.easygui.elements.controls.inputs.ComboBox;
 import net.lucent.easygui.elements.controls.inputs.MultiLineTextBox;
 import net.lucent.easygui.elements.controls.inputs.TextBox;
+import net.lucent.easygui.elements.inventory.DisplayEntity;
+import net.lucent.easygui.elements.inventory.DisplayPlayer;
 import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.screens.EasyGuiScreen;
 import net.lucent.easygui.templating.EasyGuiBuilder;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector4f;
 
 import java.awt.*;
 
@@ -30,8 +36,8 @@ public class TestScreen extends EasyGuiScreen {
         //view.setCustomScale(1);
         view.setUseMinecraftScale(true);
         //createToggleButton(view);
-
-        createDraggablePanel(view);
+        renderPlayer(view);
+        //createDraggablePanel(view);
         //createColorButton(view);
         //createFixedSizedScrollBox(view);
         //createDynamicScrollBox(view);
@@ -49,10 +55,17 @@ public class TestScreen extends EasyGuiScreen {
 
 
     }
-
+    public void renderPlayer(View view){
+        LocalPlayer player = Minecraft.getInstance().player;
+        DisplayPlayer dPlayer =  new DisplayPlayer(this,player,view.getScaledWidth()/2,view.getScaledHeight()/2,30);
+        dPlayer.setRotation(0,0,0);
+        view.addChild(
+                dPlayer
+        );
+    }
     public void genFromFile(){
 
-        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/test_parser.json"));
+        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/change_view_template.json"));
 
         try{
             System.out.println("trying to build");
@@ -121,20 +134,23 @@ public class TestScreen extends EasyGuiScreen {
     }
     public void createDraggablePanel(View view){
 
-        view.setCustomScale(2);
+        //view.setCustomScale(2);
         DraggablePanel panel =  new DraggablePanel(this,(view.getScaledWidth()/2)-100,(view.getScaledHeight()/2)-50,200,100);
-        panel.setRotation(0,0,90);
+        //panel.setRotation(0,0,90);
         view.addChild(panel);
-        //panel.setCull(true);
-        panel.setCustomScale(1);
+        panel.setCustomScale(2);
+        panel.setCull(true);
+        panel.setRotation(0,0,0);
         panel.addChild(new ColorButton(this,-20,-20,100,40));
-        panel.addChild(new ColorButton(this,-20,panel.getHeight()-20,100,40){
+        ColorButton button = (new ColorButton(this,-20,panel.getHeight()-20,100,40){
             @Override
-            public void tick() {
-                super.tick();
-                System.out.println(getX() + ","+getY());
+            public void onClick(double mouseX, double mouseY, int button, boolean clicked) {
+                super.onClick(mouseX, mouseY, button, clicked);
+                if(clicked) System.out.println("was clicked");
             }
         });
+        button.setRotation(0,0,90);
+        panel.addChild(button);
         //panel.addChild(new Label.Builder().screen(this).x(-50).y(-50).text("test culling").build());
         panel.addChild(new Label.Builder().screen(this).x(panel.getWidth()/2).y(panel.height/2).text("test stuff").centered(true).build());
     }
@@ -153,6 +169,7 @@ public class TestScreen extends EasyGuiScreen {
 
     }
     public void createFixedSizedScrollBox(View view){
+        view.setUseMinecraftScale(false);
         AbstractScrollBox scrollBox = new AbstractScrollBox(this,
                 view.getScaledWidth()/4,
                 view.getScaledHeight()/4,
@@ -174,6 +191,7 @@ public class TestScreen extends EasyGuiScreen {
 
         };
         scrollBox.setCustomScale(1);
+        scrollBox.setCull(false);
         ColorButton button = new ColorButton(this,0,0,100,40){
             @Override
             public void onClick(double mouseX, double mouseY, int button, boolean clicked) {
@@ -183,14 +201,14 @@ public class TestScreen extends EasyGuiScreen {
             }
         };
 
-
+        button.setCull(false);
         button.addChild(new Label.Builder()
                 .screen(this)
                 .text( Component.literal("Some random text. cool right?"))
                 .x(button.getWidth()/2)
                 .y(button.getHeight()/2)
                 .centered(true)
-                .customScaling(0.5)
+                .customScaling(1)
                 .build());
 
         scrollBox.addChild(button);

@@ -1,16 +1,21 @@
 package net.lucent.easygui.elements.other;
 
+import com.google.gson.JsonObject;
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.deserializers.BaseDeserializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.beans.EventHandler;
+import java.util.function.Supplier;
 
 public class Label extends BaseRenderable {
 
@@ -18,13 +23,14 @@ public class Label extends BaseRenderable {
     public boolean centered;
 
     public Component text;
-    public Font font;
+    public Font font = Minecraft.getInstance().font;
 
     /**
      * extra text gets culled
      */
 
-
+    public Label(){
+    }
 
     private Label(IEasyGuiScreen easyGuiScreen, Font font, Component text, int x, int y, int width, int height, boolean centered, int textColor){
         super(easyGuiScreen);
@@ -114,6 +120,50 @@ public class Label extends BaseRenderable {
 
 
 
+    }
+
+    public static class Deserializer extends BaseDeserializer{
+
+        public Deserializer(Supplier<? extends Label> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public void parseHeight(String expr) {
+            Font font = Minecraft.getInstance().font;
+            if(expr.equals("0")){
+                getRenderable().setHeight(font.lineHeight);
+            }else{
+                super.parseHeight(expr);
+            }
+        }
+
+        @Override
+        public void parseWidth(String expr) {
+
+            Font font = Minecraft.getInstance().font;
+            if(expr.equals("0") && ((Label) getRenderable()).text != null){
+                getRenderable().setWidth(font.width(((Label) getRenderable()).text));
+            }else{
+                super.parseWidth(expr);
+            }
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+            ((Label) getRenderable()).text = parseComponent("text",obj);
+            ((Label) getRenderable()).textColor = getOrDefault(obj,"text_color",-16777216);
+            ((Label) getRenderable()).centered = getOrDefault(obj,"centered",false);
+
+            parseWidth(getOrDefault(obj,"width","0"));
+            parseHeight(getOrDefault(obj,"height","0"));
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends Label>) supplier);
+        }
     }
 
 }

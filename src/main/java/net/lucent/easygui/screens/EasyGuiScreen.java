@@ -116,7 +116,9 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
 
     @Override
     public ContainerRenderable getElementByID(String id) {
-
+        System.out.println(idMap);
+        System.out.println(id);
+        System.out.println(idMap.get(id));
         return idMap.get(id);
     }
 
@@ -140,39 +142,39 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         eventHolder.MOUSE_SCROLL_EVENT.call(mouseX, mouseY, scrollX, scrollY);
-        return true;
+        return super.mouseScrolled(mouseX,mouseY,scrollX,scrollY);
     }
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         eventHolder.KEY_RELEASED_EVENT.call(keyCode, scanCode, modifiers);
-        return true;
+        return super.keyReleased(keyCode,scanCode,modifiers);
     }
 
     @Override
     public boolean charTyped(char codePoint, int modifiers) {
         eventHolder.CHAR_TYPED_EVENT.call(codePoint,modifiers);
-        return true;
+        return super.charTyped(codePoint,modifiers);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
 
         eventHolder.CLICK_EVENT.call(mouseX, mouseY, button);
-        return true;
+        return super.mouseClicked(mouseX,mouseY,button);
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         eventHolder.MOUSE_RELEASE_EVENT.call(mouseX, mouseY, button);
-        return true;
+        return super.mouseReleased(mouseX,mouseY,button);
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 
         eventHolder.MOUSE_DRAG_EVENT.call(mouseX, mouseY, button,dragX,dragY);
-        return true;
+        return super.mouseDragged(mouseX,mouseY,button,dragX,dragY);
     }
 
     @Override

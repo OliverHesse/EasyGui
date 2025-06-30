@@ -6,6 +6,7 @@ import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.interfaces.events.Clickable;
+import net.lucent.easygui.templating.actions.Action;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,7 +27,10 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
 
     public boolean hovered;
 
+    public Action clickAction;
 
+
+    public AbstractButton(){}
 
     public AbstractButton(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen);
@@ -59,8 +63,11 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
 
     @Override
     public void onClick(double mouseX, double mouseY, int button,boolean clicked) {
-        if(clicked)  setPressed(true);;
-
+        if(clicked){
+            setPressed(true);
+            time_pressed = 0;
+        }
+        if(clickAction != null) clickAction.accept(this,mouseX,mouseY,button,clicked);
     }
 
     @Override
@@ -75,7 +82,7 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
         if(unPressNaturally){
             time_pressed += 1;
             if (time_pressed >= PRESSED_TIME) {
-                pressed = false;
+                setPressed(false);
                 time_pressed = 0;
             }
         }

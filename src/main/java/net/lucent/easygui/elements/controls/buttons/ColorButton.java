@@ -1,19 +1,22 @@
 package net.lucent.easygui.elements.controls.buttons;
 
-import net.lucent.easygui.holders.EasyGuiEventHolder;
+import com.google.gson.JsonObject;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.util.function.Supplier;
 
 public class ColorButton extends AbstractButton{
 
-    private final Color defaultColor = new Color(162,162,162,255);
-    private final Color hoverColor = new Color(194,194,194,255);
-    private final Color pressColor = new Color(136,136,136,255);
-    private final Color focusColor = new Color(162,162,162,255);
+    private  int defaultColor = -6118750;
+    private  int hoverColor = -4013374;
+    private  int pressColor = -7829368;
+    private  int focusColor =-6118750;
 
-
+    public ColorButton(){}
     public ColorButton(IEasyGuiScreen easyGuiScreen, int x, int y, int width, int height) {
         super(easyGuiScreen, x, y, width, height);
 
@@ -22,18 +25,57 @@ public class ColorButton extends AbstractButton{
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
-        Color finalColor = defaultColor;
+        int finalColor = defaultColor;
         if(focused){
             finalColor = focusColor;
-            guiGraphics.fill(-1,-1,getWidth()+2,getHeight()+2,(new Color(255,255,255,255)).getRGB());
+            guiGraphics.fill(-1,-1,getWidth()+2,getHeight()+2,-1);
         }
         if(hovered)finalColor = hoverColor;
         if(pressed)finalColor = pressColor;
 
 
-        guiGraphics.fill(0,0,getWidth(),getHeight(),finalColor.getRGB());
+        guiGraphics.fill(0,0,getWidth(),getHeight(),finalColor);
 
     }
 
+    public void setDefaultColor(int color){
+        this.defaultColor = color;
+    }
+
+    public void setHoverColor(int hoverColor) {
+        this.hoverColor = hoverColor;
+    }
+
+    public void setFocusColor(int focusColor) {
+        this.focusColor = focusColor;
+    }
+
+    public void setPressColor(int pressColor) {
+        this.pressColor = pressColor;
+    }
+    public static class Deserializer extends SquareRenderableDeserializer {
+        public Deserializer(Supplier<? extends ColorButton> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+
+            ((ColorButton) getRenderable()).setDefaultColor(getOrDefault(obj,"default_color",-6118750));
+            ((ColorButton) getRenderable()).setHoverColor(getOrDefault(obj,"hovered_color",-4013374));
+            ((ColorButton) getRenderable()).setPressColor(getOrDefault(obj,"pressed_color",-7829368));
+            ((ColorButton) getRenderable()).setFocusColor(getOrDefault(obj,"default_color",-6118750));
+            if(obj.getAsJsonObject("on_click") != null){
+                System.out.println(obj.getAsJsonObject("on_click"));
+                ((ColorButton) getRenderable()).clickAction =  parseAction("on_click",obj);
+            }
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends ColorButton>) supplier);
+        }
+    }
 
 }

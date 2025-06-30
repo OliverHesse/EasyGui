@@ -1,13 +1,19 @@
 package net.lucent.easygui.elements.containers;
 
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.Window;
 
 import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.deserializers.BaseDeserializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 
 public class View extends BaseRenderable implements ScreenResizeListener, GuiScaleListener {
@@ -180,4 +186,33 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
         recalculateDimensions();
     }
 
+    public static class Deserializer extends BaseDeserializer {
+
+        @Override
+        public void parseWidth(String expr) {
+            ((View) getRenderable()).recalculateDimensions();
+        }
+
+        @Override
+        public void parseHeight(String expr) {
+            ((View) getRenderable()).recalculateDimensions();
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+            ((View) getRenderable()).useMinecraftScale = getOrDefault(obj,"use_minecraft_scaling",false);
+            //does not treat width and height the same as others
+
+        }
+
+        public Deserializer(Supplier<? extends View> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends View>) supplier);
+        }
+    }
 }

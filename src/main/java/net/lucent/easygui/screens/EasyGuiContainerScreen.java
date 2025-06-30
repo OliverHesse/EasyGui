@@ -10,6 +10,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -17,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 //TODO ACTUALY TEST
 public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> implements IEasyGuiScreen {
+    public int windowWidth = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getWidth() : 0;
+    public int windowHeight = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getHeight() : 0;;
+    public double guiScale = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getGuiScale() : 0;;
 
     private final List<View> views = new ArrayList<>();
 
@@ -41,6 +45,24 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         for(View view : views){
             if(view.isActive()) view.render(guiGraphics,mouseX,mouseY,partialTick);
+        }
+    }
+
+    @Override
+    protected void init() {
+        Minecraft mc = Minecraft.getInstance();
+
+        if(mc.getWindow().getHeight() != windowHeight || windowWidth != mc.getWindow().getWidth()){
+            eventHolder.SCREEN_RESIZE_EVENT.call(windowWidth,windowHeight,guiScale);
+            windowWidth = mc.getWindow().getWidth();
+            windowHeight = mc.getWindow().getHeight();
+            guiScale = mc.getWindow().getGuiScale();
+
+
+        }else if(mc.getWindow().getGuiScale() != guiScale){
+            //if(guiScale == 0) eventHolder.GUI_SCALE_CHANGED_EVENT.call(mc.getWindow().getGuiScale());
+            guiScale = mc.getWindow().getGuiScale();
+
         }
     }
 
@@ -74,45 +96,45 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         eventHolder.MOUSE_SCROLL_EVENT.call(mouseX, mouseY, scrollX, scrollY);
-        return true;
+        return super.mouseScrolled(mouseX,mouseY,scrollX,scrollY);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         eventHolder.KEY_PRESS_EVENT.call(keyCode,scanCode,modifiers);
-        return keyCode != GLFW.GLFW_KEY_ESCAPE;
+        return super.keyPressed(keyCode,scanCode,modifiers);
     }
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         eventHolder.KEY_RELEASED_EVENT.call(keyCode, scanCode, modifiers);
-        return true;
+        return super.keyReleased(keyCode,scanCode,modifiers);
     }
 
     @Override
     public boolean charTyped(char codePoint, int modifiers) {
         eventHolder.CHAR_TYPED_EVENT.call(codePoint,modifiers);
-        return true;
+        return super.charTyped(codePoint,modifiers);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
 
         eventHolder.CLICK_EVENT.call(mouseX, mouseY, button);
-        return true;
+        return super.mouseClicked(mouseX,mouseY,button);
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
 
         eventHolder.MOUSE_RELEASE_EVENT.call(mouseX, mouseY, button);
-        return true;
+        return super.mouseReleased(mouseX,mouseY,button);
     }
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 
         eventHolder.MOUSE_DRAG_EVENT.call(mouseX, mouseY, button,dragX,dragY);
-        return true;
+        return super.mouseDragged(mouseX,mouseY,button,dragX,dragY);
     }
 
 
@@ -153,5 +175,10 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     public List<ContainerRenderable> getElementsByClassName(String className) {
         if(!classMap.containsKey(className)) return List.of();
         return List.copyOf(classMap.get(className));
+    }
+
+    @Override
+    public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
+        super.renderSlot(guiGraphics, slot);
     }
 }

@@ -4,16 +4,33 @@
 - add Drop down menu(basically combo box but each val triggers a consumer)
 
 things to work on
--make combo box look nicer
--replace square renderable with default isMouseOver
--convert as many BaseRenderable functions as possible to default
--add getters and setters for all modifiable properties
--update visible cord system to work with new rotation math
--make system work with rotations
-    - right now stuff like getGlobalScaledX dont take into account the rotation
-    - same with bounds checking
+- change positioning to have a sort of baseX and offsetX. mainly for things like scroll boxes
+- go through and add actions to everything
+- make combo box look nicer
+- replace square renderable with default isMouseOver
+- convert as many BaseRenderable functions as possible to default
+- add getters and setters for all modifiable properties
+
+- change how visible colliders are calculated. potentially by storing a visible l1,l2,l3,l4 for each side
+
+- override effect display
+- make culling work with rotation:
+    - region math and region checking works
+    - cull region does not rotate so be careful with anything that involves culling
+    - try implement my own cut shader
+    - temporarily get it to support 0 90 180 270 rotation
+
 bug fixes needed
-- rotated view buggy. differnt gui scales change it
-- isMouseOver does not account for rotated stack
+- rotated view buggy. different gui scales change it
+- clicking or dragging scrollbar can cause it to be permanently offset
+
+-changes
+- getGlobalX() now properly applies rotation and scaling
+- change ScreenToLocal to work with new system
+-make system work with rotations
+    - replace getGlobalScaledX/Y with getGlobalX/Y
+    - make getter and setter for positionTransform and transform
 
 -bugs fixed
+- isMouseOver does not account for rotated stack
+- button click timer seems inconsistent

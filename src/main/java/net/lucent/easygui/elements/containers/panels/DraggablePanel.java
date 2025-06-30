@@ -7,7 +7,7 @@ import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.interfaces.events.MouseDragListener;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 
-public class DraggablePanel extends Panel implements Draggable,Sticky {
+public class DraggablePanel extends Panel implements Draggable{
 
     boolean dragged = false;
     int clickedX = 0;
@@ -44,10 +44,7 @@ public class DraggablePanel extends Panel implements Draggable,Sticky {
     }
 
 
-    @Override
-    public void setSticky(boolean sticky) {
 
-    }
 
     @Override
     public boolean isSticky() {

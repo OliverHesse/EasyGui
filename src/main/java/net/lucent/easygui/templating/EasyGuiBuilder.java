@@ -7,11 +7,8 @@ import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
-import net.lucent.easygui.templating.deserializers.BaseDeserializer;
-import net.lucent.easygui.templating.deserializers.ViewDeserializer;
 import net.lucent.easygui.templating.registry.EasyGuiRegistries;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 
 import java.io.BufferedReader;
@@ -63,6 +60,7 @@ public class EasyGuiBuilder {
             else continue;
             ContainerRenderable renderable = deserializer.build(screen,null,obj.getAsJsonObject());
             System.out.println("added View" + renderable);
+
             screen.addView((View) renderable);
         }
 

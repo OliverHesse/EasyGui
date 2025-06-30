@@ -1,9 +1,14 @@
 package net.lucent.easygui.elements.containers.panels;
 
+import com.google.gson.JsonObject;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.deserializers.BaseDeserializer;
 import net.minecraft.client.gui.GuiGraphics;
-import org.joml.Vector4f;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.function.Supplier;
 
 public class Panel extends SquareRenderable {
 
@@ -26,11 +31,9 @@ public class Panel extends SquareRenderable {
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        System.out.println("trying to render");
-        System.out.println(getX());
-        System.out.println(getGlobalScaledX());
-        System.out.println((new Vector4f(0,0,0,1)).mul(getTotalPositionTransformation()).x());
-        System.out.println((new Vector4f(0,0,0,1)).mul(getTotalTransformation()).x());
+        System.out.println("p1: "+getGlobalPoint().x + ", "+getGlobalPoint().y);
+        System.out.println("width: "+getScaledWidth());
+        System.out.println("height: "+getScaledHeight());
         if(borderWidth != 0){
             //draw borders properly
             guiGraphics.fill(-borderWidth,-borderWidth,0,getHeight()+borderWidth,borderColor);
@@ -40,5 +43,43 @@ public class Panel extends SquareRenderable {
         }
 
         guiGraphics.fill(0,0,getWidth(),getHeight(),backgroundColor);
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public void setBorderColor(int borderColor) {
+        this.borderColor = borderColor;
+    }
+
+    public void setBorderWidth(int borderWidth) {
+        this.borderWidth = borderWidth;
+    }
+    public static class Deserializer extends BaseDeserializer {
+
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+
+            Integer backgroundColor = getOrDefault(obj,"background_color",-7631989);
+            Integer borderColor = getOrDefault(obj,"border_color", -3750202);
+            Integer borderWidth = getOrDefault(obj, "border_width",2);
+
+            ((Panel)getRenderable()).setBackgroundColor(backgroundColor);
+            ((Panel)getRenderable()).setBorderColor(borderColor);
+            ((Panel)getRenderable()).setBorderWidth(borderWidth);
+
+        }
+
+        public Deserializer(Supplier<? extends Panel> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends Panel>) supplier);
+        }
     }
 }

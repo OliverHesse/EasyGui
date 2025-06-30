@@ -21,9 +21,9 @@ public class RPNParser {
     }};
     public static Double parse(List<ShuntingYardExprParser.Token> input, IRenderableDeserializer deserializer){
         List<ShuntingYardExprParser.Token> stack = new ArrayList<>();
-
+        System.out.println("RPN");
         while(!input.isEmpty()){
-      ;
+            System.out.println(stack);
             ShuntingYardExprParser.Token token = input.removeFirst();
 
             if(token instanceof ShuntingYardExprParser.Operator){
@@ -44,6 +44,7 @@ public class RPNParser {
             }
 
         }
+        System.out.println("finished parsing RPN");
         return Double.parseDouble(((ShuntingYardExprParser.Value) stack.getFirst()).value());
     }
 }
