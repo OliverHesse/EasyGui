@@ -104,6 +104,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
     public Action parseAction(String key,JsonObject obj){
         System.out.println("parsing action");
         JsonObject functionObj = obj.getAsJsonObject(key);
+        if(functionObj == null) return null;
         String function = getOrDefault(functionObj,"function", (String) null);
         String functionName;
         String functionModId;

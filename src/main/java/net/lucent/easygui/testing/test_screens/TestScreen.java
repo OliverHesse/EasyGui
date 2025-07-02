@@ -29,14 +29,14 @@ import java.awt.*;
 public class TestScreen extends EasyGuiScreen {
     public TestScreen(Component title) {
         super(title);
-        View view = new View(this,0,0);
-        view.setID("view");
-        addView(view);
-
+        //View view = new View(this,0,0);
+        //view.setID("view");
+        //addView(view);
+        //view.setUseMinecraftScale(true);
         //view.setCustomScale(1);
-        view.setUseMinecraftScale(true);
+        //view.setUseMinecraftScale(true);
         //createToggleButton(view);
-        renderPlayer(view);
+        //renderPlayer(view);
         //createDraggablePanel(view);
         //createColorButton(view);
         //createFixedSizedScrollBox(view);
@@ -45,7 +45,7 @@ public class TestScreen extends EasyGuiScreen {
         //createTextBox(view);
         //createComboBox(view);
         //createViewManagerTest(view);
-        //genFromFile();
+        genFromFile();
 
 
 
@@ -65,7 +65,7 @@ public class TestScreen extends EasyGuiScreen {
     }
     public void genFromFile(){
 
-        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/change_view_template.json"));
+        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/combo_box.json"));
 
         try{
             System.out.println("trying to build");
@@ -113,7 +113,7 @@ public class TestScreen extends EasyGuiScreen {
     }
 
     public void createComboBox(View view){
-        ComboBox comboBox = new ComboBox(this,view.getScaledWidth()/2-25,view.getScaledHeight()/2-15,50,30, System.out::println);
+        ComboBox comboBox = new ComboBox(this,view.getScaledWidth()/2-40,view.getScaledHeight()/2-10,80,29, System.out::println);
         comboBox.addValue("Test 12323232323");
         comboBox.addValue("Test 232323232323");
         comboBox.addValue("Test 33232323232");

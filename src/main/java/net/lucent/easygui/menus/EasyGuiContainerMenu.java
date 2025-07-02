@@ -10,6 +10,8 @@ public class EasyGuiContainerMenu extends AbstractContainerMenu {
         super(menuType, containerId);
     }
 
+
+
     @Override
     public ItemStack quickMoveStack(Player player, int i) {
         return ItemStack.EMPTY;

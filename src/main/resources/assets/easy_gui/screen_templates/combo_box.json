@@ -1,0 +1,26 @@
+{
+  "views": [
+    {
+      "type": "easy_gui:view",
+      "id": "view1",
+      "scale": 3,
+      "children": [
+        {
+          "type": "easy_gui:combo_box",
+          "width": 100,
+          "height": 20,
+          "x": "parent.scaledWidth/2-50",
+          "y": "parent.scaledHeight/2-10",
+          "default_entry": 1,
+          "entries": [
+            "test1",
+            "test2",
+            "test3",
+            "test4",
+            "test5"
+          ]
+        }
+      ]
+    }
+  ]
+}

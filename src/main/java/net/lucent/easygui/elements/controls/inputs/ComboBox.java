@@ -17,6 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
@@ -29,9 +30,9 @@ import java.util.function.Supplier;
 public class ComboBox extends SquareRenderable implements Clickable {
     public int borderColor = -16777216;
     public int textColor = -16777216;
-    public int backgroundColor = -7631989;
+    public int backgroundColor = -1;
     public int hoverColor =-6250336 ;
-    public int borderWidth = 2;
+    public int borderWidth = 1;
     private final List<String> entries = new ArrayList<>();
 
     public Font font = Minecraft.getInstance().font;
@@ -60,6 +61,7 @@ public class ComboBox extends SquareRenderable implements Clickable {
         if(!isFocused()){
             return super.getHeight();
         }
+
         return height+ height*entries.size();
     }
 
@@ -92,7 +94,8 @@ public class ComboBox extends SquareRenderable implements Clickable {
         //draw main box
         //TODO add drop down arrow button
         guiGraphics.fill(0,0,getWidth(),height,backgroundColor);
-        guiGraphics.enableScissor((int) getGlobalScaledX(),(int) getGlobalScaledY(),(int) getGlobalScaledX()+getWidth(), (int) (getGlobalScaledY()+height));
+        Vector3f cullPos = getTransform().transformPosition(new Vector3f(getWidth(),height,0));
+        guiGraphics.enableScissor( getGlobalPoint().x, getGlobalPoint().y,getGlobalHeightWidthPoint().x, (int) cullPos.y);
         guiGraphics.drawString(font,getValue(selectedIndex),0,height/2 - font.lineHeight/2,textColor,false);
         guiGraphics.disableScissor();
 
@@ -109,11 +112,25 @@ public class ComboBox extends SquareRenderable implements Clickable {
             for(int i = 0;i<entries.size();i++){
                 int renderColor = backgroundColor;
                 if(i == hoveredIndex) renderColor = hoverColor;
-                guiGraphics.enableScissor((int) getGlobalScaledX(),(int) getGlobalScaledY()+height+i*height,
-                        (int) getGlobalScaledX()+getWidth(), (int) (getGlobalScaledY()+2*height+i*height));
-                guiGraphics.fill(0,height+i*height,getWidth(),2*height+i*height,renderColor);
-                guiGraphics.drawString(font,getValue(i),0,(height+i*height)+height/2-font.lineHeight/2,textColor,false);
+
+                int x = 0;
+                int y = (height+i*height);
+                Vector3f pos = getTransform().transformPosition(new Vector3f(getWidth(),height+i*height,0));
+                Vector3f pos2 = getTransform().transformPosition(new Vector3f(getWidth(),2*height+i*height,0));
+
+                guiGraphics.fill(0,y,getWidth(),2*height+i*height,renderColor);
+                guiGraphics.enableScissor(getGlobalPoint().x,
+                        (int) pos.y,
+                         getGlobalPoint().x+getWidth(),
+                        (int)pos2.y);
+
+                guiGraphics.drawString(font,getValue(i),0,y+height/2-font.lineHeight/2,textColor,false);
                 guiGraphics.disableScissor();
+                //draw border
+
+                guiGraphics.fill(-borderWidth,-borderWidth+y,getWidth()+borderWidth,y,borderColor);
+                guiGraphics.fill(getWidth(),-borderWidth+y,getWidth()+borderWidth,y+height+borderWidth,borderColor);
+
             }
         }
         if(borderWidth != 0){
@@ -141,7 +158,7 @@ public class ComboBox extends SquareRenderable implements Clickable {
                 int index = (int) Math.floor( (y-height) /height);
                 if(index != selectedIndex){
                     setValue(index);
-                    consumer.accept(getValue(index));
+                    if(consumer != null) consumer.accept(getValue(index));
                     if(valueChangedAction != null) valueChangedAction.accept(this);
                 }
 
@@ -176,6 +193,7 @@ public class ComboBox extends SquareRenderable implements Clickable {
         public void parseStringList(String key,JsonObject obj){
             if(obj.getAsJsonArray(key) == null) throwMissingField("expected field entries for combo box");
             JsonArray entries = obj.getAsJsonArray(key);
+            System.out.println("parsing String list");
             for(JsonElement entry:entries){
                 ((ComboBox)getRenderable()).addValue(entry.getAsString());
             }
@@ -184,9 +202,9 @@ public class ComboBox extends SquareRenderable implements Clickable {
         @Override
         public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
             super.buildRenderable(screen, parent, obj);
-            Integer backgroundColor = getOrDefault(obj,"background_color",-7631989);
-            Integer borderColor = getOrDefault(obj,"border_color", -1677721);
-            Integer borderWidth = getOrDefault(obj, "border_width",2);
+            Integer backgroundColor = getOrDefault(obj,"background_color",-1);
+            Integer borderColor = getOrDefault(obj,"border_color", -16777216);
+            Integer borderWidth = getOrDefault(obj, "border_width",1);
 
             ((ComboBox)getRenderable()).setBackgroundColor(backgroundColor);
             ((ComboBox)getRenderable()).setBorderColor(borderColor);
