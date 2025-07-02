@@ -27,7 +27,7 @@ i will swap to maven central at some point
 
 ```
 dependencies {
-    implementation "net.lucent.easygui:easy_gui:0.0.1"
+    implementation "net.lucent.easygui:easy_gui_1.21.1:0.0.1"
 }
 ```
 replace 0.0.1 with whichever version you wish to use
