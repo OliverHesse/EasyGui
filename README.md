@@ -27,10 +27,10 @@ i will swap to maven central at some point
 
 ```
 dependencies {
-    implementation "net.lucent.easygui:easy_gui_1.21.1:0.0.1"
+    implementation "net.lucent.easygui:easy_gui_1.21.1:1.0.0"
 }
 ```
-replace 0.0.1 with whichever version you wish to use
+replace 1.0.0 with whichever version you wish to use
 
 to use github packages you must own a github account
 ```
