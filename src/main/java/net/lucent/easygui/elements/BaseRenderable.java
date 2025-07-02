@@ -3,6 +3,7 @@ package net.lucent.easygui.elements;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.lucent.easygui.elements.inventory.DisplaySlot;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
@@ -133,7 +134,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
     @Override
     public boolean shouldCull() {
-        return false;
+        return cull;
     }
 
     @Override
@@ -273,6 +274,29 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
         return visible;
     }
 
+    // a bit buggy rn
+    public boolean isCulled(){
+        if(getActiveCullRegion() == null) return false;
+        if(getTransform() == null) return false;
+        Vector3f p1 = getTransform().transformPosition(new Vector3f(0,0,0));;
+        Vector3f p2 = getTransform().transformPosition(new Vector3f(getWidth(),0,0));
+        Vector3f p3 = getTransform().transformPosition(new Vector3f(getWidth(),getHeight(),0));
+        Vector3f p4 = getTransform().transformPosition(new Vector3f(0,getHeight(),0));
+        if(!(this instanceof DisplaySlot)) return false;
+        System.out.println("active cull region");
+        getActiveCullRegion().print();
+        System.out.println("this box");
+        new BoundChecker.Rec2d(
+                new BoundChecker.Vec2(p1),
+                new BoundChecker.Vec2(p2),
+                new BoundChecker.Vec2(p3),
+                new BoundChecker.Vec2(p4)).print();
+        return !BoundChecker.containsRec(getActiveCullRegion(),new BoundChecker.Rec2d(
+                new BoundChecker.Vec2(p1),
+                new BoundChecker.Vec2(p2),
+                new BoundChecker.Vec2(p3),
+                new BoundChecker.Vec2(p4)));
+    }
     @Override
     public void setVisible(boolean visible) {
         this.visible = visible;

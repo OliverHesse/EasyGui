@@ -26,8 +26,8 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     private boolean scrollBarVisible = true;
 
 
-    private double xOffset;
-    private double yOffset;
+    public double xOffset;
+    public double yOffset;
 
     private int borderColor = -8026747;
     private boolean borderVisible = true;

@@ -32,8 +32,7 @@ public class Panel extends SquareRenderable {
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         System.out.println("p1: "+getGlobalPoint().x + ", "+getGlobalPoint().y);
-        System.out.println("width: "+getScaledWidth());
-        System.out.println("height: "+getScaledHeight());
+
         if(borderWidth != 0){
             //draw borders properly
             guiGraphics.fill(-borderWidth,-borderWidth,0,getHeight()+borderWidth,borderColor);

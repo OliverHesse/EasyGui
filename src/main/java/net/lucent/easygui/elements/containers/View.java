@@ -29,7 +29,9 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     public View() {
         super();
     }
-
+    public View(IEasyGuiScreen screen){
+        super(screen);
+    }
     public View(IEasyGuiScreen screen, int x, int y) {
         this(screen, x, y, Minecraft.getInstance().getWindow().getWidth(), Minecraft.getInstance().getWindow().getHeight());
     }

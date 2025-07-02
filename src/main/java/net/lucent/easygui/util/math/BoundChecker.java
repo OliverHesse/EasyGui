@@ -31,6 +31,13 @@ public class BoundChecker {
             this.p3 = p3;
             this.p4 = p4;
         }
+        public void print(){
+            System.out.println("Rec2d(");
+            System.out.println("Vec2("+p1.x+","+p1.y+"),");
+            System.out.println("Vec2("+p2.x+","+p2.y+"),");
+            System.out.println("Vec2("+p3.x+","+p3.y+"),");
+            System.out.println("Vec2("+p4.x+","+p4.y+"))");
+        }
     }
 
     /*
@@ -39,6 +46,14 @@ public class BoundChecker {
         split into 2 triangles. check if it is in one of them.
 
      */
+    //checks if rec1 full contains rec2
+    public static boolean containsRec(Rec2d rec1,Rec2d rec2){
+        boolean p1 = rec1.p1.x <= rec2.p1.x && rec1.p1.y <= rec2.p1.y;
+        boolean p2 = rec1.p2.x >= rec2.p2.x && rec1.p2.y <= rec2.p2.y;
+        boolean p3 = rec1.p3.x >= rec2.p3.x && rec1.p3.y >= rec2.p3.y;
+        boolean p4 = rec1.p4.x <= rec2.p4.x && rec1.p4.y >= rec2.p4.y;
+        return p1 && p2 && p3 && p4;
+    }
     public static boolean containsPoint(Rec2d rec, Vec2 checkpoint){
         return containsPoint(rec.p1,rec.p2,rec.p3,rec.p4,checkpoint);
     }
