@@ -1,13 +1,13 @@
 {
   "views": [{
     "type": "easy_gui:view",
-    "scale": 4,
+    "scale": 2,
+    "use_minecraft_scaling": true,
     "children": [{
-      "type": "easy_gui:label",
-      "text": {
-        "type":"literal",
-        "data": "test data"
-      }
+      "type": "easy_gui:draggable_panel",
+      "width": "200",
+      "height" : "200"
+
     }]
   }]
 }

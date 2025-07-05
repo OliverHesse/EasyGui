@@ -103,7 +103,7 @@ public class ComboBox extends SquareRenderable implements Clickable {
         int hoveredIndex = -1;
         if(hovered){
             //calc which one is hovered;
-            double y = screenToLocalY(mouseY);
+            double y = screenToLocalPoint(mouseX,mouseY).y;
             if(y > height){
                 hoveredIndex = (int) Math.floor( (y-height) /height);
             }
@@ -153,7 +153,7 @@ public class ComboBox extends SquareRenderable implements Clickable {
         if(!focused && clicked) setFocused(true);
         else if(clicked){
             //menu is open so select a value
-            double y = screenToLocalY(mouseY);
+            double y = screenToLocalPoint(mouseX,mouseY).y;
             if(y > height){
                 int index = (int) Math.floor( (y-height) /height);
                 if(index != selectedIndex){

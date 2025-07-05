@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.interfaces.events.Clickable;
 import net.lucent.easygui.interfaces.events.MouseDragListener;
 import net.lucent.easygui.interfaces.events.MouseReleaseListener;
+import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.util.Mth;
 
 public interface Draggable extends Clickable, MouseDragListener, MouseReleaseListener {
@@ -24,8 +25,13 @@ public interface Draggable extends Clickable, MouseDragListener, MouseReleaseLis
     @Override
     default void onDrag(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if(isDragged() && button == InputConstants.MOUSE_BUTTON_LEFT){
-            setX((int) (mouseX-getClickPosX()) );
-            setY((int) (mouseY-getClickPosY()));
+
+            BoundChecker.Vec2 localPoint = screenToLocalPoint(mouseX,mouseY);
+            BoundChecker.Vec2 finalLocalPoint = new BoundChecker.Vec2(localPoint.x-getClickPosX(),localPoint.y-getClickPosY());
+            BoundChecker.Vec2 screenPoint = localToScreenPoint(finalLocalPoint.x, finalLocalPoint.y);
+            BoundChecker.Vec2 point = getParent().screenToLocalPoint(screenPoint.x,screenPoint.y);
+            setX(point.x);
+            setY(point.y );
         }
     }
     @Override

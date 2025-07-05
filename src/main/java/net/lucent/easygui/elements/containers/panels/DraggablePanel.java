@@ -5,6 +5,7 @@ import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Draggable;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.interfaces.events.MouseDragListener;
+import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 
 public class DraggablePanel extends Panel implements Draggable{
@@ -39,8 +40,11 @@ public class DraggablePanel extends Panel implements Draggable{
 
     @Override
     public void setClickPosition(double mouseX, double mouseY) {
-        this.clickedX = (int) (screenToLocalX(mouseX)*getTotalScaleFactorX());
-        this.clickedY = (int) (screenToLocalY(mouseY)*getTotalScaleFactorY());
+        BoundChecker.Vec2 point = screenToLocalPoint(mouseX,mouseY);
+        System.out.println("local point");
+        System.out.println("point("+point.x+","+point.y+")" );
+        this.clickedY = point.y;
+        this.clickedX = point.x;
     }
 
 

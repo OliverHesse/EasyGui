@@ -41,7 +41,7 @@ public class FixedSizedScrollBox extends AbstractScrollBox{
     public void setScrollHeight(double scrollHeight) {
         this.scrollHeight = scrollHeight;
     }
-    public static class Deserializer extends SquareRenderableDeserializer {
+    public static class Deserializer extends AbstractScrollBox.Deserializer {
 
         public Deserializer(Supplier<? extends FixedSizedScrollBox> supplier) {
             super(supplier);

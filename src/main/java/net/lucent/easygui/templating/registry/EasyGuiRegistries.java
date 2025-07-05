@@ -51,7 +51,7 @@ public class EasyGuiRegistries {
         public static final DeferredHolder<IRenderableDeserializer, Label.Deserializer> LABEL = DESERIALIZERS.register("label",()->new Label.Deserializer(Label::new));
         public static final DeferredHolder<IRenderableDeserializer, ProgressBar.Deserializer> PROGRESS_BAR = DESERIALIZERS.register("progress_bar",()->new ProgressBar.Deserializer(ProgressBar::new));
 
-        public static final DeferredHolder<IRenderableDeserializer, FixedSizedScrollBox.Deserializer> FIXED_SIZED_SCROLL_BOX = DESERIALIZERS.register("fixed_scroll_box",()->new FixedSizedScrollBox.Deserializer(FixedSizedScrollBox::new));
+        public static final DeferredHolder<IRenderableDeserializer, FixedSizedScrollBox.Deserializer> FIXED_SIZED_SCROLL_BOX = DESERIALIZERS.register("fixed_sized_scroll_box",()->new FixedSizedScrollBox.Deserializer(FixedSizedScrollBox::new));
         public static final DeferredHolder<IRenderableDeserializer, AbstractScrollBox.Deserializer> DYNAMIC_SCROLL_BOX = DESERIALIZERS.register("dynamic_scroll_box",()->new AbstractScrollBox.Deserializer(DynamicScrollBox::new));
         public static final DeferredHolder<IRenderableDeserializer, ComboBox.Deserializer> COMBO_BOX = DESERIALIZERS.register("combo_box",()->new ComboBox.Deserializer(ComboBox::new));
 

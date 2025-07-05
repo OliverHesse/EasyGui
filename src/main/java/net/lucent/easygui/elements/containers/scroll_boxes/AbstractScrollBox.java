@@ -12,6 +12,7 @@ import net.lucent.easygui.interfaces.events.MouseScrollListener;
 import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
+import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -168,21 +169,22 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     @Override
     public void onClick(double mouseX, double mouseY, int button, boolean clicked) {
         if(clicked){
+            BoundChecker.Vec2 point = screenToLocalPoint(mouseX,mouseY);
             //check if it was the X or y
-            if(screenToLocalX(mouseX) > getInnerWidth()){
+            if(point.x > getInnerWidth()){
                 //y scroll
                 dragging = true;
                 draggingAxis = 0;
                 /*
                 screenToLocalY(mouseY) /getInnerHeight() percentage location of the mouse click
                  */
-                double progress = getScrollHeight()*((double) screenToLocalY(mouseY) /getInnerHeight());
+                double progress = getScrollHeight()*((double) point.y /getInnerHeight());
                 setYOffset(getScrollAmount(progress,0,getScrollHeight()));
-            }else if(screenToLocalY(mouseY)>getInnerHeight()){
+            }else if(point.y>getInnerHeight()){
                 //x scroll
                 dragging = true;
                 draggingAxis = 1;
-                double progress = getScrollWidth()*((double) screenToLocalX(mouseX) /getInnerWidth());
+                double progress = getScrollWidth()*((double) point.x     /getInnerWidth());
 
                 setXOffset(getScrollAmount(progress,0,getScrollWidth()));
             }

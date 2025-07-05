@@ -159,11 +159,15 @@ public class MultiLineTextBox extends SquareRenderable implements
     private void renderCursor(GuiGraphics guiGraphics, int cursorX, int cursorY, boolean isEndOfText) {
         if (this.frameTick / 6 % 2 == 0) {
 
+            guiGraphics.drawString(this.font, "_", cursorX,cursorY, textColor, false);
+            /*
             if (!isEndOfText) {
-                guiGraphics.fill(cursorX, cursorY- 1, cursorX + 1, cursorY + font.lineHeight+1, textColor);
+                guiGraphics.fill(RenderType.guiOverlay(),cursorX, cursorY- 1, cursorX + 2, cursorY + font.lineHeight+1, textColor);
             } else {
                 guiGraphics.drawString(this.font, "_", cursorX,cursorY, textColor, false);
             }
+
+             */
         }
     }
 
@@ -196,7 +200,7 @@ public class MultiLineTextBox extends SquareRenderable implements
             setFocused(true);
             long clickTime = Util.getMillis();
             DisplayData displayData = getDisplayData();
-            int index = displayData.getIndexAtPosition(font,screenToLocalX((int) mouseX),screenToLocalY((int) mouseY));
+            int index = displayData.getIndexAtPosition(font,screenToLocalPoint(mouseX,mouseY).x,screenToLocalPoint(mouseX, mouseY).y);
             if(index >= 0){
 
                 if(index != lastIndex|| clickTime-lastClickTime >=250L){
@@ -332,7 +336,7 @@ public class MultiLineTextBox extends SquareRenderable implements
         if(isFocused() && button == InputConstants.MOUSE_BUTTON_LEFT){
 
             int i = getDisplayData().getIndexAtPosition(
-                    this.font,screenToLocalX((int) mouseX),screenToLocalY((int) mouseY));
+                    this.font,screenToLocalPoint( mouseX,mouseY).x,screenToLocalPoint( mouseX,mouseY).y);
             this.boxData.setCursorPos(i, true);
             this.clearDisplayData();
 
@@ -520,10 +524,7 @@ public class MultiLineTextBox extends SquareRenderable implements
     }
     public static class Deserializer extends SquareRenderableDeserializer {
 
-        @Override
-        public void parseHeight(String expr) {
-            return;
-        }
+
 
         public Deserializer(Supplier<? extends MultiLineTextBox> supplier) {
             super(supplier);

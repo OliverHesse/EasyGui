@@ -95,12 +95,15 @@ public interface ContainerRenderable extends Renderable {
     void addChild(ContainerRenderable child);
     void remove();
 
-    default int screenToLocalX(double x){
-        return (int)new Matrix4f(getTransform()).invert().transformPosition(new Vector3f((float) (x),0,0)).x();
+    default BoundChecker.Vec2 screenToLocalPoint(double x, double y){
+        Vector3f position = new Matrix4f(getTransform()).invert().transformPosition(new Vector3f((float) x,(float) y,0));
+        return new BoundChecker.Vec2((int) position.x, (int) position.y);
     }
-    default int screenToLocalY(double y){
-        return (int) new Matrix4f(getTransform()).invert().transformPosition(new Vector3f( 0,(float)(y),0)).y();
+    default BoundChecker.Vec2 localToScreenPoint(double x, double y){
+        Vector3f position = new Matrix4f(getTransform()).transformPosition(new Vector3f((float) x,(float) y,0));
+        return new BoundChecker.Vec2((int) position.x, (int) position.y);
     }
+
 
     default void tick(){}
 
