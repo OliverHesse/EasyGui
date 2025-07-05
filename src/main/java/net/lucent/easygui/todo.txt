@@ -4,6 +4,7 @@
 - add Drop down menu(basically combo box but each val triggers a consumer)
 
 things to work on
+- add bezier curves
 - convert as many BaseRenderable functions as possible to default
 
 - override effect display

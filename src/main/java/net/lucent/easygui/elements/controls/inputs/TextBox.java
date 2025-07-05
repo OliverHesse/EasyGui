@@ -276,7 +276,8 @@ public class TextBox extends SquareRenderable implements Draggable, CharTypedLis
             ((TextBox) getRenderable()).charTypedAction =  parseAction("on_char_typed",obj);
             ((TextBox) getRenderable()).keyPressedAction =  parseAction("on_key_pressed",obj);
             ((TextBox) getRenderable()).editBox.valueChangedAction =  parseAction("on_value_changed",obj);
-
+            ((TextBox) getRenderable()).setTextColor(getOrDefault(obj,"text_color",14737632));
+            ((TextBox) getRenderable()).setTextColorUneditable(getOrDefault(obj,"unfocused_text_color",7368816));
 
 
         }

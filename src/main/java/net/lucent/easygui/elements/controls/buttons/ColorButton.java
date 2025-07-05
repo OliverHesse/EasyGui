@@ -53,7 +53,7 @@ public class ColorButton extends AbstractButton{
     public void setPressColor(int pressColor) {
         this.pressColor = pressColor;
     }
-    public static class Deserializer extends SquareRenderableDeserializer {
+    public static class Deserializer extends AbstractButton.Deserializer {
         public Deserializer(Supplier<? extends ColorButton> supplier) {
             super(supplier);
         }
@@ -65,11 +65,8 @@ public class ColorButton extends AbstractButton{
             ((ColorButton) getRenderable()).setDefaultColor(getOrDefault(obj,"default_color",-6118750));
             ((ColorButton) getRenderable()).setHoverColor(getOrDefault(obj,"hovered_color",-4013374));
             ((ColorButton) getRenderable()).setPressColor(getOrDefault(obj,"pressed_color",-7829368));
-            ((ColorButton) getRenderable()).setFocusColor(getOrDefault(obj,"default_color",-6118750));
-            if(obj.getAsJsonObject("on_click") != null){
-                System.out.println(obj.getAsJsonObject("on_click"));
-                ((ColorButton) getRenderable()).clickAction =  parseAction("on_click",obj);
-            }
+            ((ColorButton) getRenderable()).setFocusColor(getOrDefault(obj,"focused_color",-6118750));
+
         }
 
         @Override

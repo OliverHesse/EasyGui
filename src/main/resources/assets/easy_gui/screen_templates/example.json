@@ -1,0 +1,9 @@
+{
+  "type": "easy_gui:color_button",
+  "{action_name}":{
+    "function": "{mod_id}:{function_name}",
+    "args": [
+      "..."
+    ]
+  }
+}

@@ -1,12 +1,16 @@
 package net.lucent.easygui.elements.controls.buttons;
 
 
+import com.google.gson.JsonObject;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.interfaces.events.Clickable;
+import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -85,6 +89,29 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
                 setPressed(false);
                 time_pressed = 0;
             }
+        }
+    }
+    public void setPressTime(int pressTime){
+        this.PRESSED_TIME = pressTime;
+    }
+    public static class Deserializer extends SquareRenderableDeserializer {
+        public Deserializer(Supplier<? extends AbstractButton> supplier) {
+            super(supplier);
+        }
+
+        @Override
+        public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
+            super.buildRenderable(screen, parent, obj);
+            ((AbstractButton) getRenderable()).setPressTime(getOrDefault(obj,"press_time",10));
+            if(obj.getAsJsonObject("on_click") != null){
+                System.out.println(obj.getAsJsonObject("on_click"));
+                ((AbstractButton) getRenderable()).clickAction =  parseAction("on_click",obj);
+            }
+        }
+
+        @Override
+        public @NotNull IRenderableDeserializer createInstance() {
+            return new Deserializer((Supplier<? extends AbstractButton>) supplier);
         }
     }
 }

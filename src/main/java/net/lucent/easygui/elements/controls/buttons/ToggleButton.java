@@ -84,7 +84,7 @@ public class ToggleButton extends AbstractButton{
 
 
 
-    public static class Deserializer extends SquareRenderableDeserializer {
+    public static class Deserializer extends AbstractButton.Deserializer{
 
         public Deserializer(Supplier<? extends ToggleButton> supplier) {
             super(supplier);
@@ -93,9 +93,7 @@ public class ToggleButton extends AbstractButton{
         @Override
         public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
             super.buildRenderable(screen, parent, obj);
-            if(obj.getAsJsonObject("on_click") != null){
-                ((ToggleButton) getRenderable()).clickAction =  parseAction("on_click",obj);
-            }
+
             ((ToggleButton)getRenderable()).setBackgroundTexture(parseTexture("background_texture",obj));
             ((ToggleButton)getRenderable()).setOnStateTexture(parseTexture("on_texture",obj));
             ((ToggleButton)getRenderable()).setOffStateTexture(parseTexture("off_texture",obj));

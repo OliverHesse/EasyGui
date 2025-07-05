@@ -21,6 +21,18 @@ public class Image extends BaseRenderable {
         setY(y);
     }
 
+    @Override
+    public int getHeight() {
+        if(textureData == null) return 0;
+        return textureData.getHeight();
+    }
+
+    @Override
+    public int getWidth() {
+        if(textureData == null) return 0;
+        return textureData.getWidth();
+    }
+
     public Image(){}
 
     public ITextureData getTextureData(){return textureData;}
@@ -33,6 +45,16 @@ public class Image extends BaseRenderable {
 
 
     public static class Deserializer extends BaseDeserializer {
+
+        @Override
+        public void parseWidth(String expr) {
+
+        }
+
+        @Override
+        public void parseHeight(String expr) {
+
+        }
 
         public Deserializer(Supplier<? extends Image> supplier) {
             super(supplier);

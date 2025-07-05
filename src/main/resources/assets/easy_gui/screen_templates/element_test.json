@@ -1,0 +1,13 @@
+{
+  "views": [{
+    "type": "easy_gui:view",
+    "scale": 4,
+    "children": [{
+      "type": "easy_gui:label",
+      "text": {
+        "type":"literal",
+        "data": "test data"
+      }
+    }]
+  }]
+}

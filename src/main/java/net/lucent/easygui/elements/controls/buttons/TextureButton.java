@@ -73,7 +73,7 @@ public class TextureButton extends AbstractButton{
     public void setFocusedTexture(ITextureData focusedTexture) {
         this.focusedTexture = focusedTexture;
     }
-    public static class Deserializer extends SquareRenderableDeserializer {
+    public static class Deserializer extends AbstractButton.Deserializer{
         public Deserializer(Supplier<? extends TextureButton> supplier) {
             super(supplier);
         }
@@ -81,9 +81,7 @@ public class TextureButton extends AbstractButton{
         @Override
         public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
             super.buildRenderable(screen, parent, obj);
-            if(obj.getAsJsonObject("on_click") != null){
-                ((TextureButton) getRenderable()).clickAction =  parseAction("on_click",obj);
-            }
+
             ((TextureButton)getRenderable()).setDefaultTexture(parseTexture("default_texture",obj));
             ((TextureButton)getRenderable()).setHoveredTexture(parseTexture("hovered_texture",obj));
             ((TextureButton)getRenderable()).setPressedTexture(parseTexture("pressed_texture",obj));

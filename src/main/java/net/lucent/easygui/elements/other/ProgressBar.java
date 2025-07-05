@@ -65,12 +65,17 @@ public class ProgressBar extends BaseRenderable {
 
     @Override
     public int getWidth() {
-        return background.getWidth();
+        if(barTexture == null) return 0;
+        if(background == null) return barTexture.getWidth();
+
+        return Math.max(background.getWidth(), barTexture.getWidth());
     }
 
     @Override
     public int getHeight() {
-        return background.getWidth();
+        if(barTexture == null) return 0;
+        if(background == null) return barTexture.getHeight();
+        return Math.max(background.getHeight(), barTexture.getHeight());
     }
 
     @Override
@@ -84,6 +89,8 @@ public class ProgressBar extends BaseRenderable {
     }
 
     public void setBackground(ITextureData background) {
+        System.out.println("SETTING BACKGROUND");
+        System.out.println(background.getTexture());
         this.background = background;
     }
 
@@ -96,6 +103,16 @@ public class ProgressBar extends BaseRenderable {
 
         public Deserializer(Supplier<? extends ProgressBar> supplier) {
             super(supplier);
+        }
+
+        @Override
+        public void parseWidth(String expr) {
+
+        }
+
+        @Override
+        public void parseHeight(String expr) {
+
         }
 
         @Override

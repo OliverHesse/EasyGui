@@ -157,7 +157,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
             System.out.println(text);
             if(type == null) throwMissingField("missing field Type for label text");
             if(text == null) throwMissingField("missing data field for label text");
-            if(type.equals("raw")){
+            if(type.equals("literal")){
                 return Component.literal(text);
             }else if(type.equals("key")){
                 return Component.translatable(text);

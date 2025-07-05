@@ -65,7 +65,7 @@ public class TestScreen extends EasyGuiScreen {
     }
     public void genFromFile(){
 
-        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/combo_box.json"));
+        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/element_test.json"));
 
         try{
             System.out.println("trying to build");

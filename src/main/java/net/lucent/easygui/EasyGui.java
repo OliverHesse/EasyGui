@@ -61,8 +61,8 @@ public class EasyGui
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
         EasyGuiRegistries.register(modEventBus);
-        //ModMenuTypes.register(modEventBus);
-        //KeyHandler.register();
+        ModMenuTypes.register(modEventBus);
+        KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
