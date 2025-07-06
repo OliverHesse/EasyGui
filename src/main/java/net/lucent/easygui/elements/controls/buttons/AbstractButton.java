@@ -104,7 +104,7 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
             super.buildRenderable(screen, parent, obj);
             ((AbstractButton) getRenderable()).setPressTime(getOrDefault(obj,"press_time",10));
             if(obj.getAsJsonObject("on_click") != null){
-                System.out.println(obj.getAsJsonObject("on_click"));
+
                 ((AbstractButton) getRenderable()).clickAction =  parseAction("on_click",obj);
             }
         }

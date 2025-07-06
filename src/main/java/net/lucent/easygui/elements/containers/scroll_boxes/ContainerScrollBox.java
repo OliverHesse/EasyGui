@@ -24,7 +24,7 @@ public class ContainerScrollBox extends AbstractScrollBox{
         for(int i=0;i<slots;i++){
             int row = i/slotsPerRow;
             int column = i%slotsPerRow;
-            System.out.println("row: "+row);
+
             DisplaySlot slot = new DisplaySlot(getScreen(),column*18+1,row*18+1,16,16,i, container);
             addChild(slot);
         }
@@ -36,7 +36,7 @@ public class ContainerScrollBox extends AbstractScrollBox{
             setYOffset(getScrollAmount(yOffset,-scrollY*18,getScrollHeight()));
 
         }
-        System.out.println(yOffset);
+
         if(mouseScrollAction != null) mouseScrollAction.accept(this,mouseX,mouseY,scrollX,scrollY);
     }
 

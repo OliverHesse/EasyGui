@@ -41,8 +41,7 @@ public class DraggablePanel extends Panel implements Draggable{
     @Override
     public void setClickPosition(double mouseX, double mouseY) {
         BoundChecker.Vec2 point = screenToLocalPoint(mouseX,mouseY);
-        System.out.println("local point");
-        System.out.println("point("+point.x+","+point.y+")" );
+
         this.clickedY = point.y;
         this.clickedX = point.x;
     }

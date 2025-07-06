@@ -41,7 +41,7 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
 
         views.add(view);
         view.setActive(false);
-        System.out.println(this.views);
+
     }
 
     @Override
@@ -81,8 +81,7 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
         //Curves.drawCurve(guiGraphics,new BoundChecker.Vec2(0,0),new BoundChecker.Vec2(300,300));
 
         if(activeView == null) {
-            System.out.println(views);
-            System.out.println(views.getFirst());
+
             setActiveView(views.getFirst());}
         activeView.render(guiGraphics,mouseX,mouseY,partialTick);
 
@@ -125,9 +124,7 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
 
     @Override
     public ContainerRenderable getElementByID(String id) {
-        System.out.println(idMap);
-        System.out.println(id);
-        System.out.println(idMap.get(id));
+
         return idMap.get(id);
     }
 

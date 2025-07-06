@@ -29,8 +29,7 @@ public class DisplayEntity extends BaseRenderable {
         setY(y);
         setWidth((int) (entity.getBbWidth()*entityScale));
         setHeight((int) (entity.getBbHeight()*entityScale));
-        System.out.println(getWidth());
-        System.out.println(getHeight());
+
         this.entity =entity;
         this.entityScale = entityScale;
     }

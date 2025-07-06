@@ -15,6 +15,7 @@ import net.lucent.easygui.testing.network.ModPayloads;
 import net.lucent.easygui.testing.test_elements.HealthProgressBar;
 import net.lucent.easygui.testing.test_screens.TestInventoryScreen;
 import net.lucent.easygui.util.textures.TextureData;
+import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -73,7 +74,7 @@ public class EasyGui
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
             //EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"cultivation_progress"),new RandomOverlay());
-
+            /*
             EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay((eventHolder, overlay) ->{
                 View view = new View(overlay,0,0);
                 view.setUseMinecraftScale(true);
@@ -81,15 +82,19 @@ public class EasyGui
 
                 HealthProgressBar progressBar = new HealthProgressBar(
                         overlay,
-                        new TextureData(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_overlay.png")
-                                ,81,9),
-                        new TextureData(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_background.png")
-                                ,81,9),
+                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
+                                ,81,18,0,9,81,18),
+                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
+                                ,81,18,0,0,81,9),
                         view.getScaledWidth()/2 - 91,
                         view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
                 view.addChild(progressBar);
                 overlay.addView(view);
                 }));
+
+
+                 */
+
 
 
 

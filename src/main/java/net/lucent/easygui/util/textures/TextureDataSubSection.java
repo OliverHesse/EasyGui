@@ -5,10 +5,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public class TextureDataSubSection extends TextureData{
 
-    private int u;
-    private int v;
-    private int uOffset;
-    private int vOffset;
+    public int u;
+    public int v;
+    public int uOffset;
+    public int vOffset;
 
 
     public TextureDataSubSection(ResourceLocation texture, int textureWidth, int textureHeight,int u, int v,int uOffset,int vOffset){
@@ -28,12 +28,12 @@ public class TextureDataSubSection extends TextureData{
 
     @Override
     public int getWidth() {
-        return uOffset;
+        return uOffset-u;
     }
 
     @Override
     public int getHeight() {
-        return vOffset;
+        return vOffset-v;
     }
 
     @Override
@@ -43,7 +43,12 @@ public class TextureDataSubSection extends TextureData{
 
     @Override
     public void renderTexture(GuiGraphics guiGraphics, int x, int y, int u, int v) {
-        super.renderTexture(guiGraphics, x, y, u, v,uOffset,vOffset);
+        renderTexture(guiGraphics, x, y, u, v,getWidth(),getHeight());
+    }
+
+    @Override
+    public void renderTexture(GuiGraphics guiGraphics, int x, int y, int u, int v, int uOffset, int vOffset) {
+        super.renderTexture(guiGraphics, x, y, this.u, this.v, uOffset, vOffset);
     }
 
     public void setU(int u) {

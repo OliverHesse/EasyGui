@@ -102,7 +102,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
     }
 
     public Action parseAction(String key,JsonObject obj){
-        System.out.println("parsing action");
+
         JsonObject functionObj = obj.getAsJsonObject(key);
         if(functionObj == null) return null;
         String function = getOrDefault(functionObj,"function", (String) null);
@@ -110,7 +110,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
         String functionModId;
 
         Object[] args = getList(functionObj,"args");
-        System.out.println(args);
+
         if(function != null){
             System.out.println(function);
             functionName = function.split(":")[1];
@@ -150,11 +150,10 @@ public class BaseDeserializer implements IRenderableDeserializer {
     public Component parseComponent(String key, JsonObject obj){
         if(obj.getAsJsonObject(key) != null){
             JsonObject textObject = obj.getAsJsonObject(key);
-            System.out.println(textObject);
+
             String type = textObject.get("type").getAsString();
             String text = textObject.get("data").getAsString();
-            System.out.println(type);
-            System.out.println(text);
+
             if(type == null) throwMissingField("missing field Type for label text");
             if(text == null) throwMissingField("missing data field for label text");
             if(type.equals("literal")){
@@ -173,14 +172,14 @@ public class BaseDeserializer implements IRenderableDeserializer {
 
         this.parent = parent;
         renderable = supplier.get();
-        System.out.println("parsing renderable of type: "+renderable);
+
         renderable.setScreen(screen);
         String sX = getOrDefault(obj,"x","0");
         String sY = getOrDefault(obj,"y","0");
         String sWidth = getOrDefault(obj,"width","0");
         String sHeight = getOrDefault(obj,"height","0");
 
-        System.out.println("got x y width and height");
+
 
         Boolean cull = getOrDefault(obj,"cull",false);
         Boolean visible = getOrDefault(obj,"visible",true);
@@ -189,7 +188,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
         Double customScaling = getOrDefault(obj,"scale",1.0);
         Boolean useCustomScaling = getOrDefault(obj,"use_scale",true);
         Boolean sticky = getOrDefault(obj,"sticky",false);
-        System.out.println("got a bunch of random stuff");
+
         getRenderable().setCustomScale(customScaling);
         getRenderable().setSticky(sticky);
         getRenderable().setActive(active);
@@ -207,7 +206,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
             sRotationY = getOrDefault(rotationObj,"y","0");
             sRotationZ= getOrDefault(rotationObj,"z","0");
         }
-        System.out.println("got rotation");
+
         String id = getOrDefault(obj,"id", (String) null);
         String classes = getOrDefault(obj,"class", (String) null);
         if(classes != null){
@@ -216,7 +215,6 @@ public class BaseDeserializer implements IRenderableDeserializer {
             }
         }
         getRenderable().setID(id);
-        System.out.println("got class and id");
 
         if(obj.getAsJsonObject("on_tick") != null){
             renderable.setTickAction(parseAction("on_tick",obj));
@@ -228,7 +226,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
             renderable.setTickAction(parseAction("on_scale_changed",obj));
         }
 
-        System.out.println("got tick");
+
 
         parseRotation(sRotationX,sRotationY,sRotationZ);
         parseWidth(sWidth);
@@ -236,12 +234,7 @@ public class BaseDeserializer implements IRenderableDeserializer {
         parseX(sX);
         parseY(sY);
 
-        System.out.println("parsed rotation data properly");
-        System.out.println("parsing "+id);
 
-        System.out.println("x : "+ renderable.getX());
-        System.out.println("y: "+renderable.getY());
-        System.out.println("scaledWidth : " + renderable.getScaledWidth());
 
     }
 

@@ -283,9 +283,9 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
         Vector3f p3 = getTransform().transformPosition(new Vector3f(getWidth(),getHeight(),0));
         Vector3f p4 = getTransform().transformPosition(new Vector3f(0,getHeight(),0));
         if(!(this instanceof DisplaySlot)) return false;
-        System.out.println("active cull region");
+
         getActiveCullRegion().print();
-        System.out.println("this box");
+
         new BoundChecker.Rec2d(
                 new BoundChecker.Vec2(p1),
                 new BoundChecker.Vec2(p2),
@@ -470,7 +470,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
     @Override
     public void addChild(ContainerRenderable child) {
-        System.out.println("child: "+child);
+
         this.children.add(child);
         child.setParent(this);
     }

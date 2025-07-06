@@ -193,7 +193,7 @@ public class ComboBox extends SquareRenderable implements Clickable {
         public void parseStringList(String key,JsonObject obj){
             if(obj.getAsJsonArray(key) == null) throwMissingField("expected field entries for combo box");
             JsonArray entries = obj.getAsJsonArray(key);
-            System.out.println("parsing String list");
+
             for(JsonElement entry:entries){
                 ((ComboBox)getRenderable()).addValue(entry.getAsString());
             }

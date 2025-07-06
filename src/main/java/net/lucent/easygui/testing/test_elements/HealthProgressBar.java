@@ -4,6 +4,7 @@ import net.lucent.easygui.elements.other.ProgressBar;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.ITextureData;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
+import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.client.Minecraft;
 
 public class HealthProgressBar extends ProgressBar implements Sticky {

@@ -8,6 +8,7 @@ import net.lucent.easygui.interfaces.ITextureData;
 import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.templating.deserializers.BaseDeserializer;
+import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.EnderpearlItem;
 import org.jetbrains.annotations.NotNull;
@@ -84,13 +85,12 @@ public class ProgressBar extends BaseRenderable {
         if(background != null){
             background.renderTexture(guiGraphics);
         }
-        if(vertical) barTexture.renderTexture(guiGraphics,0,0,0,0, barTexture.getWidth(),getProgressLength());
+        if(vertical) barTexture.renderTexture(guiGraphics,0,0, 0,0, barTexture.getWidth(),getProgressLength());
         else barTexture.renderTexture(guiGraphics,0,0,0,0, getProgressLength(), barTexture.getHeight());
     }
 
     public void setBackground(ITextureData background) {
-        System.out.println("SETTING BACKGROUND");
-        System.out.println(background.getTexture());
+
         this.background = background;
     }
 
@@ -120,7 +120,7 @@ public class ProgressBar extends BaseRenderable {
             super.buildRenderable(screen, parent, obj);
 
             ((ProgressBar) getRenderable()).setBackground( parseTexture("background_texture",obj));
-            ((ProgressBar) getRenderable()).setBarTexture( parseTexture("progress_texture",obj));
+            ((ProgressBar) getRenderable()).setBarTexture(  parseTexture("progress_texture",obj));
             ((ProgressBar) getRenderable()).vertical =  getOrDefault(obj,"is_vertical",false);
 
         }

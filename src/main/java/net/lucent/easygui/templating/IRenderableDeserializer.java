@@ -68,8 +68,7 @@ public interface IRenderableDeserializer {
         return object.get(key).getAsDouble();
     }
     default Object[] getList(JsonObject object,String key){
-        System.out.println(object.get(key));
-        System.out.println(object.getAsJsonArray(key));
+
         if(object.getAsJsonArray(key) == null) return new Object[0];
         return object.getAsJsonArray(key).asList().toArray();
     }
