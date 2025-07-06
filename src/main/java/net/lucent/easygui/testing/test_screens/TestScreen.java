@@ -29,10 +29,10 @@ import java.awt.*;
 public class TestScreen extends EasyGuiScreen {
     public TestScreen(Component title) {
         super(title);
-        //View view = new View(this,0,0);
-        //view.setID("view");
-        //addView(view);
-        //view.setUseMinecraftScale(true);
+        View view = new View(this,0,0);
+        view.setID("view");
+        addView(view);
+        view.setUseMinecraftScale(true);
         //view.setCustomScale(1);
         //view.setUseMinecraftScale(true);
         //createToggleButton(view);
@@ -45,7 +45,7 @@ public class TestScreen extends EasyGuiScreen {
         //createTextBox(view);
         //createComboBox(view);
         //createViewManagerTest(view);
-        genFromFile();
+        //genFromFile();
 
 
 
@@ -55,6 +55,7 @@ public class TestScreen extends EasyGuiScreen {
 
 
     }
+
     public void renderPlayer(View view){
         LocalPlayer player = Minecraft.getInstance().player;
         DisplayPlayer dPlayer =  new DisplayPlayer(this,player,view.getScaledWidth()/2,view.getScaledHeight()/2,30);

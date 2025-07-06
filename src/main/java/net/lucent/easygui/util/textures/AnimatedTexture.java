@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * holds a list of ITexture texture data with Pair<ITextureData,TimeToNextFrame>
+ * holds a list of ITexture texture data with Pair(ITextureData,TimeToNextFrame)
  * time is in ticks. may change this in the future
  */
 public class AnimatedTexture {

@@ -9,6 +9,8 @@ import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
 import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.deserializers.BaseDeserializer;
+import net.lucent.easygui.util.math.BoundChecker;
+import net.lucent.easygui.util.math.Curves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import org.jetbrains.annotations.NotNull;
@@ -76,8 +78,7 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-
-
+        Curves.drawCurve(guiGraphics,new BoundChecker.Vec2(0,0),new BoundChecker.Vec2(300,300));
     }
 
     /**

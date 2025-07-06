@@ -1,0 +1,13 @@
+      - name: Publish package
+        run: ./gradlew publish
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+maven {
+
+  name = "GitHubPackages"
+  url = uri("https://maven.pkg.github.com/oliverhesse/easygui")
+  credentials {
+      username = project.findProperty("gpr.user") ?: System.getenv("GITHUBUSERNAME")
+      password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+  }
+}

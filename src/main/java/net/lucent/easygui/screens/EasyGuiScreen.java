@@ -4,12 +4,15 @@ import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.lucent.easygui.util.math.BoundChecker;
+import net.lucent.easygui.util.math.Curves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,11 +76,17 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+
+
+        //Curves.drawCurve(guiGraphics,new BoundChecker.Vec2(0,0),new BoundChecker.Vec2(300,300));
+
         if(activeView == null) {
             System.out.println(views);
             System.out.println(views.getFirst());
             setActiveView(views.getFirst());}
         activeView.render(guiGraphics,mouseX,mouseY,partialTick);
+
+
 
     }
 

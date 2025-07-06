@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.RegisterNamedRenderTypesEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.slf4j.Logger;
 
@@ -61,8 +62,8 @@ public class EasyGui
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
         EasyGuiRegistries.register(modEventBus);
-        ModMenuTypes.register(modEventBus);
-        KeyHandler.register();
+        //ModMenuTypes.register(modEventBus);
+        //KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
@@ -146,5 +147,6 @@ public class EasyGui
             System.out.println("=================PAYLOADS REGISTER===============");
             //ModPayloads.registerPayloads(event);
         }
+
     }
 }

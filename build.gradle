@@ -4,6 +4,7 @@ plugins {
     id 'net.neoforged.moddev' version '1.0.21'
 }
 
+
 tasks.named('wrapper', Wrapper).configure {
     // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
     // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
@@ -179,13 +180,16 @@ publishing {
     }
     repositories {
         maven {
+
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/oliverhesse/easygui")
             credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+                username = System.getenv("GITHUBUSERNAME")
+                password = System.getenv("TOKEN")
             }
         }
+
+
         maven {
             name = "LocalMaven"
             url = uri("file:///${project.projectDir}/mcmodsrepo")
