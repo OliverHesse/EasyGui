@@ -1,5 +1,7 @@
 package net.lucent.easygui;
 
+import net.lucent.easygui.elements.containers.View;
+import net.lucent.easygui.overlays.EasyGuiOverlay;
 import net.lucent.easygui.overlays.EasyGuiOverlayManager;
 import net.lucent.easygui.screens.EasyGuiScreen;
 import net.lucent.easygui.templating.EasyGuiBuilder;
@@ -10,12 +12,15 @@ import net.lucent.easygui.templating.registry.EasyGuiRegistries;
 import net.lucent.easygui.testing.KeyHandler;
 import net.lucent.easygui.testing.ModMenuTypes;
 import net.lucent.easygui.testing.network.ModPayloads;
+import net.lucent.easygui.testing.test_elements.HealthProgressBar;
 import net.lucent.easygui.testing.test_screens.TestInventoryScreen;
+import net.lucent.easygui.util.textures.TextureData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterNamedRenderTypesEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import org.slf4j.Logger;
 
@@ -68,15 +73,14 @@ public class EasyGui
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
             //EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"cultivation_progress"),new RandomOverlay());
-            /*
+
             EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay((eventHolder, overlay) ->{
-                View view = new View(eventHolder,overlay,0,0, Minecraft.getInstance().getWindow().getScreenWidth(),
-                    Minecraft.getInstance().getWindow().getScreenHeight());
-                view.useMinecraftScale = true;
+                View view = new View(overlay,0,0);
+                view.setUseMinecraftScale(true);
 
 
                 HealthProgressBar progressBar = new HealthProgressBar(
-                        eventHolder,
+                        overlay,
                         new TextureData(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_overlay.png")
                                 ,81,9),
                         new TextureData(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_background.png")
@@ -84,11 +88,11 @@ public class EasyGui
                         view.getScaledWidth()/2 - 91,
                         view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
                 view.addChild(progressBar);
-                overlay.view = view;
+                overlay.addView(view);
                 }));
 
 
-             */
+
 
         }
 

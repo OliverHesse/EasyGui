@@ -74,7 +74,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
     }
 
 
-    void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
         //initialize();
         Minecraft mc = Minecraft.getInstance();
 
@@ -86,6 +86,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
             guiScale = mc.getWindow().getGuiScale();
 
         }else if(mc.getWindow().getGuiScale() != guiScale){
+            if(guiScale != 0) eventHolder.GUI_SCALE_CHANGED_EVENT.call(guiScale);
             guiScale = mc.getWindow().getGuiScale();
 
         }
