@@ -86,7 +86,6 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
             guiScale = mc.getWindow().getGuiScale();
 
         }else if(mc.getWindow().getGuiScale() != guiScale){
-            eventHolder.GUI_SCALE_CHANGED_EVENT.call(guiScale);
             guiScale = mc.getWindow().getGuiScale();
 
         }
