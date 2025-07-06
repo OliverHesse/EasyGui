@@ -39,14 +39,18 @@ repositories {
     name = "GitHubPackages"
     url = uri("https://maven.pkg.github.com/oliverhesse/easygui")
     credentials {
-      username = project.findProperty("gpr.user") ?: System.getenv("GITHUBUSERNAME")
-      password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+      username = project.findProperty("gpr.user")
+      password = project.findProperty("gpr.key") 
     } 
   }
   mavenCentral()
 }
 ```
-
+to set up your env variables make a gradle.properties files in your .gradle folder and add
+```
+gpr.user=USERNAME
+gpr.key=TOKEN
+```
 just make sure to setup your environment variables properly and it should be sorted
 
 
