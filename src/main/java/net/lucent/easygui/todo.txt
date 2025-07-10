@@ -6,7 +6,7 @@
 things to work on
 - add bezier curves
 - convert as many BaseRenderable functions as possible to default
-
+-update how labels are made
 - override effect display
 - make culling work with rotation:
     - region math and region checking works

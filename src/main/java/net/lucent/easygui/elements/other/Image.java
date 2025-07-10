@@ -40,7 +40,7 @@ public class Image extends BaseRenderable {
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.textureData.renderTexture(guiGraphics,getX(),getY());
+        this.textureData.renderTexture(guiGraphics);
     }
 
 

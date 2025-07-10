@@ -29,10 +29,10 @@ import java.awt.*;
 public class TestScreen extends EasyGuiScreen {
     public TestScreen(Component title) {
         super(title);
-        View view = new View(this,0,0);
-        view.setID("view");
-        addView(view);
-        view.setUseMinecraftScale(true);
+        //View view = new View(this,0,0);
+        //view.setID("view");
+        //addView(view);
+        //view.setUseMinecraftScale(true);
         //view.setCustomScale(1);
         //view.setUseMinecraftScale(true);
         //createToggleButton(view);
@@ -45,7 +45,7 @@ public class TestScreen extends EasyGuiScreen {
         //createTextBox(view);
         //createComboBox(view);
         //createViewManagerTest(view);
-        //genFromFile();
+        genFromFile();
 
 
 
@@ -66,7 +66,7 @@ public class TestScreen extends EasyGuiScreen {
     }
     public void genFromFile(){
 
-        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/element_test.json"));
+        EasyGuiBuilder builder = new EasyGuiBuilder(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"screen_templates/combo_box.json"));
 
         try{
             System.out.println("trying to build");

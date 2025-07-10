@@ -19,8 +19,8 @@ import java.util.List;
 
 public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     public int windowWidth = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getWidth() : 0;
-    public int windowHeight = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getHeight() : 0;;
-    public double guiScale = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getGuiScale() : 0;;
+    public int windowHeight = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getHeight() : 0;
+    public double guiScale = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getGuiScale() : 0;
     private final List<View> views = new ArrayList<>();
     private final EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();

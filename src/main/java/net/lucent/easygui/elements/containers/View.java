@@ -204,8 +204,9 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
         @Override
         public void buildRenderable(IEasyGuiScreen screen, IRenderableDeserializer parent, JsonObject obj) {
             super.buildRenderable(screen, parent, obj);
-            ((View) getRenderable()).useMinecraftScale = getOrDefault(obj,"use_minecraft_scaling",false);
+            ((View) getRenderable()).setUseMinecraftScale(getOrDefault(obj,"use_minecraft_scaling",false));
             //does not treat width and height the same as others
+
 
         }
 

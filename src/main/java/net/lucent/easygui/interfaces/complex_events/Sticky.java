@@ -43,6 +43,8 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
 
         if(getRoot().usesMinecraftScaling()){
             recalculatePos((int) (oldWidth/oldScale), (int) (oldHeight/oldScale));
+        }else{
+            recalculatePos((oldWidth),  (oldHeight));
         }
     };
 }

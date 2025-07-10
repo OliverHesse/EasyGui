@@ -26,9 +26,9 @@ import java.util.function.BiConsumer;
 @OnlyIn(Dist.CLIENT)
 public class EasyGuiOverlay implements IEasyGuiScreen {
 
-    public int windowWidth = Minecraft.getInstance().getWindow().getWidth();
-    public int windowHeight = Minecraft.getInstance().getWindow().getHeight();
-    public double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+    public int windowWidth = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getWidth() : 0;
+    public int windowHeight = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getHeight() : 0;
+    public double guiScale = Minecraft.getInstance() != null ? Minecraft.getInstance().getWindow().getGuiScale() : 0;
     private View view;
     public EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     public BiConsumer<EasyGuiEventHolder,EasyGuiOverlay> runnable;
