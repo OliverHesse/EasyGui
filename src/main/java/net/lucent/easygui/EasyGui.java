@@ -69,7 +69,7 @@ public class EasyGui
         NeoForge.EVENT_BUS.register(this);
         EasyGuiRegistries.register(modEventBus);
         //ModMenuTypes.register(modEventBus);
-        KeyHandler.register();
+        //KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);

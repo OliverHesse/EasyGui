@@ -17,8 +17,8 @@ public class EasyGuiRenderTypes {
             VertexFormat.Mode.LINE_STRIP,
             786432,
             RenderType.CompositeState.builder()
-                    .setShaderState(RenderType.RENDERTYPE_GUI_SHADER)
-                    .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(1.0)))
+                    .setShaderState(RenderType.RENDERTYPE_LINES_SHADER)
+                    .setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(4.0)))
                     .setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY)
                     .setDepthTestState(RenderType.NO_DEPTH_TEST)
                     .setWriteMaskState(RenderType.COLOR_WRITE)

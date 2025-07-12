@@ -15,7 +15,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class KeyHandler {
 
-
+    /*
     public static final KeyMapping OPEN_MENU_KEY = new KeyMapping("key.easy_gui.test_menu_key", 67, "category.easy_gui.testing");
     public static void register() {
         IEventBus eventBus = NeoForge.EVENT_BUS;
@@ -34,6 +34,8 @@ public class KeyHandler {
 
 
     }
+
+     */
 
 
 

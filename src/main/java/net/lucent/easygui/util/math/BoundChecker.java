@@ -20,6 +20,7 @@ public class BoundChecker {
 
 
     }
+
     public static class Rec2d{
         public Vec2 p1;
         public Vec2 p2;

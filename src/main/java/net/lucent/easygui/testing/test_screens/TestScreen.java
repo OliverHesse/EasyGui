@@ -15,6 +15,8 @@ import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.screens.EasyGuiScreen;
 import net.lucent.easygui.templating.EasyGuiBuilder;
+import net.lucent.easygui.util.math.BoundChecker;
+import net.lucent.easygui.util.math.Curves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
@@ -29,15 +31,15 @@ import java.awt.*;
 public class TestScreen extends EasyGuiScreen {
     public TestScreen(Component title) {
         super(title);
-        //View view = new View(this,0,0);
-        //view.setID("view");
-        //addView(view);
-        //view.setUseMinecraftScale(true);
+        View view = new View(this,0,0);
+        view.setID("view");
+        addView(view);
+        view.setUseMinecraftScale(true);
         //view.setCustomScale(1);
-        //view.setUseMinecraftScale(true);
         //createToggleButton(view);
         //renderPlayer(view);
         //createDraggablePanel(view);
+        createLinkedDraggablePanel(view);
         //createColorButton(view);
         //createFixedSizedScrollBox(view);
         //createDynamicScrollBox(view);
@@ -45,7 +47,7 @@ public class TestScreen extends EasyGuiScreen {
         //createTextBox(view);
         //createComboBox(view);
         //createViewManagerTest(view);
-        genFromFile();
+        //genFromFile();
 
 
 
@@ -53,6 +55,12 @@ public class TestScreen extends EasyGuiScreen {
 
 
 
+
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
 
     }
 
@@ -132,6 +140,19 @@ public class TestScreen extends EasyGuiScreen {
         view.addChild(
                 toggleButton
         );
+    }
+    public void createLinkedDraggablePanel(View view){
+        DraggablePanel panel = new DraggablePanel(this,(view.getScaledWidth()/2)-100,(view.getScaledHeight()/2)-50,200,100);
+        view.addChild(panel);
+        DraggablePanel panel2 = new DraggablePanel(this,(view.getScaledWidth()/2)-100,(view.getScaledHeight()/2)-50,200,100){
+            @Override
+            public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+                super.renderSelf(guiGraphics, mouseX, mouseY, partialTick);
+                Curves.drawCurve(guiGraphics,screenToLocalPoint(panel.getGlobalPoint().x,panel.getGlobalPoint().y),screenToLocalPoint(this.getGlobalPoint().x,this.getGlobalPoint().y),500,false);
+            }
+        };
+        view.addChild(panel2);
+
     }
     public void createDraggablePanel(View view){
 

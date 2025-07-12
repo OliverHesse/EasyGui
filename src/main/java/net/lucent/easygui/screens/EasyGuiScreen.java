@@ -79,12 +79,13 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
 
 
         //Curves.drawCurve(guiGraphics,new BoundChecker.Vec2(0,0),new BoundChecker.Vec2(300,300));
+        if(!views.isEmpty()) {
+            if (activeView == null) {
 
-        if(activeView == null) {
-
-            setActiveView(views.getFirst());}
-        activeView.render(guiGraphics,mouseX,mouseY,partialTick);
-
+                setActiveView(views.getFirst());
+            }
+            activeView.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
 
 
     }
