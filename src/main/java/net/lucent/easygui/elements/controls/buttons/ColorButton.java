@@ -28,7 +28,7 @@ public class ColorButton extends AbstractButton{
         int finalColor = defaultColor;
         if(focused){
             finalColor = focusColor;
-            guiGraphics.fill(-1,-1,getWidth()+2,getHeight()+2,-1);
+            guiGraphics.fill(-1,-1,getWidth()+1,getHeight()+1,-1);
         }
         if(hovered)finalColor = hoverColor;
         if(pressed)finalColor = pressColor;

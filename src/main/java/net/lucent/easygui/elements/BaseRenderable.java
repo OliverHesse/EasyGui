@@ -36,7 +36,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
     private int x;
     private int y;
-
+    private int z;
     private int visibleX;
     private int visibleY;
 
@@ -199,7 +199,9 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
         return y;
     }
 
-
+    public int getZ() {
+        return z;
+    }
 
     /**
      * already includes the minecraft gui scale
@@ -241,6 +243,9 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     @Override
     public void setY(int y){
         this.y = y;
+    }
+    public void setZ(int z){
+        this.z = z;
     }
 
     @Override

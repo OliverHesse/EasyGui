@@ -55,7 +55,7 @@ public class TextureButton extends AbstractButton{
         if(isHovered()) finalTexture = hoveredTexture;
         if(isPressed()) finalTexture = pressedTexture;
 
-        finalTexture.renderTexture(guiGraphics,getX(),getY());
+        finalTexture.renderTexture(guiGraphics);
     }
 
     public void setDefaultTexture(ITextureData defaultTexture) {
