@@ -69,12 +69,12 @@ public class EasyGui
         NeoForge.EVENT_BUS.register(this);
         EasyGuiRegistries.register(modEventBus);
         //ModMenuTypes.register(modEventBus);
-        //KeyHandler.register();
+        KeyHandler.register();
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
             //EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"cultivation_progress"),new RandomOverlay());
-            /*
+
             EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay((eventHolder, overlay) ->{
                 View view = new View(overlay,0,0);
                 view.setUseMinecraftScale(true);
@@ -94,7 +94,7 @@ public class EasyGui
                 }));
 
 
-                 */
+
 
 
 

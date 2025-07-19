@@ -51,6 +51,7 @@ public class ClickableLabel extends ColorButton {
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(centered) guiGraphics.pose().translate((float) -getWidth() /2, (float) -getHeight() /2,0);
         guiGraphics.drawWordWrap(getFont(),text,0,0,getWidth(),textColor);
+        super.renderSelf(guiGraphics,mouseX,mouseY,partialTick);
 
     }
     public static class Builder{

@@ -35,6 +35,7 @@ public class TestScreen extends EasyGuiScreen {
         view.setID("view");
         addView(view);
         view.setUseMinecraftScale(false);
+        view.setCustomScale(2);
         //view.setCustomScale(1);
         //createToggleButton(view);
         //renderPlayer(view);

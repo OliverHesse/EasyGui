@@ -17,7 +17,7 @@ things to work on
 -potentially move all positioning over to double for accuracy
 
 bug fixes needed
-- sticky no longer works
+- sticky no longer works if use minecraft scale is false and custom scale != actual scale
 - clicking or dragging scrollbar can cause it to be permanently offset
 
 -changes
