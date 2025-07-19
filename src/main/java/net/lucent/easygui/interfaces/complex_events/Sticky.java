@@ -33,14 +33,12 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
     };
     @Override
     default void onGuiScaleChanged(double oldScale){
-
         //old height = current height. because only scale factor changed
         recalculatePos((int) (Minecraft.getInstance().getWindow().getWidth()/oldScale), (int) (Minecraft.getInstance().getWindow().getHeight()/oldScale));
     }
 
     @Override
     default void onResize(int oldWidth, int oldHeight,double oldScale){
-
         if(getRoot().usesMinecraftScaling()){
             recalculatePos((int) (oldWidth/oldScale), (int) (oldHeight/oldScale));
         }else{

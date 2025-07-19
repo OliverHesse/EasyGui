@@ -20,6 +20,7 @@ import net.lucent.easygui.elements.other.ProgressBar;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.events.Clickable;
 import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.templating.actions.IAction;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -97,10 +98,25 @@ public class EasyGuiRegistries {
                     }
                 });
 
-        public static final DeferredHolder<IAction, ContainerRenderable.TickAction> GENERIC_TICK_ACTION = ACTIONS.register("generic_tick",
-                ()-> (renderable, customArgs) -> {
-                            //System.out.println("this tick action worked lol");
+        public static final DeferredHolder<IAction, IAction> SWAP_VISIBLE = ACTIONS.register("swap_visible",
+                ()-> new IAction() {
+                    @Override
+                    public void run(ContainerRenderable renderable, Object[] customArgs) {
+                        if(customArgs.length != 2) return;
+                        String element1Id = customArgs[0] instanceof JsonPrimitive ? ((JsonPrimitive) customArgs[0]).getAsString() : (String) customArgs[0];
+                        String element2Id = customArgs[1] instanceof JsonPrimitive ? ((JsonPrimitive) customArgs[1]).getAsString() : (String) customArgs[1];
+                        ContainerRenderable renderable1 = renderable.getScreen().getElementByID(element1Id);
+                        ContainerRenderable renderable2 = renderable1.getScreen().getElementByID(element2Id);
+
+                        if(!renderable1.isVisible()){
+                            renderable1.setVisible(true);
+                            renderable2.setVisible(false);
+                        }else{
+                            renderable2.setVisible(true);
+                            renderable1.setVisible(false);
                         }
+                    }
+                }
         );
 
 

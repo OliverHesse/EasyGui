@@ -17,7 +17,7 @@ things to work on
 -potentially move all positioning over to double for accuracy
 
 bug fixes needed
-- rotated view buggy. different gui scales change it
+- sticky no longer works
 - clicking or dragging scrollbar can cause it to be permanently offset
 
 -changes

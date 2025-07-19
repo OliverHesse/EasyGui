@@ -1,10 +1,11 @@
 package net.lucent.easygui.elements.containers;
 
 import net.lucent.easygui.elements.BaseRenderable;
+import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.gui.GuiGraphics;
 
-public class EmptyContainer extends BaseRenderable {
+public class EmptyContainer extends SquareRenderable {
     public EmptyContainer(){
         super();
     }

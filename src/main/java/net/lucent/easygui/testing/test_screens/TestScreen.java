@@ -34,7 +34,7 @@ public class TestScreen extends EasyGuiScreen {
         View view = new View(this,0,0);
         view.setID("view");
         addView(view);
-        view.setUseMinecraftScale(true);
+        view.setUseMinecraftScale(false);
         //view.setCustomScale(1);
         //createToggleButton(view);
         //renderPlayer(view);
@@ -151,6 +151,8 @@ public class TestScreen extends EasyGuiScreen {
                 Curves.drawCurve(guiGraphics,screenToLocalPoint(panel.getGlobalPoint().x,panel.getGlobalPoint().y),screenToLocalPoint(this.getGlobalPoint().x,this.getGlobalPoint().y),500,false);
             }
         };
+        panel2.setSticky(true);
+        panel.setSticky(true);
         view.addChild(panel2);
 
     }
