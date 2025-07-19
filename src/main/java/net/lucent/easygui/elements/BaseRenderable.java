@@ -73,7 +73,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     public IEasyGuiScreen screen;
     public ContainerRenderable parent;
     public List<ContainerRenderable> children = new ArrayList<>();
-
+    public List<ContainerRenderable> childrenBuffer = new ArrayList<>();
     public String id = "";
     public List<String> classList = new ArrayList<>();
 
@@ -341,8 +341,10 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
     @Override
     public void setRenderScale(GuiGraphics guiGraphics){
-
-
+        if(!childrenBuffer.isEmpty()){
+            children.addAll(childrenBuffer);
+            childrenBuffer.clear();
+        }
 
 
 
@@ -476,7 +478,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     @Override
     public void addChild(ContainerRenderable child) {
 
-        this.children.add(child);
+        this.childrenBuffer.add(child);
         child.setParent(this);
     }
 
