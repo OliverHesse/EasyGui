@@ -84,6 +84,7 @@ public abstract class AbstractButton extends SquareRenderable implements Clickab
     public void tick() {
         super.tick();
         if(unPressNaturally){
+
             time_pressed += 1;
             if (time_pressed >= PRESSED_TIME) {
                 setPressed(false);

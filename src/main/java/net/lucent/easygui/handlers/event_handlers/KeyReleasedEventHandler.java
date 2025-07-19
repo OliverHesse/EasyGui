@@ -7,7 +7,7 @@ import net.lucent.easygui.interfaces.events.KeyReleasedListener;
 public class KeyReleasedEventHandler extends AbstractGuiEventHandler<KeyReleasedListener> {
 
     public void call(int keyCode, int scanCode,int modifier){
-        for(KeyReleasedListener listener:HANDLER_LIST){
+        for(KeyReleasedListener listener:getHandlerList()){
             if(listener.isActive()) listener.onKeyReleased(keyCode,scanCode,modifier);
         }
     }

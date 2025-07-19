@@ -74,6 +74,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     public ContainerRenderable parent;
     public List<ContainerRenderable> children = new ArrayList<>();
     public List<ContainerRenderable> childrenBuffer = new ArrayList<>();
+    public List<ContainerRenderable> childrenRemoveBuffer = new ArrayList<>();
     public String id = "";
     public List<String> classList = new ArrayList<>();
 
@@ -345,6 +346,10 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
             children.addAll(childrenBuffer);
             childrenBuffer.clear();
         }
+        for(ContainerRenderable renderable : childrenRemoveBuffer){
+            children.remove(renderable);
+        }
+        childrenRemoveBuffer.clear();
 
 
 
@@ -480,6 +485,11 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
         this.childrenBuffer.add(child);
         child.setParent(this);
+    }
+
+    @Override
+    public void removeChild(ContainerRenderable child) {
+        this.childrenRemoveBuffer.add(child);
     }
 
     @Override

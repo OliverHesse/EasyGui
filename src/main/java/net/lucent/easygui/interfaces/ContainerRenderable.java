@@ -93,6 +93,7 @@ public interface ContainerRenderable extends Renderable {
     Matrix4f getPositionTransform();
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
+    void removeChild(ContainerRenderable child);
     void remove();
 
     default BoundChecker.Vec2 screenToLocalPoint(double x, double y){

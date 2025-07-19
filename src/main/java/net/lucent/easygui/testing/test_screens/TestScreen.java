@@ -187,6 +187,10 @@ public class TestScreen extends EasyGuiScreen {
 
         button.clickAction = new Action(EasyGuiRegistries.Actions.CREATE_CONTAINER.get(),new Object[]{"temp"});
 
+        ColorButton button2= new ColorButton(this,view.getScaledWidth()/4,view.getScaledHeight()/4-60,200,40);
+
+        button2.clickAction = new Action(EasyGuiRegistries.Actions.CREATE_CONTAINER.get(),new Object[]{"temp"});
+
 
         button.addChild(new Label.Builder()
                 .screen(this)
@@ -195,8 +199,15 @@ public class TestScreen extends EasyGuiScreen {
                 .y(button.getHeight()/2)
                 .centered(true)
                 .build());
+        button2.addChild(new Label.Builder()
+                .screen(this)
+                .text( Component.literal("Some random text. cool right?"))
+                .x(button.getWidth()/2)
+                .y(button.getHeight()/2)
+                .centered(true)
+                .build());
         view.addChild(button);
-
+        view.addChild(button2);
     }
     public void createFixedSizedScrollBox(View view){
         view.setUseMinecraftScale(false);

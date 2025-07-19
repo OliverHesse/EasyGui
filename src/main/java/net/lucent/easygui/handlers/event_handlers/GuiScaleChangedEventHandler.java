@@ -5,7 +5,7 @@ import net.lucent.easygui.interfaces.events.GuiScaleListener;
 public class GuiScaleChangedEventHandler extends AbstractGuiEventHandler<GuiScaleListener>{
 
     public void call(double oldScale){
-        for(GuiScaleListener listener: HANDLER_LIST){
+        for(GuiScaleListener listener: getHandlerList()){
             if(listener.isActive())   listener.onGuiScaleChanged(oldScale);
 
         }

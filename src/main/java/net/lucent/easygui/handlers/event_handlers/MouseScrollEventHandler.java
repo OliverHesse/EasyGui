@@ -6,7 +6,7 @@ import net.lucent.easygui.interfaces.events.MouseScrollListener;
 public class MouseScrollEventHandler extends AbstractGuiEventHandler<MouseScrollListener>{
 
     public void call(double mouseX, double mouseY, double scrollX, double scrollY){
-        for(MouseScrollListener listener: HANDLER_LIST){
+        for(MouseScrollListener listener: getHandlerList()){
             if(listener.isActive()) listener.onMouseScroll(mouseX,mouseY,scrollX,scrollY);
         }
     }

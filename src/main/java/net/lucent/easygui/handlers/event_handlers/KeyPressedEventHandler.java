@@ -8,7 +8,7 @@ import net.lucent.easygui.interfaces.events.KeyPressedListener;
  */
 public class KeyPressedEventHandler extends AbstractGuiEventHandler<KeyPressedListener>{
     public void call(int keyCode, int scanCode,int modifier){
-        for(KeyPressedListener listener: HANDLER_LIST){
+        for(KeyPressedListener listener: getHandlerList()){
             if(listener.isActive()) listener.onKeyPressed(keyCode,scanCode,modifier);
         }
     }

@@ -5,19 +5,40 @@ import java.util.List;
 import java.util.ListIterator;
 
 public abstract class AbstractGuiEventHandler<T>{
-    public List<T> HANDLER_LIST = new ArrayList<>();
+    private List<T> HANDLER_LIST = new ArrayList<>();
+    private List<T> HANDLER_BUFFER_LIST = new ArrayList<>();
+    private List<T> HANDLER_REMOVE_LIST = new ArrayList<>();
+    public List<T> getHandlerList(){
+        if(!HANDLER_BUFFER_LIST.isEmpty()){
+            HANDLER_LIST.addAll(HANDLER_BUFFER_LIST);
+            HANDLER_BUFFER_LIST.clear();
+        }
+        for(T item : HANDLER_REMOVE_LIST){
+            HANDLER_LIST.remove(item);
+        }
+        HANDLER_REMOVE_LIST.clear();
+        return List.copyOf(HANDLER_LIST);
+    }
 
     protected ListIterator<T> getLastIterator(){
+        if(!HANDLER_BUFFER_LIST.isEmpty()){
+            HANDLER_LIST.addAll(HANDLER_BUFFER_LIST);
+            HANDLER_BUFFER_LIST.clear();
+        }
+        for(T item : HANDLER_REMOVE_LIST){
+            HANDLER_LIST.remove(item);
+        }
+        HANDLER_REMOVE_LIST.clear();
         return HANDLER_LIST.listIterator(HANDLER_LIST.size());
     }
 
     public void register(T obj){
         if(isObjRegistered(obj)) return;
-        HANDLER_LIST.add(obj);
+        HANDLER_BUFFER_LIST.add(obj);
     }
 
     public void unregister(T obj){
-        HANDLER_LIST.remove(obj);
+        HANDLER_REMOVE_LIST.remove(obj);
     }
 
     private boolean isObjRegistered(T obj){
