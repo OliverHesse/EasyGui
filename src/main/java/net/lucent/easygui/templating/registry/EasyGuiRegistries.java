@@ -1,6 +1,7 @@
 package net.lucent.easygui.templating.registry;
 
 import com.google.gson.JsonPrimitive;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.elements.containers.panels.DraggablePanel;
@@ -97,7 +98,27 @@ public class EasyGuiRegistries {
                         }
                     }
                 });
+        public static final DeferredHolder<IAction, Clickable.IClickAction> CREATE_CONTAINER = ACTIONS.register("create_container",
+                ()->
+                        new Clickable.IClickAction(){
 
+                            @Override
+                            public void run(ContainerRenderable renderable, double mouseX, double mouseY, int button, boolean clicked, Object[] args) {
+                                if(!clicked || button != InputConstants.MOUSE_BUTTON_LEFT) return;
+                                if(args.length != 1) return;
+                                System.out.println("running");
+                                String id = args[0] instanceof JsonPrimitive ? ((JsonPrimitive) args[0]).getAsString() : (String) args[0];
+                                if(id.equals("technique_data")){
+
+                                } else if (id.equals("physique_data")) {
+                                    System.out.println("tried to display physique data");
+                                }
+                                System.out.println("trying to build container");
+                                renderable.getRoot().addChild(new DraggablePanel(renderable.getScreen(),0,0,100,100));
+                                System.out.println("built container");
+                            }
+                        }
+        );
         public static final DeferredHolder<IAction, IAction> SWAP_VISIBLE = ACTIONS.register("swap_visible",
                 ()-> new IAction() {
                     @Override

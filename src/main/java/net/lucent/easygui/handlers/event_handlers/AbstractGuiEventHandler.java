@@ -21,6 +21,7 @@ public abstract class AbstractGuiEventHandler<T>{
     }
 
     private boolean isObjRegistered(T obj){
+
         for(T listener : HANDLER_LIST){
             if(listener == obj){
                 return true;

@@ -2,6 +2,7 @@ package net.lucent.easygui.testing.test_screens;
 
 import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.elements.containers.panels.DraggablePanel;
+import net.lucent.easygui.elements.containers.panels.Panel;
 import net.lucent.easygui.elements.containers.scroll_boxes.AbstractScrollBox;
 import net.lucent.easygui.elements.controls.buttons.ColorButton;
 import net.lucent.easygui.elements.containers.scroll_boxes.DynamicScrollBox;
@@ -15,6 +16,8 @@ import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.screens.EasyGuiScreen;
 import net.lucent.easygui.templating.EasyGuiBuilder;
+import net.lucent.easygui.templating.actions.Action;
+import net.lucent.easygui.templating.registry.EasyGuiRegistries;
 import net.lucent.easygui.util.math.BoundChecker;
 import net.lucent.easygui.util.math.Curves;
 import net.minecraft.client.Minecraft;
@@ -40,8 +43,8 @@ public class TestScreen extends EasyGuiScreen {
         //createToggleButton(view);
         //renderPlayer(view);
         //createDraggablePanel(view);
-        createLinkedDraggablePanel(view);
-        //createColorButton(view);
+        //createLinkedDraggablePanel(view);
+        createColorButton(view);
         //createFixedSizedScrollBox(view);
         //createDynamicScrollBox(view);
         //createMultiLineTextBox(view);
@@ -181,6 +184,8 @@ public class TestScreen extends EasyGuiScreen {
     }
     public void createColorButton(View view){
         ColorButton button = new ColorButton(this,view.getScaledWidth()/4,view.getScaledHeight()/4,200,40);
+
+        button.clickAction = new Action(EasyGuiRegistries.Actions.CREATE_CONTAINER.get(),new Object[]{"temp"});
 
 
         button.addChild(new Label.Builder()
