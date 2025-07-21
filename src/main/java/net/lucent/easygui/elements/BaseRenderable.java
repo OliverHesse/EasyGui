@@ -471,7 +471,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
             child.remove();
         }
         if(getParent() != null){
-            parent.getChildren().remove(this);
+            parent.removeChild(this);
         }
     }
 

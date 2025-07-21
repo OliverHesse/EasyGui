@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class ProgressBar extends BaseRenderable {
+public class ProgressBar extends SquareRenderable {
 
     public ITextureData background;
     public ITextureData barTexture;

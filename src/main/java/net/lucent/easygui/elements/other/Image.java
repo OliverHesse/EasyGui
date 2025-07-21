@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-public class Image extends BaseRenderable {
+public class Image extends SquareRenderable {
 
     private ITextureData textureData;
     public Image(IEasyGuiScreen easyGuiScreen, ITextureData textureData, int x, int y) {

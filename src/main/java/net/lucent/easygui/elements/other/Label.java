@@ -17,7 +17,7 @@ import java.awt.*;
 import java.beans.EventHandler;
 import java.util.function.Supplier;
 
-public class Label extends BaseRenderable {
+public class Label extends SquareRenderable {
 
     public int textColor;
     public boolean centered;
