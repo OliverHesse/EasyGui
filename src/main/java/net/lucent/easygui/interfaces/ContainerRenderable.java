@@ -6,11 +6,14 @@ import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.util.List;
 //TODO annotate for better documentation
+@OnlyIn(Dist.CLIENT)
 public interface ContainerRenderable extends Renderable {
 
 

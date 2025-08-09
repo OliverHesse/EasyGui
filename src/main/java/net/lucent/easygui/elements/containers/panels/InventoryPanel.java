@@ -9,7 +9,10 @@ import net.lucent.easygui.util.textures.TextureData;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class InventoryPanel extends Panel{
 
     public ITextureData panelTexture = new TextureData(ResourceLocation.fromNamespaceAndPath(

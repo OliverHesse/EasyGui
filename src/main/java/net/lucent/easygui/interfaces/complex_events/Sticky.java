@@ -3,7 +3,10 @@ package net.lucent.easygui.interfaces.complex_events;
 import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
 import net.minecraft.client.Minecraft;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public interface Sticky extends ScreenResizeListener, GuiScaleListener {
 
     void setSticky(boolean sticky);
@@ -42,7 +45,7 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
         if(getRoot().usesMinecraftScaling()){
             recalculatePos((int) (oldWidth/oldScale), (int) (oldHeight/oldScale));
         }else{
-            recalculatePos((oldWidth),  (oldHeight));
+            recalculatePos((int) (oldWidth/oldScale), (int) (oldHeight/oldScale));
         }
     };
 }

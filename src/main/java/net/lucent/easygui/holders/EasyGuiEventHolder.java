@@ -5,8 +5,10 @@ import net.lucent.easygui.handlers.event_handlers.*;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 
 import net.lucent.easygui.interfaces.events.*;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
-
+@OnlyIn(Dist.CLIENT)
 public class EasyGuiEventHolder {
     public ClickEventHandler CLICK_EVENT = new ClickEventHandler();
     public MouseReleaseEventHandler MOUSE_RELEASE_EVENT = new MouseReleaseEventHandler();

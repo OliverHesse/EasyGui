@@ -1,7 +1,10 @@
 package net.lucent.easygui.templating.actions;
 
 import net.lucent.easygui.interfaces.ContainerRenderable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class Action {
 
     private final Object[] args;

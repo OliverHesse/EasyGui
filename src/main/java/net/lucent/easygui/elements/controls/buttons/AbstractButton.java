@@ -10,12 +10,14 @@ import net.lucent.easygui.interfaces.events.Clickable;
 import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public abstract class AbstractButton extends SquareRenderable implements Clickable, Sticky {
 
     /**

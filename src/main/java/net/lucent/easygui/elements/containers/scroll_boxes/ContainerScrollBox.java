@@ -3,7 +3,10 @@ package net.lucent.easygui.elements.containers.scroll_boxes;
 import net.lucent.easygui.elements.inventory.DisplaySlot;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.world.Container;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class ContainerScrollBox extends AbstractScrollBox{
 
     public int slots;

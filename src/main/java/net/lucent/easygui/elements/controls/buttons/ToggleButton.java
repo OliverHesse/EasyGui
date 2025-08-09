@@ -12,10 +12,12 @@ import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.lucent.easygui.util.textures.TextureData;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class ToggleButton extends AbstractButton{
 
 

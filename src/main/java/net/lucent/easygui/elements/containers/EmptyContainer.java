@@ -4,7 +4,10 @@ import net.lucent.easygui.elements.BaseRenderable;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class EmptyContainer extends SquareRenderable {
     public EmptyContainer(){
         super();

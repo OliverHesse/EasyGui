@@ -3,10 +3,12 @@ package net.lucent.easygui.interfaces.events;
 import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.templating.actions.IAction;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 /**
  * just calls when mouse is released regardless of location
- */
+ */@OnlyIn(Dist.CLIENT)
 public interface MouseReleaseListener extends ContainerRenderable {
     public interface IClickAction extends IAction {
 

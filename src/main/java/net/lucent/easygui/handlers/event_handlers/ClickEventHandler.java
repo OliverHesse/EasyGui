@@ -2,12 +2,15 @@ package net.lucent.easygui.handlers.event_handlers;
 
 
 import net.lucent.easygui.interfaces.events.Clickable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.ListIterator;
 
 /**
  * cares about call order
  */
+@OnlyIn(Dist.CLIENT)
 public class ClickEventHandler extends AbstractGuiEventHandler<Clickable> {
     public void call(double mouseX,double mouseY,int button) {
 

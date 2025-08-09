@@ -1,5 +1,6 @@
 package net.lucent.easygui;
 
+import com.mojang.authlib.yggdrasil.request.AbuseReportRequest;
 import net.lucent.easygui.elements.containers.View;
 import net.lucent.easygui.overlays.EasyGuiOverlay;
 import net.lucent.easygui.overlays.EasyGuiOverlayManager;
@@ -18,6 +19,7 @@ import net.lucent.easygui.util.textures.TextureData;
 import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterNamedRenderTypesEvent;
@@ -54,9 +56,9 @@ public class EasyGui
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
 
-
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
+
     public EasyGui(IEventBus modEventBus, ModContainer modContainer)
     {
 
@@ -67,40 +69,6 @@ public class EasyGui
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
-        EasyGuiRegistries.register(modEventBus);
-        //ModMenuTypes.register(modEventBus);
-        KeyHandler.register();
-
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
-            //EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"cultivation_progress"),new RandomOverlay());
-
-            EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay((eventHolder, overlay) ->{
-                View view = new View(overlay,0,0);
-                view.setUseMinecraftScale(true);
-
-
-                HealthProgressBar progressBar = new HealthProgressBar(
-                        overlay,
-                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
-                                ,81,18,0,9,81,18),
-                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
-                                ,81,18,0,0,81,9),
-                        view.getScaledWidth()/2 - 91,
-                        view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
-                view.addChild(progressBar);
-                progressBar.setSticky(true);
-                overlay.addView(view);
-                }));
-
-
-
-
-
-
-
-
-        }
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -143,9 +111,31 @@ public class EasyGui
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
+
+
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            KeyHandler.register();
+            EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay((eventHolder, overlay) ->{
+                View view = new View(overlay,0,0);
+                view.setUseMinecraftScale(true);
+
+
+                HealthProgressBar progressBar = new HealthProgressBar(
+                        overlay,
+                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
+                                ,81,18,0,9,81,18),
+                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
+                                ,81,18,0,0,81,9),
+                        view.getScaledWidth()/2 - 91,
+                        view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
+                view.addChild(progressBar);
+                progressBar.setSticky(true);
+                overlay.addView(view);
+            }));
+
+
         }
         @SubscribeEvent
         public static void registerScreens(RegisterMenuScreensEvent event) {
@@ -160,3 +150,5 @@ public class EasyGui
 
     }
 }
+
+

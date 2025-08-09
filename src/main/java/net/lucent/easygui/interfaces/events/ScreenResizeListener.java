@@ -3,8 +3,11 @@ package net.lucent.easygui.interfaces.events;
 import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.templating.actions.IAction;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 //doesn't need variables since they can all be gotten through getInstance
+@OnlyIn(Dist.CLIENT)
 public interface ScreenResizeListener extends ContainerRenderable {
     public interface IScreenResizedAction extends IAction {
 

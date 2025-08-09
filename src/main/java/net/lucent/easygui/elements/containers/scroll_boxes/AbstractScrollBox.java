@@ -15,10 +15,12 @@ import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public abstract class AbstractScrollBox extends SquareRenderable implements MouseScrollListener, Clickable, MouseReleaseListener {
 
     private int scrollBarColor = -8026747;

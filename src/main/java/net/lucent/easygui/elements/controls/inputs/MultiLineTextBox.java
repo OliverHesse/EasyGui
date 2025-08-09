@@ -24,6 +24,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.StringUtil;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +38,7 @@ import java.util.function.Supplier;
 
 /*
     mostly uses code from BookEditScreen since MultiLineEditBox did not render text for some reason
- */
+ */@OnlyIn(Dist.CLIENT)
 public class MultiLineTextBox extends SquareRenderable implements
         Clickable, KeyPressedListener, CharTypedListener, MouseDragListener {
 

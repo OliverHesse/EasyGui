@@ -2,6 +2,8 @@ package net.lucent.easygui.handlers.event_handlers;
 
 
 import net.lucent.easygui.interfaces.events.Hoverable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.ListIterator;
 
@@ -12,6 +14,7 @@ import java.util.ListIterator;
  *
  * TODO use z index instead of creating order? or make it a setting?
  */
+@OnlyIn(Dist.CLIENT)
 public class MouseOverEventHandler extends AbstractGuiEventHandler<Hoverable> {
     public void call(double mouseX,double mouseY){
 

@@ -3,6 +3,8 @@ package net.lucent.easygui.templating;
 import com.google.gson.JsonObject;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 /**
  * everything is handled as double. you can then change it to int at the end of the process
  */
+@OnlyIn(Dist.CLIENT)
 public interface IRenderableDeserializer {
 
     @NotNull

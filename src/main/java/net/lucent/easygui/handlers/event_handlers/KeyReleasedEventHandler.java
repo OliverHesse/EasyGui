@@ -2,8 +2,11 @@ package net.lucent.easygui.handlers.event_handlers;
 
 
 import net.lucent.easygui.interfaces.events.KeyReleasedListener;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 //TODO
+@OnlyIn(Dist.CLIENT)
 public class KeyReleasedEventHandler extends AbstractGuiEventHandler<KeyReleasedListener> {
 
     public void call(int keyCode, int scanCode,int modifier){

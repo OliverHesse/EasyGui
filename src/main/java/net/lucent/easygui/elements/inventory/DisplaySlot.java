@@ -10,13 +10,15 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 /*
 only works with AbstractContainerScreens
 currently just a wrapper around default behaviour so still uses default slots
 will change eventually
  */
-
+@OnlyIn(Dist.CLIENT)
 public class DisplaySlot  extends SquareRenderable {
 
     public int slotIndex;

@@ -2,7 +2,10 @@ package net.lucent.easygui.templating.actions;
 
 import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.interfaces.ContainerRenderable;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public interface IAction{
 
     default <T> T cast(Object obj, Class<T> type){

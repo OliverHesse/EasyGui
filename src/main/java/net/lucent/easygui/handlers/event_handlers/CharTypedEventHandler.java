@@ -2,7 +2,10 @@ package net.lucent.easygui.handlers.event_handlers;
 
 
 import net.lucent.easygui.interfaces.events.CharTypedListener;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class CharTypedEventHandler extends AbstractGuiEventHandler<CharTypedListener>{
 
     public void call(char codePoint, int modifiers){

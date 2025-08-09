@@ -10,12 +10,14 @@ import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.templating.registry.EasyGuiRegistries;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+@OnlyIn(Dist.CLIENT)
 public class EasyGuiBuilder {
 
 

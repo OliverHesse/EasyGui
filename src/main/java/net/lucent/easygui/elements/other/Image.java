@@ -7,10 +7,12 @@ import net.lucent.easygui.interfaces.ITextureData;
 import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.deserializers.BaseDeserializer;
 import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class Image extends SquareRenderable {
 
     private ITextureData textureData;

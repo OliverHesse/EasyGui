@@ -8,6 +8,8 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.function.Consumer;
 
 /**
  * will be used to override rendering logic
- */
+ */@OnlyIn(Dist.CLIENT)
 public class EnhancedEditBox extends EditBox {
     public Action valueChangedAction;
     public ContainerRenderable parent;

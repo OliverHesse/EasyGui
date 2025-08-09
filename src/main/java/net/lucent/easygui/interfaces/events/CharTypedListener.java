@@ -3,8 +3,11 @@ package net.lucent.easygui.interfaces.events;
 import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.templating.actions.IAction;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 //TODO
+@OnlyIn(Dist.CLIENT)
 public interface CharTypedListener extends ContainerRenderable {
     public interface ICharTypedAction extends IAction {
 

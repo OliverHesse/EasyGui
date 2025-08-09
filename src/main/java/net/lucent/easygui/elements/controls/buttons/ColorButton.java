@@ -5,10 +5,12 @@ import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
 import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class ColorButton extends AbstractButton{
 
     private  int defaultColor = -6118750;

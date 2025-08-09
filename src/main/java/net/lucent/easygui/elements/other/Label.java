@@ -11,12 +11,14 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
 import net.minecraft.network.chat.Component;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.beans.EventHandler;
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class Label extends SquareRenderable {
 
     public int textColor;

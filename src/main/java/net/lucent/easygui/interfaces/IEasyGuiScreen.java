@@ -1,9 +1,11 @@
 package net.lucent.easygui.interfaces;
 
 import net.lucent.easygui.elements.containers.View;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.List;
-
+@OnlyIn(Dist.CLIENT)
 public interface IEasyGuiScreen {
 
     void register(ContainerRenderable renderable);

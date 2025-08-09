@@ -1,6 +1,8 @@
 package net.lucent.easygui.handlers.event_handlers;
 
 import net.lucent.easygui.interfaces.events.MouseDragListener;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import java.util.ListIterator;
 
@@ -8,6 +10,7 @@ import java.util.ListIterator;
  * executes basic logic needed for mouse dragging
  * can hold a currently dragged element most elements won't run if this is true
  */
+@OnlyIn(Dist.CLIENT)
 public class MouseDraggedEventHandler extends AbstractGuiEventHandler<MouseDragListener>{
 
     public MouseDragListener dragged = null;

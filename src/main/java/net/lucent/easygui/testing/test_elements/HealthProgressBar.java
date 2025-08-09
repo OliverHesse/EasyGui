@@ -6,7 +6,10 @@ import net.lucent.easygui.interfaces.ITextureData;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.client.Minecraft;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class HealthProgressBar extends ProgressBar implements Sticky {
 
 

@@ -4,10 +4,12 @@ import com.google.gson.JsonObject;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.templating.IRenderableDeserializer;
 import net.lucent.easygui.templating.deserializers.SquareRenderableDeserializer;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class FixedSizedScrollBox extends AbstractScrollBox{
 
     public double scrollHeight;

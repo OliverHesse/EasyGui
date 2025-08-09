@@ -12,6 +12,8 @@ import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -22,7 +24,7 @@ import java.util.List;
 /**
  * handles all the scaling stuff
  */
-
+@OnlyIn(Dist.CLIENT)
 public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
     private int renderedX;

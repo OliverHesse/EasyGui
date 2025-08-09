@@ -7,7 +7,10 @@ import net.lucent.easygui.interfaces.complex_events.Sticky;
 import net.lucent.easygui.interfaces.events.MouseDragListener;
 import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.gui.components.events.ContainerEventHandler;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class DraggablePanel extends Panel implements Draggable{
 
     boolean dragged = false;

@@ -7,9 +7,11 @@ import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.Hoverable;
 import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.util.math.BoundChecker;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
-
+@OnlyIn(Dist.CLIENT)
 public abstract class SquareRenderable extends BaseRenderable implements Hoverable {
 
     public Action hoverAction;

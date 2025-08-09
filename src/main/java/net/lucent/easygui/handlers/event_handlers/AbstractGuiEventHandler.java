@@ -1,9 +1,12 @@
 package net.lucent.easygui.handlers.event_handlers;
 
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
+@OnlyIn(Dist.CLIENT)
 public abstract class AbstractGuiEventHandler<T>{
     private List<T> HANDLER_LIST = new ArrayList<>();
     private List<T> HANDLER_BUFFER_LIST = new ArrayList<>();

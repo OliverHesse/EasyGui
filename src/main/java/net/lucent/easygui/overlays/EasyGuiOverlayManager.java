@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = EasyGui.MOD_ID)
+
+@EventBusSubscriber(modid = EasyGui.MOD_ID,value = Dist.CLIENT)
 public class EasyGuiOverlayManager {
 
 

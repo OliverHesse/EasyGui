@@ -6,10 +6,12 @@ import net.lucent.easygui.elements.controls.buttons.ColorButton;
 import net.lucent.easygui.elements.other.SquareRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.templating.IRenderableDeserializer;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class SquareRenderableDeserializer extends BaseDeserializer{
     public SquareRenderableDeserializer(Supplier<? extends SquareRenderable> supplier) {
         super(supplier);

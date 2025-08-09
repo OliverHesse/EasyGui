@@ -19,6 +19,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.glfw.GLFW;
@@ -32,7 +34,7 @@ import java.util.function.Supplier;
  * uses default rendering by default. for more options either extend or use
  * TexturedTextBox
  */
-
+@OnlyIn(Dist.CLIENT)
 public class TextBox extends SquareRenderable implements Draggable, CharTypedListener, KeyPressedListener {
 
     private boolean editable = false;

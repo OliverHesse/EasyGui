@@ -6,7 +6,10 @@ import net.lucent.easygui.interfaces.events.MouseDragListener;
 import net.lucent.easygui.interfaces.events.MouseReleaseListener;
 import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.util.Mth;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public interface Draggable extends Clickable, MouseDragListener, MouseReleaseListener {
 
     boolean isDragged();

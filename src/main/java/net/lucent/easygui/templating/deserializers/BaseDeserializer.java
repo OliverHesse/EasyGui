@@ -19,6 +19,8 @@ import net.lucent.easygui.templating.registry.EasyGuiRegistries;
 import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import javax.management.AttributeNotFoundException;
@@ -26,7 +28,7 @@ import javax.management.AttributeNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class BaseDeserializer implements IRenderableDeserializer {
 
     private BaseRenderable renderable;

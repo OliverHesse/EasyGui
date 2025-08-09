@@ -11,10 +11,12 @@ import net.lucent.easygui.templating.deserializers.BaseDeserializer;
 import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.EnderpearlItem;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+@OnlyIn(Dist.CLIENT)
 public class ProgressBar extends SquareRenderable {
 
     public ITextureData background;

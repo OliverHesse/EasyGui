@@ -3,7 +3,10 @@ package net.lucent.easygui.elements.containers;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Draggable;
 import net.lucent.easygui.util.math.BoundChecker;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class EmptyDraggableContainer extends EmptyContainer implements Draggable {
 
     boolean dragged = false;

@@ -3,7 +3,10 @@ package net.lucent.easygui.interfaces.events;
 import net.lucent.easygui.EasyGui;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.templating.actions.IAction;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public interface KeyPressedListener extends ContainerRenderable {
     public interface IKeyPressAction extends IAction {
 

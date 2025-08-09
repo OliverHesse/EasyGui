@@ -26,11 +26,13 @@ import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 import java.awt.*;
-
+@OnlyIn(Dist.CLIENT)
 public class TestScreen extends EasyGuiScreen {
     public TestScreen(Component title) {
         super(title);
@@ -43,8 +45,8 @@ public class TestScreen extends EasyGuiScreen {
         //createToggleButton(view);
         //renderPlayer(view);
         //createDraggablePanel(view);
-        //createLinkedDraggablePanel(view);
-        createColorButton(view);
+        createLinkedDraggablePanel(view);
+        //createColorButton(view);
         //createFixedSizedScrollBox(view);
         //createDynamicScrollBox(view);
         //createMultiLineTextBox(view);

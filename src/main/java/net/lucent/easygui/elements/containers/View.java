@@ -13,11 +13,13 @@ import net.lucent.easygui.util.math.BoundChecker;
 import net.lucent.easygui.util.math.Curves;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
-
+@OnlyIn(Dist.CLIENT)
 public class View extends BaseRenderable implements ScreenResizeListener, GuiScaleListener {
     /**
      * scales items relative to original viewport size
