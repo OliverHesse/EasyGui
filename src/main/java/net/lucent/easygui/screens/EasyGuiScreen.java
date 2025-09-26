@@ -1,6 +1,7 @@
 package net.lucent.easygui.screens;
 
 import net.lucent.easygui.elements.containers.View;
+import net.lucent.easygui.elements.tooltips.EasyTooltip;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
@@ -27,6 +28,8 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     private final EasyGuiEventHolder eventHolder = new EasyGuiEventHolder();
     private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();
     private final HashMap<String,List<ContainerRenderable>> classMap = new HashMap<>();
+
+    private EasyTooltip tooltip;
 
     private View activeView = null;
 
@@ -75,6 +78,11 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     }
 
     @Override
+    public void setTooltip(EasyTooltip tooltip) {
+        this.tooltip = tooltip;
+    }
+
+    @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
@@ -87,6 +95,10 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
                 setActiveView(views.getFirst());
             }
             activeView.render(guiGraphics, mouseX, mouseY, partialTick);
+        }
+        if(tooltip != null) {
+            tooltip.render(guiGraphics);
+            tooltip = null;
         }
 
 

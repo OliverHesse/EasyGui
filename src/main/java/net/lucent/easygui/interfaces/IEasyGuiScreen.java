@@ -1,6 +1,7 @@
 package net.lucent.easygui.interfaces;
 
 import net.lucent.easygui.elements.containers.View;
+import net.lucent.easygui.elements.tooltips.EasyTooltip;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -12,6 +13,8 @@ public interface IEasyGuiScreen {
     void unregister(ContainerRenderable renderable);
 
     default void setActiveView(View view){}
+
+    void setTooltip(EasyTooltip tooltip);
 
     void addView(View view);
 
