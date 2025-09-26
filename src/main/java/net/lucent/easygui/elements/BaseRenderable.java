@@ -349,8 +349,9 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
             childrenBuffer.clear();
         }
         for(ContainerRenderable renderable : childrenRemoveBuffer){
+            renderable.removeChildren();
             children.remove(renderable);
-            renderable.remove();
+
         }
         childrenRemoveBuffer.clear();
 
@@ -467,13 +468,10 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
 
     @Override
-    public void remove() {
+    public void removeChildren() {
         screen.unregister(this);
         for(ContainerRenderable child:getChildren()){
-            child.remove();
-        }
-        if(getParent() != null){
-            parent.removeChild(this);
+            child.removeChildren();
         }
     }
 

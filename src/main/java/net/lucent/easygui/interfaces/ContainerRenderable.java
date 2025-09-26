@@ -97,7 +97,7 @@ public interface ContainerRenderable extends Renderable {
     void setParent(ContainerRenderable parent);
     void addChild(ContainerRenderable child);
     void removeChild(ContainerRenderable child);
-    void remove();
+    void removeChildren();
 
     default BoundChecker.Vec2 screenToLocalPoint(double x, double y){
         Vector3f position = new Matrix4f(getTransform()).invert().transformPosition(new Vector3f((float) x,(float) y,0));
