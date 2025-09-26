@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.mojang.blaze3d.platform.Window;
 
 import net.lucent.easygui.elements.BaseRenderable;
+import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.events.GuiScaleListener;
 import net.lucent.easygui.interfaces.events.ScreenResizeListener;
@@ -127,8 +128,12 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     }
 
     @Override
-    public void remove() {
+    public void removeChildren() {
         screen.unregister(this);
+        //clean up registries
+        for(ContainerRenderable child : getChildren()){
+            child.removeChildren();
+        }
         screen.removeView(this);
     }
 
