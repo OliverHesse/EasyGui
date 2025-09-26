@@ -2,6 +2,7 @@ package net.lucent.easygui.overlays;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.lucent.easygui.elements.containers.View;
+import net.lucent.easygui.elements.tooltips.EasyTooltip;
 import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
@@ -34,6 +35,12 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
     public BiConsumer<EasyGuiEventHolder,EasyGuiOverlay> runnable;
     private final HashMap<String,ContainerRenderable> idMap= new HashMap<>();
     private final HashMap<String,List<ContainerRenderable>> classMap = new HashMap<>();
+
+    @Override
+    public void setTooltip(EasyTooltip tooltip) {
+
+    }
+
     public EasyGuiOverlay(BiConsumer<EasyGuiEventHolder,EasyGuiOverlay>  initialize){
         this.runnable = initialize;
 
