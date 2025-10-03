@@ -342,18 +342,30 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
         screen.register(this);
     }
 
-    @Override
-    public void setRenderScale(GuiGraphics guiGraphics){
-        if(!childrenBuffer.isEmpty()){
-            children.addAll(childrenBuffer);
-            childrenBuffer.clear();
-        }
+    public void clearChildRemoveBuffer(){
         for(ContainerRenderable renderable : childrenRemoveBuffer){
             renderable.removeChildren();
             children.remove(renderable);
 
         }
         childrenRemoveBuffer.clear();
+    }
+
+    /**
+     *
+     * @return true: child added false: no child added
+     */
+    public boolean clearChildBuffer(){
+        if(!childrenBuffer.isEmpty()){
+            children.addAll(childrenBuffer);
+            childrenBuffer.clear();
+            return true;
+        }else return false;
+    }
+    @Override
+    public void setRenderScale(GuiGraphics guiGraphics){
+        clearChildBuffer();
+        clearChildRemoveBuffer();
 
 
 
@@ -469,8 +481,9 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
     @Override
     public void removeChildren() {
-        screen.unregister(this);
+
         for(ContainerRenderable child:getChildren()){
+            screen.unregister(child);
             child.removeChildren();
         }
     }
