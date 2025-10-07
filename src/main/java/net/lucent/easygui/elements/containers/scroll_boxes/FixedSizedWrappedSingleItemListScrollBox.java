@@ -31,7 +31,7 @@ public class FixedSizedWrappedSingleItemListScrollBox extends AbstractScrollBox{
             int row = i/slotsPerRow;
             int column = i%slotsPerRow;
             children.get(i).setX(column*(slotGap+slotWidth));
-            children.get(i).setY(row*(slotGap+slotHeight));
+            children.get(i).setY(row*(2+slotHeight));
         }
         setYOffset(yOffset);
     }
@@ -46,7 +46,7 @@ public class FixedSizedWrappedSingleItemListScrollBox extends AbstractScrollBox{
     @Override
     public void onMouseScroll(double mouseX, double mouseY, double scrollX, double scrollY) {
         if(isMouseOver(mouseX,mouseY)){
-            setYOffset(getScrollAmount(yOffset,-scrollY*(slotHeight+slotGap),getScrollHeight()));
+            setYOffset(getScrollAmount(yOffset,-scrollY*(slotHeight+2),getScrollHeight()));
 
         }
 
@@ -55,7 +55,7 @@ public class FixedSizedWrappedSingleItemListScrollBox extends AbstractScrollBox{
 
     @Override
     public double getScrollHeight() {
-        return Math.max(0,(rows-displayRows-1)*(slotHeight+slotGap));
+        return Math.max(0,(rows-displayRows-1)*(slotHeight+2));
     }
 
     @Override
