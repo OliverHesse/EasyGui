@@ -18,13 +18,16 @@ import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
-
+//TODO allow them to be rendered without color (background = false)
+//TODO get mouse drag scroll working;
+//TODO if user uses mousewheel and only width is scrollable scroll width
 import java.util.function.Supplier;
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractScrollBox extends SquareRenderable implements MouseScrollListener, Clickable, MouseReleaseListener {
 
     private int scrollBarColor = -8026747;
     private int backgroundColor = -16777216;
+    public boolean useBackgroundColor = false;
     private int scrollBarThickness = 4;
     private boolean scrollBarVisible = true;
 
@@ -141,7 +144,7 @@ public abstract class AbstractScrollBox extends SquareRenderable implements Mous
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if(borderVisible) guiGraphics.fill(-borderWidth,-borderWidth,getWidth()+borderWidth,getHeight()+borderWidth,borderColor);
-        guiGraphics.fill(0,0,getWidth(),getHeight(),backgroundColor);
+        if(useBackgroundColor) guiGraphics.fill(0,0,getWidth(),getHeight(),backgroundColor);
      }
 
     @Override
