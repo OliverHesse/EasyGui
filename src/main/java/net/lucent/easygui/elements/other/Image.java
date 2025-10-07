@@ -12,6 +12,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
+//TODO make any texture render null protected
 @OnlyIn(Dist.CLIENT)
 public class Image extends SquareRenderable {
 
@@ -42,7 +43,7 @@ public class Image extends SquareRenderable {
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        this.textureData.renderTexture(guiGraphics);
+        if(textureData != null)textureData.renderTexture(guiGraphics);
     }
 
 

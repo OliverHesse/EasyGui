@@ -18,6 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 import java.beans.EventHandler;
 import java.util.function.Supplier;
+/*TODO change to work without builder kinda pisses me off tbh
+    the builder should be for the text. which should be a list of components
+    or 1 if i make it a singleLineLabel
+*/
 @OnlyIn(Dist.CLIENT)
 public class Label extends SquareRenderable {
 

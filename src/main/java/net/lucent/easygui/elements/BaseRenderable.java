@@ -484,6 +484,7 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
         for(ContainerRenderable child:getChildren()){
             screen.unregister(child);
+            removeChild(child);
             child.removeChildren();
         }
     }
