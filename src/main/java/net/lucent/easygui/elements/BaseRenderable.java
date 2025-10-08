@@ -24,6 +24,8 @@ import java.util.List;
 /**
  * handles all the scaling stuff
  */
+//TODO add some sort up bubble up way of detecting child updates.
+// e.g if a child is updated it then calls a function on the parent telling it it was updated
 @OnlyIn(Dist.CLIENT)
 public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
