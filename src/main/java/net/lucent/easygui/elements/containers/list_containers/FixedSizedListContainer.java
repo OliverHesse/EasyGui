@@ -5,7 +5,7 @@ import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 
 import java.util.List;
-
+//TODO update to take into account child scaled size
 public class FixedSizedListContainer extends Panel {
 
     private boolean AS_ROWS = true;
@@ -21,6 +21,7 @@ public class FixedSizedListContainer extends Panel {
     public void setGap(int gap){
         this.GAP = gap;
     }
+    public int getGap(){return GAP;}
     /** TODO redo child position when this is called
      * true = rows
      * false = columns
@@ -39,7 +40,8 @@ public class FixedSizedListContainer extends Panel {
         if(index < 0) return 0;
         int length = 0;
         for(int i = 0; i<index;i++){
-            length += AS_ROWS ? getChildren().get(i).getHeight() : getChildren().get(i).getWidth();
+            ContainerRenderable child = getChildren().get(i);
+            length += AS_ROWS ? (int) (child.getHeight() * child.getCustomScale() + getGap()) : (int) (child.getWidth() * child.getCustomScale() + getGap());
 
         }
         return length;
@@ -47,8 +49,8 @@ public class FixedSizedListContainer extends Panel {
 
     public void updateChildrenAlignment(){
         for(int i = 0;i < getChildren().size(); i++){
-            if(AS_ROWS) getChildren().get(i).setY(getUsedLength(i-1));
-            else getChildren().get(i).setX(getUsedLength(i-1));
+            if(AS_ROWS) getChildren().get(i).setY(getUsedLength(i));
+            else getChildren().get(i).setX(getUsedLength(i));
         }
     }
     @Override
