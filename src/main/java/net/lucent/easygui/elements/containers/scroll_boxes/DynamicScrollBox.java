@@ -33,10 +33,10 @@ public class DynamicScrollBox extends AbstractScrollBox {
     public void addChild(ContainerRenderable child) {
         super.addChild(child);
         //get largest yValue pos child
-        if(child.getY()+child.getHeight() > getScrollHeight()){
-            maxScrollY =Math.max(0,child.getY()+child.getScaledHeight()-getInnerHeight());
+        if(child.getY()+child.getHeight()*child.getCustomScale() > getScrollHeight()){
+            maxScrollY =Math.max(0,child.getY()+child.getHeight()*child.getCustomScale()-getInnerHeight());
         }
-        if(child.getX()+getWidth() > getScrollWidth())   maxScrollX =Math.max(0,child.getX()+child.getScaledWidth()-getInnerWidth());
+        if(child.getX()+child.getWidth()*child.getCustomScale() > getScrollWidth())   maxScrollX =Math.max(0,child.getX()+child.getWidth()*child.getCustomScale()-getInnerWidth());
     }
 
     @Override
