@@ -9,6 +9,7 @@ import net.lucent.easygui.testing.test_elements.HealthProgressBar;
 import net.lucent.easygui.util.textures.TextureData;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -17,7 +18,9 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 
-@Mod(value = EasyGui.MOD_ID,dist = Dist.CLIENT)
+import static net.lucent.easygui.EasyGui.MOD_ID;
+
+@Mod(value = MOD_ID,dist = Dist.CLIENT)
 public class EasyGuiClient{
     public EasyGuiClient(IEventBus modEventBus, ModContainer modContainer)
     {

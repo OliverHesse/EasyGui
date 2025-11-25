@@ -12,6 +12,11 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
     void setSticky(boolean sticky);
     boolean isSticky();
 
+    //TODO still bugged. because im doing multipliers everything about the position is bugged.
+    //  because im placing elements using viewdimension/2. im placing stuff relative to the center not 0,0
+    //  the displacement from the center should be the same
+    //  so if im -20,-20 from center even after enlarging it should stay as such
+    //  so i should calc that. then apply it to the center of the new ui.
     /**
      * you will need to implement this yourself. i know... annoying... but it is what it is
      * mainly because the formula for gui scale change is not the same as the formula for window size change
@@ -47,12 +52,15 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
              */
         }
     };
+    //TODO is it this?
     @Override
     default void onGuiScaleChanged(double oldScale){
         //old height = current height. because only scale factor changed
         recalculatePos((int) (Minecraft.getInstance().getWindow().getWidth()/oldScale), (int) (Minecraft.getInstance().getWindow().getHeight()/oldScale));
     }
 
+
+    //TODO bruhhh
     @Override
     default void onResize(int oldWidth, int oldHeight,double oldScale){
         if(getRoot().usesMinecraftScaling()){
