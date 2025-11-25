@@ -2,6 +2,8 @@ package net.lucent.easygui.elements.containers.list_containers;
 
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
+import net.neoforged.neoforge.common.data.AdvancementProvider;
+import net.neoforged.neoforge.common.data.internal.NeoForgeAdvancementProvider;
 
 public class DynamicSizedListContainer extends FixedSizedListContainer{
     public DynamicSizedListContainer(IEasyGuiScreen easyGuiScreen, int x, int y) {
@@ -35,7 +37,7 @@ public class DynamicSizedListContainer extends FixedSizedListContainer{
             int value =  getAlignment() ? renderable.getHeight() : renderable.getWidth();
             if(value > runningMax) runningMax = value;
         }
-        return runningMax;
+                return runningMax;
     }
 
     @Override

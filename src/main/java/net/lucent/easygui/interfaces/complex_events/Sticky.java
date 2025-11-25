@@ -23,6 +23,17 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
         if(isSticky()) {
             oldWidth = (int) (oldWidth/getRoot().getTotalScaleFactorX());
             oldHeight = (int) (oldHeight/getRoot().getTotalScaleFactorY());
+            int centerX = oldWidth/2;
+            int centerY = oldHeight/2;
+
+            int xOffset = centerX-getX();
+            int yOffset = centerY-getY();
+
+            int newX = getRoot().getScaledWidth()+xOffset;
+            int newY = getRoot().getScaledHeight()+yOffset;
+            setX(newX);
+            setY(newY);
+            /*
             int x = (int) (getX()+getWidth()*getScaleX()/2);
             int y = (int) (getY()+getHeight()*getScaleY()/2);
             double mX = (double) x /oldWidth;
@@ -32,6 +43,8 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
             int newY = (int) (getRoot().getScaledHeight()*mY - getHeight()*getScaleY()/2);
             setX(newX);
             setY(newY);
+
+             */
         }
     };
     @Override

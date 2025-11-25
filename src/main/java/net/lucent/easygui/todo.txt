@@ -8,11 +8,12 @@ things to work on
 - convert as many BaseRenderable functions as possible to default
 -update how labels are made
 - override effect display
-- make culling work with rotation:
+- make culling work with rotation: (IMPOSSIBLE, ONLY WORKS ON NON ROTATED SQUARES)
     - region math and region checking works
     - cull region does not rotate so be careful with anything that involves culling
     - try implement my own cut shader
     - temporarily get it to support 0 90 180 270 rotation
+
 
 -potentially move all positioning over to double for accuracy
 
