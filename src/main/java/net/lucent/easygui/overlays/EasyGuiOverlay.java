@@ -83,6 +83,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
 
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
         //initialize();
+        if(view == null) return;
         Minecraft mc = Minecraft.getInstance();
 
         //Annoyingly overlays don't get a resize event...
