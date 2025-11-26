@@ -24,6 +24,11 @@ import java.util.function.BiConsumer;
 /**
  * this cannot be inherited will cause problems with events
  */
+/*
+TODO change so it does not act as an event register. overlay manager does that.
+ this lets others extends easyGuiOverlay instead of the weird initialize shit im doing
+ */
+
 @OnlyIn(Dist.CLIENT)
 public class EasyGuiOverlay implements IEasyGuiScreen {
 
@@ -83,7 +88,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
 
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
         //initialize();
-        if(view == null) return;
+        if(view == null) runnable.accept(eventHolder,this);
         Minecraft mc = Minecraft.getInstance();
 
         //Annoyingly overlays don't get a resize event...
