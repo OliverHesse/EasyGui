@@ -49,7 +49,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
 
     public EasyGuiOverlay(BiConsumer<EasyGuiEventHolder,EasyGuiOverlay>  initialize){
         this.runnable = initialize;
-        initialize.accept(eventHolder,this);
+        //initialize.accept(eventHolder,this);
         NeoForge.EVENT_BUS.register(this);
     }
 
@@ -59,7 +59,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
     //should only run client side
     @SubscribeEvent
     private void onPlayerJoin(ClientPlayerNetworkEvent.LoggingIn event){
-        //runnable.accept(eventHolder,this);
+        runnable.accept(eventHolder,this);
     }
     @SubscribeEvent
     private void onClientTick(ClientTickEvent.Pre event){
@@ -89,7 +89,7 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
 
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
         //initialize();
-        if(view == null) return;//runnable.accept(eventHolder,this);
+        if(view == null) runnable.accept(eventHolder,this);
         Minecraft mc = Minecraft.getInstance();
 
         //Annoyingly overlays don't get a resize event...
