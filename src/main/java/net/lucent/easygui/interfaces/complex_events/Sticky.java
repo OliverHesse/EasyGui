@@ -30,7 +30,7 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
             oldHeight = (int) (oldHeight/getRoot().getTotalScaleFactorY());
             int centerX = oldWidth/2;
             int centerY = oldHeight/2;
-
+            /*
             int xOffset = centerX-getX();
             int yOffset = centerY-getY();
 
@@ -38,7 +38,7 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
             int newY = getRoot().getScaledHeight()+yOffset;
             setX(newX);
             setY(newY);
-            /*
+            */
             int x = (int) (getX()+getWidth()*getScaleX()/2);
             int y = (int) (getY()+getHeight()*getScaleY()/2);
             double mX = (double) x /oldWidth;
@@ -49,7 +49,7 @@ public interface Sticky extends ScreenResizeListener, GuiScaleListener {
             setX(newX);
             setY(newY);
 
-             */
+
         }
     };
     //TODO is it this?
