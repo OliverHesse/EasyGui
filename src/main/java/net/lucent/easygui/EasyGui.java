@@ -116,24 +116,7 @@ public class EasyGui
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-            KeyHandler.register();
-            EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH, new EasyGuiOverlay((eventHolder, overlay) ->{
-                View view = new View(overlay,0,0);
-                view.setUseMinecraftScale(true);
 
-
-                HealthProgressBar progressBar = new HealthProgressBar(
-                        overlay,
-                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
-                                ,81,18,0,9,81,18),
-                        new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
-                                ,81,18,0,0,81,9),
-                        view.getScaledWidth()/2 - 91,
-                        view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
-                view.addChild(progressBar);
-                progressBar.setSticky(true);
-                overlay.addView(view);
-            }));
 
 
         }

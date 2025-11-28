@@ -24,5 +24,7 @@ public class EasyGuiOverlayHandler implements LayeredDraw.Layer {
                         deltaTracker.getGameTimeDeltaPartialTick(true));
             }
         }
+
+
     }
 }

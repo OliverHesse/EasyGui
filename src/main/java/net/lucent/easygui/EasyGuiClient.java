@@ -5,8 +5,10 @@ import net.lucent.easygui.overlays.EasyGuiOverlay;
 import net.lucent.easygui.overlays.EasyGuiOverlayHandler;
 import net.lucent.easygui.overlays.EasyGuiOverlayManager;
 import net.lucent.easygui.templating.registry.EasyGuiRegistries;
+import net.lucent.easygui.testing.KeyHandler;
 import net.lucent.easygui.testing.test_elements.HealthProgressBar;
 import net.lucent.easygui.util.textures.TextureData;
+import net.lucent.easygui.util.textures.TextureDataSubSection;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.resources.ResourceLocation;
@@ -29,19 +31,28 @@ public class EasyGuiClient{
         //ModMenuTypes.register(modEventBus);
 
         modEventBus.addListener(EasyGuiOverlayManager::onRegisterOverlays);
-        EasyGuiOverlayManager.registerVanillaOverlayOverride(VanillaGuiLayers.PLAYER_HEALTH,new EasyGuiOverlay((easyGuiEventHolder, easyGuiOverlay) ->{
-            View view = new View(easyGuiOverlay);
-            easyGuiOverlay.addView(view);
-            HealthProgressBar healthProgressBar = new HealthProgressBar(easyGuiOverlay,
-                    new TextureData( ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_overlay.png"),81,9),
-                    new TextureData(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar_background.png"),81,8),
-                    view.getScaledWidth()/2-91,
-                    view.getScaledHeight()/2-39
-                    );
+        //ResourceLocation.fromNamespaceAndPath(MOD_ID,"test")
+        //KeyHandler.register();
+        /*
+        EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"test"), new EasyGuiOverlay((eventHolder, overlay) ->{
+            View view = new View(overlay,0,0);
+            view.setUseMinecraftScale(true);
 
-            view.addChild(healthProgressBar);
-            healthProgressBar.setSticky(true);
+
+            HealthProgressBar progressBar = new HealthProgressBar(
+                    overlay,
+                    new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
+                            ,81,18,0,9,81,18),
+                    new TextureDataSubSection(ResourceLocation.fromNamespaceAndPath(EasyGui.MOD_ID,"test_textures/health_bar.png")
+                            ,81,18,0,0,81,9),
+                    view.getScaledWidth()/2 - 91,
+                    view.getScaledHeight() - 39); //view.getWidth()/2 - 91 view.getHeight() - 39
+            view.addChild(progressBar);
+            progressBar.setSticky(true);
+            overlay.addView(view);
         }));
+
+         */
         //EasyGuiOverlayManager.addLayer(ResourceLocation.fromNamespaceAndPath(MOD_ID,"cultivation_progress"),new RandomOverlay());
     }
 
