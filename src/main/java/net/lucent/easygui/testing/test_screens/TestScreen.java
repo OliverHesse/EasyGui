@@ -14,6 +14,7 @@ import net.lucent.easygui.elements.inventory.DisplayEntity;
 import net.lucent.easygui.elements.inventory.DisplayPlayer;
 import net.lucent.easygui.elements.other.Label;
 import net.lucent.easygui.elements.containers.View;
+import net.lucent.easygui.properties.Positioning;
 import net.lucent.easygui.screens.EasyGuiScreen;
 import net.lucent.easygui.templating.EasyGuiBuilder;
 import net.lucent.easygui.templating.actions.Action;
@@ -41,11 +42,12 @@ public class TestScreen extends EasyGuiScreen {
         addView(view);
         view.setUseMinecraftScale(false);
         view.setCustomScale(2);
+        createLabel(view);
         //view.setCustomScale(1);
         //createToggleButton(view);
         //renderPlayer(view);
         //createDraggablePanel(view);
-        createLinkedDraggablePanel(view);
+        //createLinkedDraggablePanel(view);
         //createColorButton(view);
         //createFixedSizedScrollBox(view);
         //createDynamicScrollBox(view);
@@ -62,6 +64,18 @@ public class TestScreen extends EasyGuiScreen {
 
 
 
+    }
+
+    public void createLabel(View view){
+        DraggablePanel panel =  new DraggablePanel(this,-100,-50,200,100);
+        panel.setXPositioning(Positioning.CENTER);
+        panel.setYPositioning(Positioning.CENTER);
+        view.addChild(panel);
+        Label label = new Label(this,0,0,Component.literal("yo this is some really cool text"));
+        //label.setWrap(true);
+        label.setWidth(label.getFont().width(Component.literal("yo this is some really cool text"))/2);
+        label.setCull(true);
+        panel.addChild(label);
     }
 
     @Override

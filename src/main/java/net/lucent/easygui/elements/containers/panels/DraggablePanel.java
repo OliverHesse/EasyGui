@@ -54,6 +54,6 @@ public class DraggablePanel extends Panel implements Draggable{
 
     @Override
     public boolean isSticky() {
-        return true;
+        return false;
     }
 }

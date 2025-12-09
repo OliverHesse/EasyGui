@@ -27,7 +27,9 @@ public class Label extends SquareRenderable {
 
     public int textColor;
     public boolean centered;
-
+    public boolean wrap;
+    public boolean fixedWidth;
+    public boolean fixedHeight;
     public Component text;
     public Font font = Minecraft.getInstance().font;
 
@@ -37,8 +39,44 @@ public class Label extends SquareRenderable {
 
     public Label(){
     }
+    public Label(IEasyGuiScreen easyGuiScreen,int x,int y,Component text){
+        super(easyGuiScreen);
+        setX(x);
+        setY(y);
+        this.text = text;
+        this.font = Minecraft.getInstance().font;
+    }
 
-    private Label(IEasyGuiScreen easyGuiScreen, Font font, Component text, int x, int y, int width, int height, boolean centered, int textColor){
+    @Override
+    public void setWidth(int width) {
+        super.setWidth(width);
+        fixedWidth = true;
+    }
+
+    @Override
+    public int getWidth() {
+        if(fixedWidth) return super.getWidth();
+        return font.width(text);
+    }
+
+    @Override
+    public void setHeight(int height) {
+        super.setHeight(height);
+        fixedHeight = true;
+    }
+
+    //the text is only wrapped if wrap is true and fixedWith is true
+    @Override
+    public int getHeight() {
+        if(fixedHeight) return super.getHeight();
+        if(fixedWidth && wrap)  return font.split(text,getWidth()).size()*font.lineHeight;
+        return font.lineHeight;
+    }
+
+    public void setWrap(boolean wrap){
+        this.wrap = wrap;
+    }
+    public Label(IEasyGuiScreen easyGuiScreen, Font font, Component text, int x, int y, int width, int height, boolean centered, int textColor){
         super(easyGuiScreen);
         this.font = font;
         this.text = text;
@@ -65,11 +103,14 @@ public class Label extends SquareRenderable {
 
     @Override
     public void renderSelf(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        if(centered) guiGraphics.pose().translate((float) -getWidth() /2, (float) -getHeight() /2,0);
-        guiGraphics.drawWordWrap(getFont(),text,0,0,getWidth(),textColor);
+        int x = 0,y = 0;
+        if(centered){x = -getWidth()/2;y = -getHeight()/2;}
+        if(wrap) guiGraphics.drawWordWrap(getFont(),text,x,y,getWidth(),textColor);
+        else guiGraphics.drawString(getFont(),text,x,y,textColor,false);
 
     }
-
+    //TODO idk man this is all kinda rubish
+    @Deprecated
     public static class Builder{
 
         private IEasyGuiScreen easyGuiScreen = null;

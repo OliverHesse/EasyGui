@@ -1,5 +1,6 @@
 package net.lucent.easygui.interfaces;
 
+import net.lucent.easygui.properties.Positioning;
 import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.templating.actions.IAction;
 import net.lucent.easygui.util.math.BoundChecker;
@@ -13,16 +14,38 @@ import org.joml.Vector3f;
 
 import java.util.List;
 //TODO annotate for better documentation
+//TODO add a render tick? that runs regardless of isVisible?
+//TODO clean up how scaling works
+//TODO clean up naming for scaling functions
 @OnlyIn(Dist.CLIENT)
 public interface ContainerRenderable extends Renderable {
-
-
-
+    //===================Identifier stuff===================
     String getID();
     List<String> getClassList();
     void setID(String id);
     void addClass(String className);
     void removeClass(String className);
+
+
+    //===================Positioning stuff===================
+    Positioning getXPositioning();
+    Positioning getYPositioning();
+
+    int getX();
+    int getY();
+
+    // the actual value stored
+    int getRawX();
+    int getRawY();
+
+    void setX(int x);
+    void setY(int y);
+
+    void setX(int x,Positioning positioning);
+    void setY(int y,Positioning positioning);
+
+
+    //===================Rendering stuff===================
     @Override
     void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick);
     void renderSelf(GuiGraphics guiGraphics,int mouseX, int mouseY,float partialTick);
@@ -38,10 +61,7 @@ public interface ContainerRenderable extends Renderable {
     default boolean isFocused(){return false;}
     void setFocused(boolean state);
 
-    int getX();
-    int getY();
-    void setX(int x);
-    void setY(int y);
+
 
     default void setRotation(double x,double y,double z){}
 

@@ -7,6 +7,7 @@ import net.lucent.easygui.elements.inventory.DisplaySlot;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.interfaces.complex_events.Sticky;
+import net.lucent.easygui.properties.Positioning;
 import net.lucent.easygui.templating.actions.Action;
 import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,8 @@ import java.util.List;
 /**
  * handles all the scaling stuff
  */
+//TODO modify setX and setY for new positioning system
+//TODO setX and setY also take in a Positioning and calc
 //TODO add some sort up bubble up way of detecting child updates.
 // e.g if a child is updated it then calls a function on the parent telling it it was updated
 @OnlyIn(Dist.CLIENT)
@@ -43,7 +46,8 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     private int z;
     private int visibleX;
     private int visibleY;
-
+    private Positioning xPositioning = Positioning.START;
+    private Positioning yPositioning = Positioning.START;
     public int width;
     public int height;
 
@@ -197,10 +201,30 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
 
     @Override
     public int getX(){
-        return x;
+        int origin = switch (getXPositioning()){
+            case START -> 0;
+            case CENTER -> getParent().getWidth()/2;
+            case END -> getParent().getWidth();
+        };
+        return origin+getRawX();
     }
     @Override
     public int getY(){
+        int origin = switch (getYPositioning()){
+            case START -> 0;
+            case CENTER -> getParent().getHeight()/2;
+            case END -> getParent().getHeight();
+        };
+        return origin+getRawY();
+    }
+
+    @Override
+    public int getRawX() {
+        return x;
+    }
+
+    @Override
+    public int getRawY() {
         return y;
     }
 
@@ -249,8 +273,58 @@ public abstract class BaseRenderable implements ContainerRenderable, Sticky {
     public void setY(int y){
         this.y = y;
     }
+
+    @Override
+    public void setX(int x, Positioning positioning) {
+        if(positioning == xPositioning) setX(x);
+        //convert to positioning start. then convert to proper
+        int relativeToStart = 0;
+        if(positioning == Positioning.START) relativeToStart = x;
+        else if (positioning == Positioning.CENTER) relativeToStart = getParent().getWidth()/2+x;
+        else if(positioning == Positioning.END) relativeToStart = getParent().getWidth() + x;
+
+        //set x
+        if(xPositioning == Positioning.START) setX(x);
+        else if (xPositioning == Positioning.CENTER) setX(relativeToStart-getParent().getWidth()/2);
+        else if(xPositioning == Positioning.END) setX(relativeToStart-getParent().getWidth());
+
+    }
+
+    @Override
+    public void setY(int y, Positioning positioning) {
+        if(positioning == yPositioning) setY(y);
+        //convert to positioning start. then convert to proper
+        int relativeToStart = 0;
+        if(positioning == Positioning.START) relativeToStart = y;
+        else if (positioning == Positioning.CENTER) relativeToStart = getParent().getHeight()/2+x;
+        else if(positioning == Positioning.END) relativeToStart = getParent().getHeight() + x;
+
+        //set y
+        if(yPositioning == Positioning.START) setY(y);
+        else if (yPositioning == Positioning.CENTER) setY(relativeToStart-getParent().getHeight()/2);
+        else if(yPositioning == Positioning.END) setY(relativeToStart-getParent().getHeight());
+    }
+
     public void setZ(int z){
         this.z = z;
+    }
+
+    public void setXPositioning(Positioning xPositioning) {
+        this.xPositioning = xPositioning;
+    }
+
+    public void setYPositioning(Positioning yPositioning) {
+        this.yPositioning = yPositioning;
+    }
+
+    @Override
+    public Positioning getXPositioning() {
+        return xPositioning;
+    }
+
+    @Override
+    public Positioning getYPositioning() {
+        return yPositioning;
     }
 
     @Override

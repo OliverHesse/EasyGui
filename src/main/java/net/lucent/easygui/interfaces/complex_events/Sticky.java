@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+@Deprecated
 @OnlyIn(Dist.CLIENT)
 public interface Sticky extends ScreenResizeListener, GuiScaleListener {
 

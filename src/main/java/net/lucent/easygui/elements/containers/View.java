@@ -19,7 +19,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
-
+//TODO remove? screens should be able to handle all this
 @OnlyIn(Dist.CLIENT)
 public class View extends BaseRenderable implements ScreenResizeListener, GuiScaleListener {
     /**
@@ -138,15 +138,15 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
     }
 
     @Override
-    public int getScaledHeight() {
+    public int getHeight() {
         double scaleFactor = useCustomScaling ? getCustomScale() : 1;
-        return (int) (getHeight()/scaleFactor);
+        return (int) (super.getHeight()/scaleFactor);
     }
 
     @Override
-    public int getScaledWidth() {
+    public int getWidth() {
         double scaleFactor = useCustomScaling ? getCustomScale() : 1;
-        return (int) (getWidth()/scaleFactor);
+        return (int) (super.getWidth()/scaleFactor);
     }
 
     @Override
@@ -172,6 +172,8 @@ public class View extends BaseRenderable implements ScreenResizeListener, GuiSca
             setWidth(Minecraft.getInstance().getWindow().getWidth());
             setHeight(Minecraft.getInstance().getWindow().getHeight());
         }
+
+
     }
 
     @Override
