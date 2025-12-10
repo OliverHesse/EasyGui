@@ -1,33 +1,8 @@
--Current Feature-
-- add Textured combo Box
-- add Scroll comboBox for both Textured and normal
-- add Drop down menu(basically combo box but each val triggers a consumer)
-
-things to work on
-- add bezier curves
-- convert as many BaseRenderable functions as possible to default
--update how labels are made
-- override effect display
-- make culling work with rotation: (IMPOSSIBLE, ONLY WORKS ON NON ROTATED SQUARES)
-    - region math and region checking works
-    - cull region does not rotate so be careful with anything that involves culling
-    - try implement my own cut shader
-    - temporarily get it to support 0 90 180 270 rotation
+- known bugs
+    - dynamic scroll box calculates maxYOffset without accounting for box height
+    - dynamic scroll box calculates maxYOffset using x
+    - Positioning is broken with useMinecraftScaling = false
 
 
--potentially move all positioning over to double for accuracy
-
-bug fixes needed
-- sticky no longer works if use minecraft scale is false and custom scale != actual scale
-- clicking or dragging scrollbar can cause it to be permanently offset
-
--changes
-- getGlobalX() now properly applies rotation and scaling
-- change ScreenToLocal to work with new system
--make system work with rotations
-    - replace getGlobalScaledX/Y with getGlobalX/Y
-    - make getter and setter for positionTransform and transform
-
--bugs fixed
-- isMouseOver does not account for rotated stack
-- button click timer seems inconsistent
+- ideas
+    - add a max width for labels. so for centering it still uses current width, but wrapping uses maxWidth
