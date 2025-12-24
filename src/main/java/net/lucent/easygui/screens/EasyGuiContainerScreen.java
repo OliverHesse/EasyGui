@@ -194,8 +194,8 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
         guiGraphics.pose().pushPose();
         if(slot instanceof EasySlot easySlot){
-            easySlot.updatePose();
-            if(easySlot.pose != null) guiGraphics.pose().mulPose(easySlot.pose);
+
+            if(easySlot.getPose() != null) guiGraphics.pose().mulPose(easySlot.getPose());
             if(!easySlot.slot.isVisible()){
                 guiGraphics.pose().popPose();
                 return;
@@ -216,8 +216,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         guiGraphics.pose().pushPose();
         if(slot instanceof EasySlot easySlot){
 
-            easySlot.updatePose();
-            if(easySlot.posPose != null) guiGraphics.pose().mulPose(easySlot.posPose);
+            if(easySlot.getPosPose() != null) guiGraphics.pose().mulPose(easySlot.getPosPose());
             if(!easySlot.slot.isVisible()){
                 guiGraphics.pose().popPose();
                 return;
@@ -235,7 +234,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
     @Override
     public boolean isHovering(Slot slot, double mouseX, double mouseY) {
-        if(slot instanceof EasySlot easySlot) return easySlot.slot.isMouseOver(mouseX,mouseY);
+        if(slot instanceof EasySlot easySlot) return easySlot.isMouseOver(mouseX,mouseY);
         return super.isHovering(slot, mouseX, mouseY);
     }
 
