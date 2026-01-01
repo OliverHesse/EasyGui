@@ -1,8 +1,0 @@
-- known bugs
-    - dynamic scroll box calculates maxYOffset without accounting for box height
-    - dynamic scroll box calculates maxYOffset using x
-    - Positioning is broken with useMinecraftScaling = false
-
-
-- ideas
-    - add a max width for labels. so for centering it still uses current width, but wrapping uses maxWidth

@@ -1,25 +1,11 @@
 package net.lucent.easygui.util.math;
 
+import net.minecraft.world.phys.Vec2;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class BoundChecker {
 
-    public static class Vec2{
-        public int x;
-        public int y;
-        public Vec2(int x,int y){
-            this.x = x;
-            this.y = y;
-
-        }
-        public Vec2(Vector3f v){
-            this((int) v.x(),(int) v.y());
-
-        }
-
-
-    }
 
     public static class Rec2d{
         public Vec2 p1;
