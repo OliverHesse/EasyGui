@@ -1,7 +1,6 @@
 package net.lucent.easygui;
 
-import net.lucent.easygui.util.textures.TextureData;
-import net.lucent.easygui.util.textures.TextureDataSubSection;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.OnlyIn;
