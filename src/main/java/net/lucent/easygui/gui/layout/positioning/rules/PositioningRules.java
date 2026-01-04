@@ -3,6 +3,9 @@ package net.lucent.easygui.gui.layout.positioning.rules;
 import net.lucent.easygui.gui.RenderableElement;
 
 //think about making individual classes instead of dynamic like this
+/*
+    Holds some default Positioning Rules
+ */
 public class PositioningRules {
 
     //since transformations assume x input is using start rule when converting, old rule -> start -> new rule
