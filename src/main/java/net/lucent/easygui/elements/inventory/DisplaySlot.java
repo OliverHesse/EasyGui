@@ -33,7 +33,7 @@ public class DisplaySlot  extends SquareRenderable {
         this.slotIndex = slotIndex;
 
         EasyGuiContainerScreen<? extends AbstractContainerMenu> screen2 = ((EasyGuiContainerScreen<? extends AbstractContainerMenu>) getScreen());
-        ((EasyGuiContainerMenu)screen2.getMenu()).addSlot(new EasySlot(container,slotIndex,0,0,this));
+        ((AbstractContainerMenu)screen2.getMenu()).addSlot(new EasySlot(container,slotIndex,0,0,this));
     }
     public DisplaySlot(IEasyGuiScreen screen, int x, int y, int width, int height, int slotIndex,Container container,boolean renderDefaultSlot){
         this(screen,x,y,width,height,slotIndex,container);
