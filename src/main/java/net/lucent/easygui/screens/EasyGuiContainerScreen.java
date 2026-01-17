@@ -6,6 +6,7 @@ import net.lucent.easygui.holders.EasyGuiEventHolder;
 import net.lucent.easygui.interfaces.ContainerRenderable;
 import net.lucent.easygui.interfaces.IEasyGuiScreen;
 import net.lucent.easygui.util.inventory.EasySlot;
+import net.lucent.easygui.util.inventory.IEasySlot;
 import net.lucent.easygui.util.math.BoundChecker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -193,48 +194,48 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     @Override
     public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
         guiGraphics.pose().pushPose();
-        if(slot instanceof EasySlot easySlot){
+        if(slot instanceof IEasySlot easySlot){
 
             if(easySlot.getPose() != null) guiGraphics.pose().mulPose(easySlot.getPose());
-            if(!easySlot.slot.isVisible()){
+            if(!easySlot.getContainerRenderable().isVisible()){
                 guiGraphics.pose().popPose();
                 return;
             }
-            if (easySlot.slot.getActiveCullRegion() != null) {
-                BoundChecker.Rec2d activeRegion = easySlot.slot.getActiveCullRegion();
+            if (easySlot.getContainerRenderable().getActiveCullRegion() != null) {
+                BoundChecker.Rec2d activeRegion = easySlot.getContainerRenderable().getActiveCullRegion();
                 guiGraphics.enableScissor(activeRegion.p1.x,activeRegion.p1.y,activeRegion.p3.x,activeRegion.p3.y);
             }
 
         }
         super.renderSlot(guiGraphics, slot);
-        if(slot instanceof EasySlot easySlot && easySlot.slot.getActiveCullRegion() != null) guiGraphics.disableScissor();
+        if(slot instanceof IEasySlot easySlot && easySlot.getContainerRenderable().getActiveCullRegion() != null) guiGraphics.disableScissor();
         guiGraphics.pose().popPose();
     }
 
     @Override
     protected void renderSlotHighlight(GuiGraphics guiGraphics, Slot slot, int mouseX, int mouseY, float partialTick) {
         guiGraphics.pose().pushPose();
-        if(slot instanceof EasySlot easySlot){
+        if(slot instanceof IEasySlot easySlot){
 
             if(easySlot.getPosPose() != null) guiGraphics.pose().mulPose(easySlot.getPosPose());
-            if(!easySlot.slot.isVisible()){
+            if(!easySlot.getContainerRenderable().isVisible()){
                 guiGraphics.pose().popPose();
                 return;
             }
-            if (easySlot.slot.getActiveCullRegion() != null) {
-                BoundChecker.Rec2d activeRegion = easySlot.slot.getActiveCullRegion();
+            if (easySlot.getContainerRenderable().getActiveCullRegion() != null) {
+                BoundChecker.Rec2d activeRegion = easySlot.getContainerRenderable().getActiveCullRegion();
                 guiGraphics.enableScissor(activeRegion.p1.x,activeRegion.p1.y,activeRegion.p3.x,activeRegion.p3.y);
             }
         }
         guiGraphics.pose().translate(0,0,100f);
         super.renderSlotHighlight(guiGraphics, slot,mouseX,mouseY,partialTick);
-        if(slot instanceof EasySlot easySlot && easySlot.slot.getActiveCullRegion() != null) guiGraphics.disableScissor();
+        if(slot instanceof IEasySlot easySlot && easySlot.getContainerRenderable().getActiveCullRegion() != null) guiGraphics.disableScissor();
         guiGraphics.pose().popPose();
     }
 
     @Override
     public boolean isHovering(Slot slot, double mouseX, double mouseY) {
-        if(slot instanceof EasySlot easySlot) return easySlot.isMouseOver(mouseX,mouseY);
+        if(slot instanceof IEasySlot easySlot) return easySlot.isMouseOver(mouseX,mouseY);
         return super.isHovering(slot, mouseX, mouseY);
     }
 
