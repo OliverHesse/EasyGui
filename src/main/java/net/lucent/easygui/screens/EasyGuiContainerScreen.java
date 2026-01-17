@@ -197,7 +197,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         if(slot instanceof IEasySlot easySlot){
 
             if(easySlot.getPose() != null) guiGraphics.pose().mulPose(easySlot.getPose());
-            if(!easySlot.getContainerRenderable().isVisible()){
+            if(!easySlot.getContainerRenderable().isVisible() || !easySlot.getContainerRenderable().isActive()){
                 guiGraphics.pose().popPose();
                 return;
             }
@@ -218,7 +218,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         if(slot instanceof IEasySlot easySlot){
 
             if(easySlot.getPosPose() != null) guiGraphics.pose().mulPose(easySlot.getPosPose());
-            if(!easySlot.getContainerRenderable().isVisible()){
+            if(!easySlot.getContainerRenderable().isVisible() || !easySlot.getContainerRenderable().isActive()){
                 guiGraphics.pose().popPose();
                 return;
             }
