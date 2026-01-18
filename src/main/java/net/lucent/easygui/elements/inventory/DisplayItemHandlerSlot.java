@@ -16,19 +16,17 @@ public class DisplayItemHandlerSlot   extends SquareRenderable {
     public int slotIndex;
     public boolean renderDefaultSlot = true;
     public DisplayItemHandlerSlot(){}
-    public DisplayItemHandlerSlot(IEasyGuiScreen screen, int x, int y, int width, int height, int slotIndex, ItemStackHandler container){
+    public DisplayItemHandlerSlot(IEasyGuiScreen screen, int x, int y, int width, int height,String renderId){
         super(screen);
         setX(x);
         setY(y);
         setHeight(height);
         setWidth(width);
-        this.slotIndex = slotIndex;
 
-        EasyGuiContainerScreen<? extends AbstractContainerMenu> screen2 = ((EasyGuiContainerScreen<? extends AbstractContainerMenu>) getScreen());
-        ((AbstractContainerMenu)screen2.getMenu()).addSlot(new EasyItemHandlerSlot(container,slotIndex,0,0,this));
+        setID(renderId);
     }
-    public DisplayItemHandlerSlot(IEasyGuiScreen screen, int x, int y, int width, int height, int slotIndex,ItemStackHandler container,boolean renderDefaultSlot){
-        this(screen,x,y,width,height,slotIndex,container);
+    public DisplayItemHandlerSlot(IEasyGuiScreen screen, int x, int y, int width, int height, String renderId,boolean renderDefaultSlot){
+        this(screen,x,y,width,height,renderId);
         this.renderDefaultSlot = renderDefaultSlot;
     }
 
