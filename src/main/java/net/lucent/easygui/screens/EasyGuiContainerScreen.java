@@ -49,9 +49,14 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         views.add(view);
     }
 
+    @Override
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
+    }
 
     @Override
     protected void init() {
+
         Minecraft mc = Minecraft.getInstance();
 
         if(mc.getWindow().getHeight() != windowHeight || windowWidth != mc.getWindow().getWidth()){
@@ -193,6 +198,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
     @Override
     public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
+        /*
         guiGraphics.pose().pushPose();
         if(slot instanceof IEasySlot easySlot){
             ContainerRenderable renderable = this.getElementByID(easySlot.getRenderSlotId());
@@ -210,6 +216,9 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         super.renderSlot(guiGraphics, slot);
         if(slot instanceof IEasySlot easySlot && this.getElementByID(easySlot.getRenderSlotId()).getActiveCullRegion() != null) guiGraphics.disableScissor();
         guiGraphics.pose().popPose();
+
+         */
+        super.renderSlot(guiGraphics, slot);
     }
 
     @Override
