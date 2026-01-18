@@ -198,11 +198,10 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
     @Override
     public void renderSlot(GuiGraphics guiGraphics, Slot slot) {
-        /*
         guiGraphics.pose().pushPose();
         if(slot instanceof IEasySlot easySlot){
             ContainerRenderable renderable = this.getElementByID(easySlot.getRenderSlotId());
-            if(easySlot.getPose(this) != null) guiGraphics.pose().mulPose(easySlot.getPose(this ));
+            if(easySlot.getPose(this) != null) guiGraphics.pose().mulPose(easySlot.getPosPose(this ));
             if(!renderable.isVisible() || !renderable.isActive()){
                 guiGraphics.pose().popPose();
                 return;
@@ -216,9 +215,6 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         super.renderSlot(guiGraphics, slot);
         if(slot instanceof IEasySlot easySlot && this.getElementByID(easySlot.getRenderSlotId()).getActiveCullRegion() != null) guiGraphics.disableScissor();
         guiGraphics.pose().popPose();
-
-         */
-        super.renderSlot(guiGraphics, slot);
     }
 
     @Override
@@ -226,7 +222,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         guiGraphics.pose().pushPose();
         if(slot instanceof IEasySlot easySlot){
             ContainerRenderable renderable = this.getElementByID(easySlot.getRenderSlotId());
-            if(easySlot.getPosPose(this ) != null) guiGraphics.pose().mulPose(easySlot.getPosPose(this));
+            if(easySlot.getPosPose(this ) != null) guiGraphics.pose().mulPose(easySlot.getPose(this));
             if(!renderable.isVisible() || !renderable.isActive()){
                 guiGraphics.pose().popPose();
                 return;

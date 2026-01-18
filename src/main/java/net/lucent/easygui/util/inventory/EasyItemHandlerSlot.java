@@ -28,7 +28,7 @@ public class EasyItemHandlerSlot extends SlotItemHandler implements IEasySlot {
     @Override
     public boolean isMouseOver(double mouseX, double mouseY, IEasyGuiScreen screen) {
         if(screen.getElementByID(getRenderSlotId()) instanceof Hoverable hoverable){
-            hoverable.isMouseOver(mouseX,mouseY);
+            return   hoverable.isMouseOver(mouseX,mouseY);
         }
         return false;
     }
