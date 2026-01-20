@@ -157,7 +157,9 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
+
         eventHolder.MOUSE_MOVED_EVENT.call(mouseX, mouseY);
+        super.mouseMoved(mouseX,mouseY);
     }
 
     @Override

@@ -111,7 +111,9 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
     @Override
     public void mouseMoved(double mouseX, double mouseY) {
+
         eventHolder.MOUSE_MOVED_EVENT.call(mouseX, mouseY);
+        super.mouseMoved(mouseX,mouseY);
     }
 
     @Override
