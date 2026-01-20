@@ -82,6 +82,8 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
         if(tooltip != null) {
             tooltip.render(guiGraphics);
             tooltip = null;
+        }else{
+            renderTooltip(guiGraphics,mouseX,mouseY);
         }
     }
 
