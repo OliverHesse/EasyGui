@@ -236,7 +236,6 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
                 guiGraphics.enableScissor(activeRegion.p1.x,activeRegion.p1.y,activeRegion.p3.x,activeRegion.p3.y);
             }
         }
-        guiGraphics.pose().translate(0,0,100f);
         super.renderSlotHighlight(guiGraphics, slot,mouseX,mouseY,partialTick);
         if(slot instanceof IEasySlot easySlot && this.getElementByID(easySlot.getRenderSlotId()).getActiveCullRegion() != null) guiGraphics.disableScissor();
         guiGraphics.pose().popPose();
