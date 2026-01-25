@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
@@ -36,7 +37,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     private final HashMap<String,List<ContainerRenderable>> classMap = new HashMap<>();
 
     private EasyTooltip tooltip;
-
+    public  IEasySlot heldSlot = null;
     public EasyGuiContainerScreen(T menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
     }
@@ -74,17 +75,46 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     }
 
     @Override
-    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-        for(View view : views){
-            if(view.isActive()) view.render(guiGraphics,mouseX,mouseY,partialTick);
-        }
         if(tooltip != null) {
             tooltip.render(guiGraphics);
             tooltip = null;
         }else{
             renderTooltip(guiGraphics,mouseX,mouseY);
         }
+    }
+
+    @Override
+    protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
+        if (menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()) {
+            guiGraphics.pose().pushPose();
+            if(hoveredSlot instanceof IEasySlot easySlot){
+                ContainerRenderable renderable = this.getElementByID(easySlot.getRenderSlotId());
+
+                guiGraphics.pose().translate(x,y,0);
+                guiGraphics.pose().scale((float) renderable.getTotalCustomScale(), (float) renderable.getTotalCustomScale(),1);
+                if(!renderable.isVisible() || !renderable.isActive()){
+                    guiGraphics.pose().popPose();
+                    return;
+                }
+            }
+
+            ItemStack itemstack = this.hoveredSlot.getItem();
+            guiGraphics.renderTooltip(this.font, this.getTooltipFromContainerItem(itemstack), itemstack.getTooltipImage(), itemstack, 0,0);
+        }
+        super.renderTooltip(guiGraphics, x, y);
+
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+
+        for(View view : views){
+            if(view.isActive()) view.render(guiGraphics,mouseX,mouseY,partialTick);
+        }
+
     }
 
 
@@ -143,7 +173,26 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
 
         eventHolder.CLICK_EVENT.call(mouseX, mouseY, button);
-        return super.mouseClicked(mouseX,mouseY,button);
+        boolean result = super.mouseClicked(mouseX,mouseY,button);
+        if(menu.getCarried() == ItemStack.EMPTY && heldSlot != null ) heldSlot = null;
+        else if(menu.getCarried() != ItemStack.EMPTY && hoveredSlot != null && hoveredSlot instanceof IEasySlot){
+            heldSlot = (IEasySlot) hoveredSlot;
+        }
+        return result;
+    }
+
+    @Override
+    public void renderFloatingItem(GuiGraphics guiGraphics, ItemStack stack, int x, int y, String text) {
+        if(heldSlot != null) {
+            guiGraphics.pose().pushPose();
+            ContainerRenderable renderable = this.getElementByID(heldSlot.getRenderSlotId());
+
+            guiGraphics.pose().translate(x,y,0);
+            guiGraphics.pose().scale((float) renderable.getTotalCustomScale(), (float) renderable.getTotalCustomScale(),1);
+            super.renderFloatingItem(guiGraphics, stack, 0,0, text);
+            guiGraphics.pose().popPose();
+        }
+        else super.renderFloatingItem(guiGraphics, stack, x, y, text);
     }
 
     @Override
@@ -249,6 +298,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-
     }
+
+
 }

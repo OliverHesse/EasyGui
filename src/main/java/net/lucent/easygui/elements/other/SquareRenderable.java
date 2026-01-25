@@ -37,7 +37,7 @@ public abstract class SquareRenderable extends BaseRenderable implements Hoverab
         //.mul((float) (getApplicableMinecraftScale()/getTotalCustomScale()))
 
         if(getTransform() == null) return false;
-        Vector3f p1 = getTransform().transformPosition(new Vector3f(0,0,0));;
+        Vector3f p1 = getTransform().transformPosition(new Vector3f(0,0,0));
         Vector3f p2 = getTransform().transformPosition(new Vector3f(getWidth(),0,0));
         Vector3f p3 = getTransform().transformPosition(new Vector3f(getWidth(),getHeight(),0));
         Vector3f p4 = getTransform().transformPosition(new Vector3f(0,getHeight(),0));

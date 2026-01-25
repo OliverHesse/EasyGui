@@ -86,8 +86,6 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-
-
         //Curves.drawCurve(guiGraphics,new BoundChecker.Vec2(0,0),new BoundChecker.Vec2(300,300));
         if(!views.isEmpty()) {
             if (activeView == null) {
@@ -96,13 +94,14 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
             }
             activeView.render(guiGraphics, mouseX, mouseY, partialTick);
         }
+
+
         if(tooltip != null) {
             tooltip.render(guiGraphics);
             tooltip = null;
         }
-
-
     }
+
 
     @Override
     public void register(ContainerRenderable renderable) {
