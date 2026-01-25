@@ -94,7 +94,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
                 ContainerRenderable renderable = this.getElementByID(easySlot.getRenderSlotId());
 
                 guiGraphics.pose().translate(x,y,0);
-                guiGraphics.pose().scale((float) renderable.getTotalCustomScale(), (float) renderable.getTotalCustomScale(),1);
+                guiGraphics.pose().scale((float) renderable.getTotalScaleFactorX(), (float) renderable.getTotalScaleFactorX(),1);
                 if(!renderable.isVisible() || !renderable.isActive()){
                     guiGraphics.pose().popPose();
                     return;
@@ -188,7 +188,7 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
             ContainerRenderable renderable = this.getElementByID(heldSlot.getRenderSlotId());
 
             guiGraphics.pose().translate(x,y,0);
-            guiGraphics.pose().scale((float) renderable.getTotalCustomScale(), (float) renderable.getTotalCustomScale(),1);
+            guiGraphics.pose().scale((float) renderable.getTotalScaleFactorX(), (float) renderable.getTotalScaleFactorX(),1);
             super.renderFloatingItem(guiGraphics, stack, 0,0, text);
             guiGraphics.pose().popPose();
         }
