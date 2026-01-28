@@ -103,8 +103,13 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
             ItemStack itemstack = this.hoveredSlot.getItem();
             guiGraphics.renderTooltip(this.font, this.getTooltipFromContainerItem(itemstack), itemstack.getTooltipImage(), itemstack, 0,0);
+            guiGraphics.pose().popPose();
+            return;
         }
+
         super.renderTooltip(guiGraphics, x, y);
+
+
 
     }
 
