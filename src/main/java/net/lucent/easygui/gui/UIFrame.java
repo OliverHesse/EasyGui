@@ -130,7 +130,6 @@ public class UIFrame {
     public boolean renderItemTooltip(GuiGraphics guiGraphics, AbstractContainerScreen<?> screen, int x, int y){
         if (screen.getMenu().getCarried().isEmpty() && screen.hoveredSlot != null && screen.hoveredSlot.hasItem()) {
 
-
             guiGraphics.pose().pushPose();
             if(hasRenderableLinkedToSlot(screen.hoveredSlot.index)){
                 RenderableElement element = getSlotLinkedRenderable(screen.hoveredSlot.index);

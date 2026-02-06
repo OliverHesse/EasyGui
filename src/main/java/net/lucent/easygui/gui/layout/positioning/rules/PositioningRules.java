@@ -2,6 +2,7 @@ package net.lucent.easygui.gui.layout.positioning.rules;
 
 import net.lucent.easygui.gui.RenderableElement;
 
+//TODO change to have only 1 set of getters for getCoordinate/getRawCoordinate ?
 //think about making individual classes instead of dynamic like this
 /*
     Holds some default Positioning Rules
@@ -21,13 +22,15 @@ public class PositioningRules {
             if(renderableElement.getParent() == null){
                 return rawX-renderableElement.getUiFrame().getWidth()/2;
             }
-            return rawX-renderableElement.getWidth()/2;
+            return rawX-renderableElement.getParent().getWidth()/2;
         }
 
         @Override
         public int getRawX(int x, RenderableElement renderableElement) {
             if(renderableElement.getParent() == null){
                 //use frame
+                System.out.println("frame width: "+renderableElement.getUiFrame().getWidth());
+
                 return renderableElement.getUiFrame().getWidth()/2+x;
             }
             return renderableElement.getParent().getWidth()/2+x;
@@ -38,7 +41,7 @@ public class PositioningRules {
             if(renderableElement.getParent() == null){
                 return rawY-renderableElement.getUiFrame().getHeight()/2;
             }
-            return rawY-renderableElement.getHeight()/2;
+            return rawY-renderableElement.getParent().getHeight()/2;
         }
 
         @Override

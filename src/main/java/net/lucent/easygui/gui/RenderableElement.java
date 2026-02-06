@@ -2,6 +2,8 @@ package net.lucent.easygui.gui;
 
 import net.lucent.easygui.gui.events.EventPhase;
 import net.lucent.easygui.gui.layout.positioning.Positioning;
+import net.lucent.easygui.gui.layout.positioning.context.PositioningContexts;
+import net.lucent.easygui.gui.layout.positioning.rules.PositioningRules;
 import net.lucent.easygui.gui.layout.transform.Transform;
 import net.lucent.easygui.gui.listeners.IEasyEventListener;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,8 +33,8 @@ public class RenderableElement {
     private int width;
     private int height;
 
-    private boolean active;
-    private boolean visible;
+    private boolean active = true;
+    private boolean visible  =true;
 
     private int zIndex;
     private final List<RenderableElement> children = new ArrayList<>();
@@ -42,7 +44,9 @@ public class RenderableElement {
     private boolean canBeFocused;
 
     public RenderableElement(UIFrame frame){
-        this.uiFrame = getUiFrame();
+        this.uiFrame = frame;
+        positioning =  new Positioning(PositioningContexts.ABSOLUTE, PositioningRules.CENTER,this);
+        transform  = new Transform(this);
     }
     public RenderableElement(UIFrame frame,int x, int y){
         this(frame);
@@ -169,12 +173,12 @@ public class RenderableElement {
         if(!isActive()) return;
         guiGraphics.pose().pushPose();
         guiGraphics.pose().mulPose(getPositioningTransform());
-
+        guiGraphics.pose().mulPose(getTransform());
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
         if(!isVisible()) return;
         render(guiGraphics,mouseX,mouseY,partialTick);
 
-        guiGraphics.pose().mulPose(getTransform());
+
         runChildren(guiGraphics,mouseX,mouseY,partialTick);
         guiGraphics.pose().popPose();
     }

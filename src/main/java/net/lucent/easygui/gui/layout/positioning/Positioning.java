@@ -31,10 +31,15 @@ public class Positioning {
 
     private RenderableElement element;
 
-    public Positioning(IPositioningContext context, IPositioningRule xPositioning,IPositioningRule yPositioning){
+    public Positioning(IPositioningContext context, IPositioningRule xPositioning,IPositioningRule yPositioning,RenderableElement element){
         this.context = context;
         this.xPositioning = xPositioning;
         this.yPositioning = yPositioning;
+        setElement(element);
+        updatePositionMatrix();
+    }
+    public Positioning(IPositioningContext context,IPositioningRule positioningRule,RenderableElement element){
+        this(context,positioningRule,positioningRule,element);
     }
 
     public void setElement(RenderableElement element) {
@@ -44,20 +49,29 @@ public class Positioning {
 
     public void setPositioningContext(IPositioningContext context){
         this.context = context;
+        updatePositionMatrix();
     }
 
 
     //========================= Set Positioning Rule ======================
 
     public void setXPositioningRule(IPositioningRule rule){
+        setXPositioning(rule,false);
+    }
+    public void setXPositioning(IPositioningRule rule,boolean keepRawX){
         this.xPositioning = rule;
-        setX(rule.getX(getRawX(),element));
-        updateRawX();
+        if(keepRawX) setX(rule.getX(getRawX(),element));
+        else setX(0);
+
+
     }
     public void setYPositioningRule(IPositioningRule rule){
-        this.yPositioning = rule;
-        setY(rule.getY(getRawY(),element));
-        updateRawY();
+        setYPositioning(rule,false);
+    }
+    public void setYPositioning(IPositioningRule rule, boolean keepRawY){
+        this.xPositioning = rule;
+        if(keepRawY) setY(rule.getY(getRawY(),element));
+        else setY(0);
     }
     public void setPositioningRule(IPositioningRule rule){
         this.xPositioning  =rule;
@@ -74,6 +88,7 @@ public class Positioning {
 
         //get the context matrix
         Matrix4f contextMatrix = context.getPositioningContextMatrix(element);
+        System.out.println("trying to position element at " + rawX+","+rawY);
         positionMatrix = contextMatrix.translate(rawX,rawY,0);
     }
 

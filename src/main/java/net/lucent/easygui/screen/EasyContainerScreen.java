@@ -76,6 +76,7 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         getUIFrame().run(guiGraphics,mouseX,mouseY,partialTick);
+        getUIFrame().renderItemTooltip(guiGraphics,this,mouseX,mouseY);
     }
 
 

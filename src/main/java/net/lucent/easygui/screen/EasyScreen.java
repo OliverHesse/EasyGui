@@ -32,12 +32,12 @@ public class EasyScreen extends Screen implements IEasyScreen{
 
     @Override
     protected void init() {
-        frame.onWindowResize(Minecraft.getInstance());
+        getUIFrame().onWindowResize(Minecraft.getInstance());
     }
 
     @Override
     public void resize(Minecraft minecraft, int width, int height) {
-        frame.onWindowResize(minecraft);
+        getUIFrame().onWindowResize(minecraft);
     }
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
