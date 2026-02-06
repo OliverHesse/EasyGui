@@ -1,13 +1,16 @@
 package net.lucent.easygui.gui;
 
+import net.lucent.easygui.gui.events.EventPhase;
 import net.lucent.easygui.gui.layout.positioning.Positioning;
 import net.lucent.easygui.gui.layout.transform.Transform;
+import net.lucent.easygui.gui.listeners.IEasyEventListener;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RenderableElement {
@@ -16,6 +19,12 @@ public class RenderableElement {
     public Transform transform;
     public RenderableElement parent;
     public UIFrame uiFrame;
+
+    private String id;
+    private final List<String> classes = new ArrayList<>();
+
+    private final HashMap<String, List<IEasyEventListener>> bubbleListeners = new HashMap<>();
+    private final HashMap<String, List<IEasyEventListener>> captureListeners = new HashMap<>();
 
     private int width;
     private int height;
@@ -26,6 +35,8 @@ public class RenderableElement {
 
     private int zIndex;
     private final List<RenderableElement> children = new ArrayList<>();
+    private final List<RenderableElement> childAdditionBuffer = new ArrayList<>();
+    private final List<RenderableElement> childRemovalBuffer = new ArrayList<>();
     //================ SHAPE =================
     public int getWidth(){
         return width;
@@ -87,6 +98,43 @@ public class RenderableElement {
     public void setZIndex(int zIndex){this.zIndex = zIndex;}
 
     public int getZIndex(){return this.zIndex;}
+
+    public String getId() {
+        return id;
+    }
+    public List<String> getClasses(){
+        return classes;
+    }
+    public void clearClasses(){
+        for(String classId : getClasses()){
+            getUiFrame().removeClass(classId,this);
+        }
+        getClasses().clear();
+    }
+    public void setId(String id){
+        getUiFrame().setId(id,this);
+        this.id = id;
+    }
+
+    public void removeClass(String classId){
+        getUiFrame().removeClass(classId,this);
+        getClasses().remove(classId);
+    }
+
+    public void addClasses(List<String> classIds){
+        for(String classId : classIds){
+            getUiFrame().addClass(classId,this);
+        }
+        getClasses().addAll(classIds);
+
+    }
+
+    public void addClass(String classId){
+        getUiFrame().addClass(classId,this);
+        getClasses().add(classId);
+    }
+
+
     //================== RUNTIME ======================
     protected void run(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){
         if(!isActive()) return;
@@ -100,17 +148,60 @@ public class RenderableElement {
     public void render(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){}
     public void runChildren(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){}
 
+    public void onRemove(){}
+    //====================== EVENTS ============================
+    public void addEventListener(String event, IEasyEventListener eventListener, EventPhase phase){
+        if(phase == EventPhase.CAPTURE){
+            captureListeners.computeIfAbsent(event,key -> new ArrayList<>()).addFirst(eventListener);
+        }else{
+            bubbleListeners.computeIfAbsent(event,key -> new ArrayList<>()).addFirst(eventListener);
+        }
+    }
+    public void addEventListener(String event,IEasyEventListener eventListener){
+        addEventListener(event,eventListener,EventPhase.BUBBLE);
+    }
+
+    public List<IEasyEventListener> getCaptureListeners(String event){return captureListeners.get(event);}
+    public List<IEasyEventListener> getBubbleListeners(String event){return bubbleListeners.get(event);}
     //====================== CHILDREN ==========================
 
     public boolean hasChildren(){
-        return !children.isEmpty();
+        return !children.isEmpty() || !childAdditionBuffer.isEmpty();
+    }
+
+    public void addChild(RenderableElement element){
+        element.parent = this;
+        childAdditionBuffer.add(element);
+    }
+    public void clearChildAdditionBuffer(){
+        children.addAll(childAdditionBuffer);
+        childAdditionBuffer.clear();
+    }
+
+    public void clearChildRemovalBuffer(){
+        for(RenderableElement element : childRemovalBuffer){
+            element.onRemove();
+            element.removeChildren();
+        }
+        childRemovalBuffer.clear();
+    }
+
+    public void removeChildren(){
+        childRemovalBuffer.addAll(children);
+    }
+
+    public List<RenderableElement> getChildren(){
+        ArrayList<RenderableElement> arrayList = new ArrayList<>();
+        arrayList.addAll(children);
+        arrayList.addAll(childAdditionBuffer);
+        return arrayList;
     }
 
     //TODO see if i can make more efficient
     //order by z index. if z index match order by position in original list
     public List<RenderableElement> getPriorityOrderedChildren(){
         List<RenderableElement> orderedList = new ArrayList<>();
-        for (RenderableElement element : children){
+        for (RenderableElement element : getChildren()){
             //try insert into list
             if(orderedList.isEmpty()) {
                 orderedList.add(element);

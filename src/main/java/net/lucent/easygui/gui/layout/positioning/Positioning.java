@@ -39,11 +39,30 @@ public class Positioning {
     }
     //========================= Set Positioning Context ==================
 
-    //TODO
+    public void setPositioningContext(IPositioningContext context){
+        this.context = context;
+    }
+
 
     //========================= Set Positioning Rule ======================
 
-    //TODO
+    public void setXPositioningRule(IPositioningRule rule){
+        this.xPositioning = rule;
+        setX(rule.getX(getRawX(),element));
+        updateRawX();
+    }
+    public void setYPositioningRule(IPositioningRule rule){
+        this.yPositioning = rule;
+        setY(rule.getY(getRawY(),element));
+        updateRawY();
+    }
+    public void setPositioningRule(IPositioningRule rule){
+        this.xPositioning  =rule;
+        this.yPositioning= rule;
+        setX(rule.getX(getRawX(),element));
+        setY(rule.getY(getRawY(),element));
+        updateRawCoordinates();
+    }
 
     //========================= Position Matrix ===========================
     public void updatePositionMatrix(){
