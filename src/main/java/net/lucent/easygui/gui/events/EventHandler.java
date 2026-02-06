@@ -1,6 +1,7 @@
 package net.lucent.easygui.gui.events;
 
 import net.lucent.easygui.gui.RenderableElement;
+import net.lucent.easygui.gui.listeners.IEasyEventListener;
 import net.minecraft.client.Minecraft;
 
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.List;
 public class EventHandler {
 
 
-    //TODO allow for optional skipping of bubble or capture phase?
     public static void runEvent(EasyEvent event){
 
         List<RenderableElement> capturePath = EventHelper.createEventPath(event.getTarget());
@@ -16,21 +16,40 @@ public class EventHandler {
         for(RenderableElement element : capturePath){
             event.setCurrentElement(element);
             //run event code
-                //TODO
+            for(IEasyEventListener listener : event.getCurrentElement().getCaptureListeners(event.getEvent())){
+                event.listenerRun();
+                listener.run(event);
+
+            }
             //check if canceled
             if(event.isCanceled()) break; //potentially change to return unless i add important code after this
         }
         if(event.isCanceled()) return;
 
+        RenderableElement currentElement = event.getTarget();
+        event.setEventPhase(EventPhase.AT_TARGET);
+        for(IEasyEventListener listener : currentElement.getCaptureListeners(event.getEvent())){
+            listener.run(event);
+            event.listenerRun();
+        }
+        for(IEasyEventListener listener : currentElement.getBubbleListeners(event.getEvent())){
+            listener.run(event);
+            event.listenerRun();
+        }
+
+        currentElement = currentElement.getParent();
+
         //run bubble up code
 
-        RenderableElement currentElement = event.getTarget();
+        event.setEventPhase(EventPhase.BUBBLE);
         while(currentElement != null){
             event.setCurrentElement(currentElement);
 
             //run event code
-                //TODO
-
+            for(IEasyEventListener listener : event.getCurrentElement().getBubbleListeners(event.getEvent())){
+                listener.run(event);
+                event.listenerRun();
+            }
             //check if canceled
             if(event.isCanceled()) return;
             currentElement = currentElement.getParent();

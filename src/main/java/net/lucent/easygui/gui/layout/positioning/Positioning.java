@@ -5,6 +5,9 @@ import net.lucent.easygui.gui.layout.positioning.context.IPositioningContext;
 import net.lucent.easygui.gui.layout.positioning.rules.IPositioningRule;
 import org.joml.Matrix4f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Handles the positioning of the element
  * uses a context to determine relative to what is it positioned
@@ -115,4 +118,18 @@ public class Positioning {
     public int getRawX(){return this.rawX;}
     public int getRawY(){return this.rawY;}
     public Matrix4f getPositionMatrix(){return this.positionMatrix;}
+    public Matrix4f getCompletePositionMatrix(){
+        if(element.getParent() == null) return positionMatrix;
+        RenderableElement currentElement = element.getParent();
+        List<RenderableElement> elements = new ArrayList<>();
+        while(currentElement != null){
+            elements.addFirst(currentElement);
+            currentElement = currentElement.getParent();
+        }
+        Matrix4f completeMatrix = new Matrix4f();
+        for(RenderableElement positionedElement : elements){
+            completeMatrix = completeMatrix.mul(positionedElement.getPositioningTransform().mul(positionedElement.getTransform()));
+        }
+        return completeMatrix.mul(positionMatrix);
+    }
 }

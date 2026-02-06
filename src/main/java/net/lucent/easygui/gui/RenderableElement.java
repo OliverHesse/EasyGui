@@ -7,7 +7,9 @@ import net.lucent.easygui.gui.listeners.IEasyEventListener;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,13 +32,24 @@ public class RenderableElement {
     private int height;
 
     private boolean active;
-    private boolean focused;
     private boolean visible;
 
     private int zIndex;
     private final List<RenderableElement> children = new ArrayList<>();
     private final List<RenderableElement> childAdditionBuffer = new ArrayList<>();
     private final List<RenderableElement> childRemovalBuffer = new ArrayList<>();
+
+    private boolean canBeFocused;
+
+    public RenderableElement(UIFrame frame){
+        this.uiFrame = getUiFrame();
+    }
+    public RenderableElement(UIFrame frame,int x, int y){
+        this(frame);
+        positioning.setX(x);
+        positioning.setY(y);
+    }
+
     //================ SHAPE =================
     public int getWidth(){
         return width;
@@ -51,9 +64,17 @@ public class RenderableElement {
         this.height = height;
     }
 
-    //TODO
-    public boolean isPointBounded(int x,int y){
-        return false;
+
+    public boolean isPointBounded(double x,double y){
+
+
+        Matrix4f totalTransform = getCompletePositioningTransform().mul(getTransform());
+        Vector3f p1 = totalTransform.transformPosition(new Vector3f(0,0,0));
+
+        Vector3f p2 = totalTransform.transformPosition(new Vector3f(getWidth(),getHeight(),0));
+
+        Vec2 mousePos = new Vec2((float) x,(float)y);
+        return mousePos.x > p1.x && mousePos.y > p1.y && mousePos.x < p2.x && mousePos.y < p2.y;
     }
     //================= TRANSFORMATION MATRICES ===================
     //returns total transform including scale and rotation
@@ -64,6 +85,7 @@ public class RenderableElement {
     public Matrix4f getPositioningTransform(){
         return positioning.getPositionMatrix();
     }
+    public Matrix4f getCompletePositioningTransform(){return positioning.getCompletePositionMatrix();}
 
     /**
      *
@@ -89,11 +111,9 @@ public class RenderableElement {
     }
     public boolean isActive(){return this.active;}
     public boolean isVisible(){return this.visible;}
-    public boolean isFocused(){return this.focused;}
 
     public void setActive(boolean active){this.active = active;}
     public void setVisible(boolean visible){this.visible =visible;}
-    public void setFocused(boolean focused){this.focused = focused;}
 
     public void setZIndex(int zIndex){this.zIndex = zIndex;}
 
@@ -134,14 +154,29 @@ public class RenderableElement {
         getClasses().add(classId);
     }
 
+    public boolean isFocusable(){
+        return canBeFocused;
+    }
+    public boolean isFocused(){
+        return isFocusable() && getUiFrame().getFocusedElement() == this;
+    }
 
+    public void setFocused(boolean focus){
+        getUiFrame().trySetFocus(this,focus);
+    }
     //================== RUNTIME ======================
     protected void run(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){
         if(!isActive()) return;
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().mulPose(getPositioningTransform());
+
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
         if(!isVisible()) return;
         render(guiGraphics,mouseX,mouseY,partialTick);
+
+        guiGraphics.pose().mulPose(getTransform());
         runChildren(guiGraphics,mouseX,mouseY,partialTick);
+        guiGraphics.pose().popPose();
     }
 
     public void renderTick(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){}
