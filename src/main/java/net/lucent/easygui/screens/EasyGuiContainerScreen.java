@@ -16,9 +16,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec2;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
+import oshi.util.tuples.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +53,11 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
     }
 
     @Override
+    public View getActiveView() {
+        return views.getFirst();
+    }
+
+    @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
     }
@@ -73,11 +80,18 @@ public class EasyGuiContainerScreen<T extends AbstractContainerMenu> extends Abs
 
         }
     }
+    public void tempMethodForJEISupWhilstIRefactorCodeBase(){
+        Pair<Vec2,Vec2> points =  getFurthestAndNearestPoint();
+        this.inventoryLabelX = (int) points.getA().x;
+        this.inventoryLabelY = (int) points.getA().y;
+        this.imageWidth = (int) (points.getB().x-points.getA().x);
+        this.imageHeight = (int) (points.getB().y-points.getA().y);
+    }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-
+        tempMethodForJEISupWhilstIRefactorCodeBase();
         if(tooltip != null) {
             tooltip.render(guiGraphics);
             tooltip = null;

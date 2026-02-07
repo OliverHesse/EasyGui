@@ -68,6 +68,11 @@ public class EasyGuiScreen extends Screen implements IEasyGuiScreen {
     }
 
     @Override
+    public View getActiveView() {
+        return activeView;
+    }
+
+    @Override
     public void setActiveView(View view) {
 
         for(View disableView : views){
