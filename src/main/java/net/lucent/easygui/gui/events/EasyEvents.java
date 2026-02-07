@@ -1,6 +1,12 @@
 package net.lucent.easygui.gui.events;
 
+
 public class EasyEvents {
+
+    /*TODO
+        add a element position transform changed and element transform changed
+        this is important for stuff like JEI compatibility
+     */
 
     public static String MOUSE_DOWN_EVENT = "mouse_down_event";
     public static String MOUSE_UP_EVENT = "mouse_up_event";
