@@ -124,6 +124,11 @@ public class EasyGuiOverlay implements IEasyGuiScreen {
     }
 
     @Override
+    public View getActiveView() {
+        return view;
+    }
+
+    @Override
     public void removeView(View view) {
 
     }
