@@ -16,6 +16,18 @@ public class EventHelper {
             currentElement = currentElement.getParent();
         }
         return path;
+    }
+    public static List<RenderableElement> getAllElements(RenderableElement startElement){
+        ArrayList<RenderableElement> finalList = new ArrayList<>();
+        ArrayList<RenderableElement> notExplored = new ArrayList<>();
+        notExplored.add(startElement);
+
+        while(!notExplored.isEmpty()){
+            RenderableElement element = notExplored.removeFirst();
+            notExplored.addAll(element.getChildren());
+            finalList.add(element);
+        }
+        return finalList;
 
     }
 }

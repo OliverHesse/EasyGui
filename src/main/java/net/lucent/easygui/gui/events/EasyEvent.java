@@ -44,6 +44,9 @@ public class EasyEvent {
     public EasyEvent(RenderableElement target,String event,int keyCode,int scanCode,int modifiers){
         this(target,event,0.0,0.0,0,0.0,0.0,0.0,0.0,keyCode,scanCode,modifiers);
     }
+    public EasyEvent(String event){
+        this(null,event,0.0,0.0,0,0.0,0.0,0.0,0.0,0,0,0);
+    }
 
     //general
     public EasyEvent(RenderableElement target,String event, double mouseX, double mouseY, int button,double deltaX,double deltaY,double dragX,double dragY,int keyCode,int scanCode,int modifiers){

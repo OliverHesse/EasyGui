@@ -9,15 +9,17 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 
 public class EasyScreen extends Screen implements IEasyScreen{
-    UIFrame frame = new UIFrame();
+    private final UIFrame frame;
 
 
     public EasyScreen(Component title,UIFrame frame){
         super(title);
         this.frame = frame;
+        getUIFrame().onWindowResize(Minecraft.getInstance());
     }
     public EasyScreen(Component title) {
         super(title);
+        frame = new UIFrame();
     }
 
 

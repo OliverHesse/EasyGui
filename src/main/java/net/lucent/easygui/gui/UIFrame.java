@@ -2,6 +2,7 @@ package net.lucent.easygui.gui;
 
 import net.lucent.easygui.gui.events.EasyEvent;
 import net.lucent.easygui.gui.events.EasyEvents;
+import net.lucent.easygui.gui.events.EventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -43,9 +44,17 @@ public class UIFrame {
     }
 
     public void updateDimensions(Minecraft minecraft){
+        System.out.println("updating dimensions");
+
         width = isUsingMinecraftScale() ? minecraft.getWindow().getGuiScaledWidth() : minecraft.getWindow().getWidth();
         height = isUsingMinecraftScale() ? minecraft.getWindow().getGuiScaledHeight() : minecraft.getWindow().getHeight();
+
+        EventHandler.runForAllChildren(new EasyEvent(EasyEvents.FRAME_DIMENSIONS_CHANGE_EVENT),this);
+
+        System.out.println("width : "+minecraft.getWindow().getWidth());
+        System.out.println("height : "+minecraft.getWindow().getHeight());
     }
+
 
     public void onWindowResize(Minecraft minecraft){
         updateBaseTransform();
@@ -96,6 +105,8 @@ public class UIFrame {
         root = element;
     }
     //======================= GETTERS =======================
+
+    public RenderableElement getRoot(){return root;}
 
     public boolean isUsingMinecraftScale(){return this.useMinecraftScale;}
 

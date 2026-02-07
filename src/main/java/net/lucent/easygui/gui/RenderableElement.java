@@ -1,5 +1,6 @@
 package net.lucent.easygui.gui;
 
+import net.lucent.easygui.gui.events.EasyEvents;
 import net.lucent.easygui.gui.events.EventPhase;
 import net.lucent.easygui.gui.layout.positioning.Positioning;
 import net.lucent.easygui.gui.layout.positioning.context.PositioningContexts;
@@ -47,6 +48,10 @@ public class RenderableElement {
         this.uiFrame = frame;
         positioning =  new Positioning(PositioningContexts.ABSOLUTE, PositioningRules.CENTER,this);
         transform  = new Transform(this);
+        addEventListener(EasyEvents.FRAME_DIMENSIONS_CHANGE_EVENT,(easyEvent)->{
+            System.out.println("event resize revcieved");
+            positioning.updatePositionMatrix();
+        });
     }
     public RenderableElement(UIFrame frame,int x, int y){
         this(frame);
@@ -200,8 +205,12 @@ public class RenderableElement {
         addEventListener(event,eventListener,EventPhase.BUBBLE);
     }
 
-    public List<IEasyEventListener> getCaptureListeners(String event){return captureListeners.get(event);}
-    public List<IEasyEventListener> getBubbleListeners(String event){return bubbleListeners.get(event);}
+    public List<IEasyEventListener> getCaptureListeners(String event){
+        return captureListeners.containsKey(event) ? captureListeners.get(event) : List.of();
+    }
+    public List<IEasyEventListener> getBubbleListeners(String event){
+        return bubbleListeners.containsKey(event) ? bubbleListeners.get(event) : List.of();
+    }
     //====================== CHILDREN ==========================
 
     public boolean hasChildren(){

@@ -9,4 +9,6 @@ public class EasyEvents {
     public static String MOUSE_DRAG_EVENT = "mouse_drag_event";
     public static String KEY_DOWN_EVENT = "key_press_event";
     public static String KEY_UP_EVENT = "key_up_event";
+    public static String FRAME_DIMENSIONS_CHANGE_EVENT = "frame_dimension_change_event";
+
 }

@@ -1,6 +1,7 @@
 package net.lucent.easygui.gui.events;
 
 import net.lucent.easygui.gui.RenderableElement;
+import net.lucent.easygui.gui.UIFrame;
 import net.lucent.easygui.gui.listeners.IEasyEventListener;
 import net.minecraft.client.Minecraft;
 
@@ -56,5 +57,21 @@ public class EventHandler {
 
         }
 
+    }
+
+    public static void runForAllChildren(EasyEvent event, UIFrame frame){
+        RenderableElement root =  frame.getRoot();
+        event.setEventPhase(EventPhase.AT_TARGET);
+        for(RenderableElement element : EventHelper.getAllElements(root)){
+            event.setCurrentElement(element);
+            for(IEasyEventListener listener : event.getCurrentElement().getCaptureListeners(event.getEvent())){
+                listener.run(event);
+                event.listenerRun();
+            }
+            for(IEasyEventListener listener : event.getCurrentElement().getBubbleListeners(event.getEvent())){
+                listener.run(event);
+                event.listenerRun();
+            }
+        }
     }
 }
