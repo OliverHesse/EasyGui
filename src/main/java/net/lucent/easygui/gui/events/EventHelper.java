@@ -18,6 +18,8 @@ public class EventHelper {
         return path;
     }
     public static List<RenderableElement> getAllElements(RenderableElement startElement){
+        if(startElement == null) return List.of();
+
         ArrayList<RenderableElement> finalList = new ArrayList<>();
         ArrayList<RenderableElement> notExplored = new ArrayList<>();
         notExplored.add(startElement);

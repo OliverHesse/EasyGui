@@ -133,7 +133,9 @@ public class UIFrame {
     public void run(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
         guiGraphics.pose().pushPose();
         guiGraphics.pose().mulPose(getBaseTransform());
+
         highestPriorityHoveredElement =  root.getHighestPriorityChildWithBoundedPoint(mouseX,mouseY);
+
         if(root != null) root.run(guiGraphics,mouseX,mouseY,partialTick);
         guiGraphics.pose().popPose();
     }
@@ -221,22 +223,26 @@ public class UIFrame {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(highestPriorityHoveredElement == null) return false;
         EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_DOWN_EVENT,mouseX,mouseY,button);
+        EventHandler.runEvent(event);
         return event.didRunListener();
     }
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if(highestPriorityHoveredElement == null) return false;
         EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_UP_EVENT,mouseX,mouseY,button);
+        EventHandler.runEvent(event);
         return event.didRunListener();
     }
     public void mouseMoved(double mouseX, double mouseY){
         if(highestPriorityHoveredElement == null) return;
         EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_MOVE_EVENT,mouseX,mouseY);
+        EventHandler.runEvent(event);
 
     }
 
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if(highestPriorityHoveredElement == null) return false;
         EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_DRAG_EVENT,mouseX,mouseY,button,dragX,dragY);
+        EventHandler.runEvent(event);
         return event.didRunListener();
     }
 
@@ -244,12 +250,14 @@ public class UIFrame {
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if(highestPriorityHoveredElement == null) return false;
         EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_SCROLL_EVENT,mouseX,mouseY,scrollX,scrollY);
+        EventHandler.runEvent(event);
         return event.didRunListener();
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if(focusedElement == null) return false;
         EasyEvent event = new EasyEvent(focusedElement,EasyEvents.KEY_DOWN_EVENT,keyCode,scanCode,modifiers);
+        EventHandler.runEvent(event);
         return event.didRunListener();
     }
 
@@ -257,6 +265,7 @@ public class UIFrame {
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         if(focusedElement == null) return false;
         EasyEvent event = new EasyEvent(focusedElement,EasyEvents.KEY_UP_EVENT,keyCode,scanCode,modifiers);
+        EventHandler.runEvent(event);
         return event.didRunListener();
     }
 

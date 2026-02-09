@@ -281,7 +281,7 @@ public class RenderableElement {
             }
         }
         //does not matter if element has higher z index because children have an auto +1
-        if(isPointBounded(x,y) && element == null){
+        if( element == null && isPointBounded(x,y)){
             return this;
         }
         return element;
