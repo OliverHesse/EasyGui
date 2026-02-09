@@ -10,7 +10,7 @@ public class PositioningContexts {
         public Matrix4f getPositioningContextMatrix(RenderableElement element) {
             UIFrame uiFrame = element.getUiFrame();
 
-            Matrix4f currentPositioningContext = element.getParent() == null ? new Matrix4f(element.getUiFrame().getBaseTransform()) : new Matrix4f(element.getTransform());
+            Matrix4f currentPositioningContext = element.getParent() == null ? new Matrix4f(element.getUiFrame().getBaseTransform()) : new Matrix4f(element.getTransformMatrix());
             return uiFrame.getBaseTransform().mul(currentPositioningContext.invert()); // should get transform matrix
         }
     };

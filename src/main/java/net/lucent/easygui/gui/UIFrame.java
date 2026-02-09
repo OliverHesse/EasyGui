@@ -1,16 +1,15 @@
 package net.lucent.easygui.gui;
 
-import net.lucent.easygui.gui.events.EasyEvent;
+import net.lucent.easygui.gui.events.type.EasyEvent;
 import net.lucent.easygui.gui.events.EasyEvents;
 import net.lucent.easygui.gui.events.EventHandler;
+import net.lucent.easygui.gui.events.type.EasyKeyEvent;
+import net.lucent.easygui.gui.events.type.EasyMouseEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.event.ScreenEvent;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -26,8 +25,8 @@ public class UIFrame {
     private int height;
     private boolean useMinecraftScale;
 
-    private HashMap<String,RenderableElement> idMap = new HashMap<>();
-    private HashMap<String, List<RenderableElement>> classMap = new HashMap<>();
+    private final HashMap<String,RenderableElement> idMap = new HashMap<>();
+    private final HashMap<String, List<RenderableElement>> classMap = new HashMap<>();
 
     private RenderableElement highestPriorityHoveredElement;
     private RenderableElement focusedElement;
@@ -49,7 +48,7 @@ public class UIFrame {
         width = isUsingMinecraftScale() ? minecraft.getWindow().getGuiScaledWidth() : minecraft.getWindow().getWidth();
         height = isUsingMinecraftScale() ? minecraft.getWindow().getGuiScaledHeight() : minecraft.getWindow().getHeight();
 
-        EventHandler.runForAllChildren(new EasyEvent(EasyEvents.FRAME_DIMENSIONS_CHANGE_EVENT),this);
+        EventHandler.runForAllChildren(new EasyEvent(null,EasyEvents.FRAME_DIMENSIONS_CHANGE_EVENT),this);
 
         System.out.println("width : "+minecraft.getWindow().getWidth());
         System.out.println("height : "+minecraft.getWindow().getHeight());
@@ -147,7 +146,7 @@ public class UIFrame {
             if(hasRenderableLinkedToSlot(screen.hoveredSlot.index)){
                 RenderableElement element = getSlotLinkedRenderable(screen.hoveredSlot.index);
                 guiGraphics.pose().translate(x,y,0);
-                guiGraphics.pose().mulPose(element.getTransform());
+                guiGraphics.pose().mulPose(element.getTransformMatrix());
                 if(!element.isVisible() || !element.isActive()){
                     guiGraphics.pose().popPose();
                     return false;
@@ -167,8 +166,8 @@ public class UIFrame {
         if(hasRenderableLinkedToSlot(slot.index)){
             guiGraphics.pose().pushPose();
             RenderableElement element = getSlotLinkedRenderable(slot.index);
-            guiGraphics.pose().mulPose(element.getCompletePositioningTransform());
-            guiGraphics.pose().mulPose(element.getTransform());
+            guiGraphics.pose().mulPose(element.getCompletePositioningMatrix());
+            guiGraphics.pose().mulPose(element.getTransformMatrix());
             if(!element.isVisible() || !element.isActive()){
                 guiGraphics.pose().popPose();
                 return false;
@@ -183,7 +182,7 @@ public class UIFrame {
             guiGraphics.pose().pushPose();
             RenderableElement element = getSlotLinkedRenderable(slot.index);
             guiGraphics.pose().translate(mouseX,mouseY,0);
-            guiGraphics.pose().mulPose(element.getTransform());
+            guiGraphics.pose().mulPose(element.getTransformMatrix());
             if(!element.isVisible() || !element.isActive()){
                 guiGraphics.pose().popPose();
                 return false;
@@ -198,7 +197,7 @@ public class UIFrame {
             RenderableElement renderable = getElementById(carriedItemSlot);
 
             guiGraphics.pose().translate(x,y,0);
-            guiGraphics.pose().mulPose(renderable.getTransform());
+            guiGraphics.pose().mulPose(renderable.getTransformMatrix());
             return  true;
         }
         return false;
@@ -222,51 +221,66 @@ public class UIFrame {
     //===================================== EVENT HANDLER================================
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if(highestPriorityHoveredElement == null) return false;
-        EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_DOWN_EVENT,mouseX,mouseY,button);
-        EventHandler.runEvent(event);
-        return event.didRunListener();
+        EasyEvent targetedEvent = EasyMouseEvent.MouseDownEvent(highestPriorityHoveredElement,mouseX,mouseY,button);
+        EasyEvent globalEvent = EasyMouseEvent.MouseDownEvent(highestPriorityHoveredElement,mouseX,mouseY,button,true);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(globalEvent,this);
+        return targetedEvent.didRunListener() || globalEvent.didRunListener();
     }
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
         if(highestPriorityHoveredElement == null) return false;
-        EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_UP_EVENT,mouseX,mouseY,button);
-        EventHandler.runEvent(event);
-        return event.didRunListener();
+        EasyEvent targetedEvent = EasyMouseEvent.MouseUpEvent(highestPriorityHoveredElement,mouseX,mouseY,button);
+        EasyEvent globalEvent = EasyMouseEvent.MouseUpEvent(highestPriorityHoveredElement,mouseX,mouseY,button,true);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(globalEvent,this);
+        return targetedEvent.didRunListener() || globalEvent.didRunListener();
     }
     public void mouseMoved(double mouseX, double mouseY){
         if(highestPriorityHoveredElement == null) return;
-        EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_MOVE_EVENT,mouseX,mouseY);
-        EventHandler.runEvent(event);
+        EasyEvent targetedEvent = EasyMouseEvent.MouseMoveEvent(highestPriorityHoveredElement,mouseX,mouseY);
+        EasyEvent globalEvent = EasyMouseEvent.MouseMoveEvent(highestPriorityHoveredElement,mouseX,mouseY,true);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(globalEvent,this);
+
 
     }
 
     public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
         if(highestPriorityHoveredElement == null) return false;
-        EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_DRAG_EVENT,mouseX,mouseY,button,dragX,dragY);
-        EventHandler.runEvent(event);
-        return event.didRunListener();
+        EasyEvent targetedEvent = EasyMouseEvent.MouseDragEvent(highestPriorityHoveredElement,mouseX,mouseY,button,dragX,dragY);
+        EasyEvent globalEvent = EasyMouseEvent.MouseDragEvent(highestPriorityHoveredElement,mouseX,mouseY,button,dragX,dragY,true);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(globalEvent,this);
+        return targetedEvent.didRunListener() || globalEvent.didRunListener();
     }
 
 
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         if(highestPriorityHoveredElement == null) return false;
-        EasyEvent event = new EasyEvent(highestPriorityHoveredElement,EasyEvents.MOUSE_SCROLL_EVENT,mouseX,mouseY,scrollX,scrollY);
-        EventHandler.runEvent(event);
-        return event.didRunListener();
+        EasyEvent targetedEvent = EasyMouseEvent.MouseScrollEvent(highestPriorityHoveredElement,mouseX,mouseY,scrollX,scrollY);
+        EasyEvent globalEvent = EasyMouseEvent.MouseScrollEvent(highestPriorityHoveredElement,mouseX,mouseY,scrollX,scrollY,true);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(globalEvent,this);
+        return targetedEvent.didRunListener() || globalEvent.didRunListener();
     }
 
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if(focusedElement == null) return false;
-        EasyEvent event = new EasyEvent(focusedElement,EasyEvents.KEY_DOWN_EVENT,keyCode,scanCode,modifiers);
-        EventHandler.runEvent(event);
-        return event.didRunListener();
+        EasyEvent targetedEvent = EasyKeyEvent.KeyDownEvent(highestPriorityHoveredElement,keyCode,scanCode,modifiers);
+        EasyEvent globalEvent = EasyKeyEvent.KeyDownEvent(highestPriorityHoveredElement,keyCode,scanCode,modifiers,true);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(globalEvent,this);
+        return targetedEvent.didRunListener() || globalEvent.didRunListener();
     }
 
 
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
         if(focusedElement == null) return false;
-        EasyEvent event = new EasyEvent(focusedElement,EasyEvents.KEY_UP_EVENT,keyCode,scanCode,modifiers);
-        EventHandler.runEvent(event);
-        return event.didRunListener();
+        EasyEvent targetedEvent = EasyKeyEvent.KeyUpEvent(highestPriorityHoveredElement,keyCode,scanCode,modifiers);
+        EasyEvent globalEvent = EasyKeyEvent.KeyUpEvent(highestPriorityHoveredElement,keyCode,scanCode,modifiers,true);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(globalEvent,this);
+        return targetedEvent.didRunListener() || globalEvent.didRunListener();
     }
 
 

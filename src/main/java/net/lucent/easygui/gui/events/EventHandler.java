@@ -2,8 +2,8 @@ package net.lucent.easygui.gui.events;
 
 import net.lucent.easygui.gui.RenderableElement;
 import net.lucent.easygui.gui.UIFrame;
+import net.lucent.easygui.gui.events.type.EasyEvent;
 import net.lucent.easygui.gui.listeners.IEasyEventListener;
-import net.minecraft.client.Minecraft;
 
 import java.util.List;
 

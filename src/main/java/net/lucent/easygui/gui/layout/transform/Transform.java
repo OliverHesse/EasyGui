@@ -1,6 +1,9 @@
 package net.lucent.easygui.gui.layout.transform;
 
 import net.lucent.easygui.gui.RenderableElement;
+import net.lucent.easygui.gui.events.EasyEvents;
+import net.lucent.easygui.gui.events.EventHandler;
+import net.lucent.easygui.gui.events.type.EasyEvent;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
@@ -21,12 +24,17 @@ public class Transform {
     public Transform(RenderableElement element){
         this.element = element;
     }
-
+    public void initiateEvent(){
+        EasyEvent targetedEvent = new EasyEvent(element, EasyEvents.CHILD_TRANSFORM_CHANGED_EVENT);
+        EasyEvent global = new EasyEvent(element, EasyEvents.ELEMENT_TRANSFORM_CHANGED_EVENT);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(global,element.getUiFrame());
+    }
     //========================== TRANSFORM ====================================
     //TODO let user manually chose rotation pivot
     public void updateTransformMatrix(){
         //getPosition matrix
-        Matrix4f transformMatrix = new Matrix4f(element.getPositioningTransform());
+        Matrix4f transformMatrix = new Matrix4f(element.getPositioningMatrix());
 
         //apply rotation
         Quaternionf rotation = new Quaternionf()
@@ -40,6 +48,7 @@ public class Transform {
 
 
         this.transformMatrix = transformMatrix;
+        initiateEvent();
     }
 
     //========================== GETTERS AND SETTERS ==========================

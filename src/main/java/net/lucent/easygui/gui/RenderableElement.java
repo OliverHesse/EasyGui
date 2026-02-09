@@ -8,8 +8,6 @@ import net.lucent.easygui.gui.layout.positioning.rules.PositioningRules;
 import net.lucent.easygui.gui.layout.transform.Transform;
 import net.lucent.easygui.gui.listeners.IEasyEventListener;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -20,10 +18,10 @@ import java.util.List;
 
 public class RenderableElement {
 
-    public Positioning positioning;
-    public Transform transform;
-    public RenderableElement parent;
-    public UIFrame uiFrame;
+    private Positioning positioning;
+    private final Transform transform;
+    private RenderableElement parent;
+    private UIFrame uiFrame;
 
     private String id;
     private final List<String> classes = new ArrayList<>();
@@ -77,7 +75,7 @@ public class RenderableElement {
     public boolean isPointBounded(double x,double y){
 
 
-        Matrix4f totalTransform = getCompletePositioningTransform().mul(getTransform());
+        Matrix4f totalTransform = getCompletePositioningMatrix().mul(getTransformMatrix());
         Vector3f p1 = totalTransform.transformPosition(new Vector3f(0,0,0));
 
         Vector3f p2 = totalTransform.transformPosition(new Vector3f(getWidth(),getHeight(),0));
@@ -86,15 +84,18 @@ public class RenderableElement {
         return mousePos.x > p1.x && mousePos.y > p1.y && mousePos.x < p2.x && mousePos.y < p2.y;
     }
     //================= TRANSFORMATION MATRICES ===================
+    public  Positioning getPositioning(){return positioning;}
+    public Transform getTransform(){return this.transform;}
+
     //returns total transform including scale and rotation
-    public Matrix4f getTransform(){
+    public Matrix4f getTransformMatrix(){
         return transform.getTransformMatrix();
     }
     //returns only positioning transform
-    public Matrix4f getPositioningTransform(){
+    public Matrix4f getPositioningMatrix(){
         return positioning.getPositionMatrix();
     }
-    public Matrix4f getCompletePositioningTransform(){return positioning.getCompletePositionMatrix();}
+    public Matrix4f getCompletePositioningMatrix(){return positioning.getCompletePositionMatrix();}
 
     /**
      *
@@ -118,6 +119,7 @@ public class RenderableElement {
     public UIFrame getUiFrame(){
         return uiFrame;
     }
+    public void setUiFrame(UIFrame frame){this.uiFrame=frame;}
     public boolean isActive(){return this.active;}
     public boolean isVisible(){return this.visible;}
 
@@ -177,8 +179,8 @@ public class RenderableElement {
     protected void run(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){
         if(!isActive()) return;
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().mulPose(getPositioningTransform());
-        guiGraphics.pose().mulPose(getTransform());
+        guiGraphics.pose().mulPose(getPositioningMatrix());
+        guiGraphics.pose().mulPose(getTransformMatrix());
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
         if(!isVisible()) return;
         render(guiGraphics,mouseX,mouseY,partialTick);

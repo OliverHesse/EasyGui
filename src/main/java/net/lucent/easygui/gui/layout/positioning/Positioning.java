@@ -1,6 +1,9 @@
 package net.lucent.easygui.gui.layout.positioning;
 
 import net.lucent.easygui.gui.RenderableElement;
+import net.lucent.easygui.gui.events.EasyEvents;
+import net.lucent.easygui.gui.events.EventHandler;
+import net.lucent.easygui.gui.events.type.EasyEvent;
 import net.lucent.easygui.gui.layout.positioning.context.IPositioningContext;
 import net.lucent.easygui.gui.layout.positioning.rules.IPositioningRule;
 import org.joml.Matrix4f;
@@ -44,6 +47,13 @@ public class Positioning {
 
     public void setElement(RenderableElement element) {
         this.element = element;
+    }
+
+    public void initiateEvent(){
+        EasyEvent targetedEvent = new EasyEvent(element, EasyEvents.CHILD_POSITION_TRANSFORM_CHANGED_EVENT);
+        EasyEvent global = new EasyEvent(element, EasyEvents.ELEMENT_POSITION_TRANSFORM_CHANGED_EVENT);
+        EventHandler.runEvent(targetedEvent);
+        EventHandler.runForAllChildren(global,element.getUiFrame());
     }
     //========================= Set Positioning Context ==================
 
@@ -90,7 +100,9 @@ public class Positioning {
         Matrix4f contextMatrix = context.getPositioningContextMatrix(element);
         System.out.println("trying to position element at " + rawX+","+rawY);
         positionMatrix = contextMatrix.translate(rawX,rawY,0);
+        initiateEvent();
     }
+
 
     //========================= Rule positioned cords =====================
     //assumes x and y inputs are of the same positioning rule
@@ -143,7 +155,7 @@ public class Positioning {
         }
         Matrix4f completeMatrix = new Matrix4f();
         for(RenderableElement positionedElement : elements){
-            completeMatrix = completeMatrix.mul(positionedElement.getPositioningTransform().mul(positionedElement.getTransform()));
+            completeMatrix = completeMatrix.mul(positionedElement.getPositioningMatrix().mul(positionedElement.getTransformMatrix()));
         }
         return completeMatrix.mul(positionMatrix);
     }
