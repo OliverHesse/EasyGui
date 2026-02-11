@@ -7,4 +7,5 @@ import org.joml.Matrix4f;
 public interface IEasyScreen {
 
     UIFrame getUIFrame();
+    void setUIFrame(UIFrame frame);
 }

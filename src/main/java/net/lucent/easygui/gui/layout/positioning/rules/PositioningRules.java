@@ -30,7 +30,8 @@ public class PositioningRules {
             if(renderableElement.getParent() == null){
                 //use frame
                 System.out.println("frame width: "+renderableElement.getUiFrame().getWidth());
-
+                System.out.println("frame width/2: "+renderableElement.getUiFrame().getWidth()/2);
+                System.out.println("frame width/2+x: "+ (renderableElement.getUiFrame().getWidth()/2+x));
                 return renderableElement.getUiFrame().getWidth()/2+x;
             }
             return renderableElement.getParent().getWidth()/2+x;

@@ -34,7 +34,7 @@ public class Transform {
     //TODO let user manually chose rotation pivot
     public void updateTransformMatrix(){
         //getPosition matrix
-        Matrix4f transformMatrix = new Matrix4f(element.getPositioningMatrix());
+        Matrix4f transformMatrix = new Matrix4f();
 
         //apply rotation
         Quaternionf rotation = new Quaternionf()

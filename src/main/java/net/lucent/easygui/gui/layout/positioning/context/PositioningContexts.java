@@ -11,7 +11,7 @@ public class PositioningContexts {
             UIFrame uiFrame = element.getUiFrame();
 
             Matrix4f currentPositioningContext = element.getParent() == null ? new Matrix4f(element.getUiFrame().getBaseTransform()) : new Matrix4f(element.getTransformMatrix());
-            return uiFrame.getBaseTransform().mul(currentPositioningContext.invert()); // should get transform matrix
+            return new Matrix4f(uiFrame.getBaseTransform()).mul(currentPositioningContext.invert()); // should get transform matrix
         }
     };
     public static final IPositioningContext ABSOLUTE = new IPositioningContext() {};

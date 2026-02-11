@@ -44,7 +44,7 @@ public class RenderableElement {
 
     public RenderableElement(UIFrame frame){
         this.uiFrame = frame;
-        positioning =  new Positioning(PositioningContexts.ABSOLUTE, PositioningRules.CENTER,this);
+        positioning =  new Positioning(PositioningContexts.ABSOLUTE, PositioningRules.START,this);
         transform  = new Transform(this);
         addEventListener(EasyEvents.FRAME_DIMENSIONS_CHANGE_EVENT,(easyEvent)->{
             System.out.println("event resize revcieved");
@@ -75,7 +75,7 @@ public class RenderableElement {
     public boolean isPointBounded(double x,double y){
 
 
-        Matrix4f totalTransform = getCompletePositioningMatrix().mul(getTransformMatrix());
+        Matrix4f totalTransform = new Matrix4f(getCompletePositioningMatrix()).mul(getTransformMatrix());
         Vector3f p1 = totalTransform.transformPosition(new Vector3f(0,0,0));
 
         Vector3f p2 = totalTransform.transformPosition(new Vector3f(getWidth(),getHeight(),0));
@@ -112,6 +112,20 @@ public class RenderableElement {
 
     }
 
+    public Matrix4f globalToLocalMatrix(){
+        return new Matrix4f(getCompletePositioningMatrix()).mul(getTransformMatrix()).invert();
+    }
+    public Vec2 globalToLocalPositionPoint(float mouseX, float mouseY){
+        Vector3f point = (new Matrix4f(getCompletePositioningMatrix())).invert().transformPosition(new Vector3f(mouseX,mouseY,0));
+        return new Vec2(point.x,point.y);
+    }
+    public Vec2 globalToLocalPoint(float mouseX, float mouseY){
+        Vector3f point =  (new Matrix4f(getCompletePositioningMatrix().mul(getTransformMatrix()))).invert().transformPosition(
+                new Vector3f(mouseX,mouseY,0)
+        );
+        return new Vec2(point.x,point.y);
+    }
+
     //================= OTHER =========================
     public RenderableElement getParent() {
         return parent;
@@ -127,6 +141,16 @@ public class RenderableElement {
     public void setVisible(boolean visible){this.visible =visible;}
 
     public void setZIndex(int zIndex){this.zIndex = zIndex;}
+
+    public int getTotalZIndex(){
+        RenderableElement element = getParent();
+        int finalV = getZIndex();
+        while (element != null){
+            finalV += element.getZIndex();
+            element = element.getParent();
+        }
+        return finalV;
+    }
 
     public int getZIndex(){return this.zIndex;}
 
@@ -177,12 +201,17 @@ public class RenderableElement {
     }
     //================== RUNTIME ======================
     protected void run(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){
+        clearChildAdditionBuffer();
+        clearChildRemovalBuffer();
         if(!isActive()) return;
         guiGraphics.pose().pushPose();
         guiGraphics.pose().mulPose(getPositioningMatrix());
+
         guiGraphics.pose().mulPose(getTransformMatrix());
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
         if(!isVisible()) return;
+
+        guiGraphics.pose().translate(0,0,getZIndex());
         render(guiGraphics,mouseX,mouseY,partialTick);
 
 
@@ -190,9 +219,15 @@ public class RenderableElement {
         guiGraphics.pose().popPose();
     }
 
+    //run event when not active
     public void renderTick(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){}
+    //run only when active
     public void render(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){}
-    public void runChildren(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){}
+    public void runChildren(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){
+        for(RenderableElement child:getChildren()){
+            child.run(guiGraphics,mouseX,mouseY,partialTick);
+        }
+    }
 
     public void onRemove(){}
     //====================== EVENTS ============================
@@ -258,7 +293,7 @@ public class RenderableElement {
                 continue;
             }
             for(int i =0; i<orderedList.size();i++){
-                if(element.getZIndex() > orderedList.get(i).getZIndex()){
+                if(element.getTotalZIndex() > orderedList.get(i).getTotalZIndex()){
                     orderedList.add(i,element);
                     break;
                 }

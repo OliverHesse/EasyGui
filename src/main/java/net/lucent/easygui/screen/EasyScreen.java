@@ -9,7 +9,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 
 public class EasyScreen extends Screen implements IEasyScreen{
-    private final UIFrame frame;
+    private UIFrame frame;
 
 
     public EasyScreen(Component title,UIFrame frame){
@@ -22,6 +22,10 @@ public class EasyScreen extends Screen implements IEasyScreen{
         frame = new UIFrame();
     }
 
+    @Override
+    protected void renderMenuBackground(GuiGraphics partialTick) {
+        super.renderMenuBackground(partialTick);
+    }
 
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
@@ -29,6 +33,7 @@ public class EasyScreen extends Screen implements IEasyScreen{
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         frame.run(guiGraphics,mouseX,mouseY,partialTick);
+        super.render(guiGraphics,mouseX,mouseY,partialTick);
     }
 
 
@@ -86,5 +91,10 @@ public class EasyScreen extends Screen implements IEasyScreen{
     @Override
     public UIFrame getUIFrame() {
         return frame;
+    }
+
+    @Override
+    public void setUIFrame(UIFrame frame) {
+        this.frame = frame;
     }
 }

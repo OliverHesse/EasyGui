@@ -30,6 +30,7 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
 
     }
 
+
     @Override
     protected void renderSlot(GuiGraphics guiGraphics, Slot slot) {
         if(getUIFrame().renderItemSlot(guiGraphics,slot)){
@@ -61,7 +62,7 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
     public void renderFloatingItem(GuiGraphics guiGraphics, ItemStack stack, int x, int y, String text) {
         if(getUIFrame().renderFloatingItem(guiGraphics,stack,x,y,text)){
 
-            super.renderFloatingItem(guiGraphics, stack, x, y, text);
+            super.renderFloatingItem(guiGraphics, stack, 0, 0, text);
             guiGraphics.pose().popPose();
             return;
         }
@@ -74,8 +75,19 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
     }
 
     @Override
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+
+    }
+
+    @Override
+    protected void renderMenuBackground(GuiGraphics partialTick) {
+        super.renderMenuBackground(partialTick);
+    }
+
+    @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         getUIFrame().run(guiGraphics,mouseX,mouseY,partialTick);
+        super.render(guiGraphics,mouseX,mouseY,partialTick);
         getUIFrame().renderItemTooltip(guiGraphics,this,mouseX,mouseY);
     }
 
@@ -134,5 +146,8 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
         boolean result = getUIFrame().keyReleased(keyCode,scanCode,modifiers);
         return super.keyReleased(keyCode, scanCode, modifiers) || result;
     }
-
+    @Override
+    public void setUIFrame(UIFrame frame) {
+        this.frame = frame;
+    }
 }

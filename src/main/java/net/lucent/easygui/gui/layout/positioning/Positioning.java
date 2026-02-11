@@ -6,6 +6,7 @@ import net.lucent.easygui.gui.events.EventHandler;
 import net.lucent.easygui.gui.events.type.EasyEvent;
 import net.lucent.easygui.gui.layout.positioning.context.IPositioningContext;
 import net.lucent.easygui.gui.layout.positioning.rules.IPositioningRule;
+import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -31,7 +32,6 @@ public class Positioning {
     private int rawY;
 
     private Matrix4f positionMatrix = new Matrix4f();
-
     private RenderableElement element;
 
     public Positioning(IPositioningContext context, IPositioningRule xPositioning,IPositioningRule yPositioning,RenderableElement element){
@@ -55,7 +55,7 @@ public class Positioning {
         EventHandler.runEvent(targetedEvent);
         EventHandler.runForAllChildren(global,element.getUiFrame());
     }
-    //========================= Set Positioning Context ==================
+    //========================= Positioning Context ==================
 
     public void setPositioningContext(IPositioningContext context){
         this.context = context;
@@ -66,9 +66,9 @@ public class Positioning {
     //========================= Set Positioning Rule ======================
 
     public void setXPositioningRule(IPositioningRule rule){
-        setXPositioning(rule,false);
+        setXPositioningRule(rule,false);
     }
-    public void setXPositioning(IPositioningRule rule,boolean keepRawX){
+    public void setXPositioningRule(IPositioningRule rule,boolean keepRawX){
         this.xPositioning = rule;
         if(keepRawX) setX(rule.getX(getRawX(),element));
         else setX(0);
@@ -76,20 +76,29 @@ public class Positioning {
 
     }
     public void setYPositioningRule(IPositioningRule rule){
-        setYPositioning(rule,false);
+        setYPositioningRule(rule,false);
     }
-    public void setYPositioning(IPositioningRule rule, boolean keepRawY){
-        this.xPositioning = rule;
+    public void setYPositioningRule(IPositioningRule rule, boolean keepRawY){
+        this.yPositioning = rule;
         if(keepRawY) setY(rule.getY(getRawY(),element));
         else setY(0);
     }
     public void setPositioningRule(IPositioningRule rule){
+        setPositioningRule(rule,false);
+    }
+    public void setPositioningRule(IPositioningRule rule,boolean keepOld){
         this.xPositioning  =rule;
         this.yPositioning= rule;
-        setX(rule.getX(getRawX(),element));
-        setY(rule.getY(getRawY(),element));
+        if(keepOld) {
+            setX(rule.getX(getRawX(), element));
+            setY(rule.getY(getRawY(), element));
+        }else{
+            setX(0);
+            setY(0);
+        }
         updateRawCoordinates();
     }
+
 
     //========================= Position Matrix ===========================
     public void updatePositionMatrix(){
@@ -98,8 +107,9 @@ public class Positioning {
 
         //get the context matrix
         Matrix4f contextMatrix = context.getPositioningContextMatrix(element);
-        System.out.println("trying to position element at " + rawX+","+rawY);
+
         positionMatrix = contextMatrix.translate(rawX,rawY,0);
+
         initiateEvent();
     }
 
@@ -146,17 +156,20 @@ public class Positioning {
     public int getRawY(){return this.rawY;}
     public Matrix4f getPositionMatrix(){return this.positionMatrix;}
     public Matrix4f getCompletePositionMatrix(){
-        if(element.getParent() == null) return positionMatrix;
+        Matrix4f completeMatrix = new Matrix4f(element.getUiFrame().getBaseTransform());
+        if(element.getParent() == null) {
+            return completeMatrix.mul(getPositionMatrix());
+        };
         RenderableElement currentElement = element.getParent();
         List<RenderableElement> elements = new ArrayList<>();
         while(currentElement != null){
             elements.addFirst(currentElement);
             currentElement = currentElement.getParent();
         }
-        Matrix4f completeMatrix = new Matrix4f();
+
         for(RenderableElement positionedElement : elements){
-            completeMatrix = completeMatrix.mul(positionedElement.getPositioningMatrix().mul(positionedElement.getTransformMatrix()));
+            completeMatrix = completeMatrix.mul(positionedElement.getPositioningMatrix()).mul(positionedElement.getTransformMatrix());
         }
-        return completeMatrix.mul(positionMatrix);
+        return completeMatrix.mul(getPositionMatrix());
     }
 }
