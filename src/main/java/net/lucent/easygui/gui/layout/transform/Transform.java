@@ -19,11 +19,12 @@ public class Transform {
 
     private Matrix4f transformMatrix = new Matrix4f();
 
-    private final RenderableElement element;
+    private RenderableElement element;
 
     public Transform(RenderableElement element){
         this.element = element;
     }
+
     public void initiateEvent(){
         EasyEvent targetedEvent = new EasyEvent(element, EasyEvents.CHILD_TRANSFORM_CHANGED_EVENT);
         EasyEvent global = new EasyEvent(element, EasyEvents.ELEMENT_TRANSFORM_CHANGED_EVENT);
@@ -52,7 +53,9 @@ public class Transform {
     }
 
     //========================== GETTERS AND SETTERS ==========================
-
+    public void setElement(RenderableElement element){
+        this.element = element;
+    }
     public float getScale(){return scale;}
     public void setScale(float scale){
         this.scale = scale;
@@ -83,4 +86,13 @@ public class Transform {
     }
 
     public Matrix4f getTransformMatrix(){return transformMatrix;}
+    public double getTotalScaleFactor(){
+        RenderableElement currentElement = element;
+        float scale = 1;
+        while(currentElement != null){
+            scale *= element.getTransform().getScale();
+            currentElement = element.getParent();
+        }
+        return scale;
+    }
 }

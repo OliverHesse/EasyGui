@@ -64,7 +64,7 @@ public class EasyDraggableElement extends RenderableElement {
         Vec2 point = globalToLocalPoint((float) easyMouseEvent.getMouseX(), (float) easyMouseEvent.getMouseY());
         clickedMouseX = (int) point.x;
         clickedMouseY = (int) point.y;
-        if(isHovered()) setZIndex(1000);
+        if(isHovered()) setZIndex(100);
     }
     public void onMouseUp(EasyEvent event){
         if(!(event instanceof EasyMouseEvent easyMouseEvent)) return;//make sure the right event was called (should always be this but double check)

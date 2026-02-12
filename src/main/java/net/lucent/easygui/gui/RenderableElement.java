@@ -7,6 +7,7 @@ import net.lucent.easygui.gui.layout.positioning.context.PositioningContexts;
 import net.lucent.easygui.gui.layout.positioning.rules.PositioningRules;
 import net.lucent.easygui.gui.layout.transform.Transform;
 import net.lucent.easygui.gui.listeners.IEasyEventListener;
+import net.lucent.easygui.util.BoundChecker;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix4f;
@@ -19,7 +20,7 @@ import java.util.List;
 public class RenderableElement {
 
     private Positioning positioning;
-    private final Transform transform;
+    private Transform transform;
     private RenderableElement parent;
     private UIFrame uiFrame;
 
@@ -34,6 +35,8 @@ public class RenderableElement {
 
     private boolean active = true;
     private boolean visible  =true;
+
+    private boolean cull = false;
 
     private int zIndex;
     private final List<RenderableElement> children = new ArrayList<>();
@@ -71,17 +74,38 @@ public class RenderableElement {
         this.height = height;
     }
 
-
+    public Vec2 getGlobalPoint(){
+        Vector3f position = getCompletePositioningMatrix().transformPosition(new Vector3f(0,0,0));
+        return new Vec2(position.x,position.y);
+    }
+    //the point x+width,y+height;
+    public Vec2 getGlobalCornerPoint(){
+        Matrix4f point = new Matrix4f(getCompletePositioningMatrix()).translate(getWidth(),getHeight(),0);
+        Vector3f position = point.mul(getTransformMatrix()).transformPosition(new Vector3f(0,0,0));
+        return new Vec2(position.x,position.y);
+    }
+    public boolean isPointBounded(GuiGraphics guiGraphics,double x,double y){
+        if(!guiGraphics.containsPointInScissor((int) x, (int) y)) return false;
+        return isPointBounded(x,y);
+    }
     public boolean isPointBounded(double x,double y){
 
+        Vec2 p1 = getGlobalPoint();
 
-        Matrix4f totalTransform = new Matrix4f(getCompletePositioningMatrix()).mul(getTransformMatrix());
-        Vector3f p1 = totalTransform.transformPosition(new Vector3f(0,0,0));
-
-        Vector3f p2 = totalTransform.transformPosition(new Vector3f(getWidth(),getHeight(),0));
+        Vec2 p2 = getGlobalCornerPoint();
 
         Vec2 mousePos = new Vec2((float) x,(float)y);
         return mousePos.x > p1.x && mousePos.y > p1.y && mousePos.x < p2.x && mousePos.y < p2.y;
+    }
+    public boolean isFullyCulled(GuiGraphics guiGraphics){
+        Vec2 point1 = getGlobalPoint();
+        Vec2 point2 = getGlobalCornerPoint();
+
+        boolean corner1 = guiGraphics.containsPointInScissor((int) point1.x, (int) point1.y);
+        boolean corner2 = guiGraphics.containsPointInScissor((int) point1.x, (int) point2.y);
+        boolean corner3 = guiGraphics.containsPointInScissor((int) point2.x, (int) point2.y);
+        boolean corner4 = guiGraphics.containsPointInScissor((int) point2.x, (int) point1.y);
+        return corner1 || corner2 || corner3 || corner4;
     }
     //================= TRANSFORMATION MATRICES ===================
     public  Positioning getPositioning(){return positioning;}
@@ -111,6 +135,10 @@ public class RenderableElement {
         this.positioning = positioning;
 
     }
+    public void setTransform(Transform transform){
+        transform.setElement(this);
+        this.transform = transform;
+    }
 
     public Matrix4f globalToLocalMatrix(){
         return new Matrix4f(getCompletePositioningMatrix()).mul(getTransformMatrix()).invert();
@@ -126,21 +154,16 @@ public class RenderableElement {
         return new Vec2(point.x,point.y);
     }
 
-    //================= OTHER =========================
+    //================= GETTERS =======================
     public RenderableElement getParent() {
         return parent;
     }
     public UIFrame getUiFrame(){
         return uiFrame;
     }
-    public void setUiFrame(UIFrame frame){this.uiFrame=frame;}
     public boolean isActive(){return this.active;}
     public boolean isVisible(){return this.visible;}
 
-    public void setActive(boolean active){this.active = active;}
-    public void setVisible(boolean visible){this.visible =visible;}
-
-    public void setZIndex(int zIndex){this.zIndex = zIndex;}
 
     public int getTotalZIndex(){
         RenderableElement element = getParent();
@@ -160,6 +183,23 @@ public class RenderableElement {
     public List<String> getClasses(){
         return classes;
     }
+
+    public boolean isFocusable(){
+        return canBeFocused;
+    }
+    public boolean isFocused(){
+        return isFocusable() && getUiFrame().getFocusedElement() == this;
+    }
+    public boolean shouldCull(){
+        return cull;
+    }
+    //================= SETTERS =======================
+    public void setUiFrame(UIFrame frame){this.uiFrame=frame;}
+    public void setActive(boolean active){this.active = active;}
+    public void setVisible(boolean visible){this.visible =visible;}
+
+    public void setZIndex(int zIndex){this.zIndex = zIndex;}
+
     public void clearClasses(){
         for(String classId : getClasses()){
             getUiFrame().removeClass(classId,this);
@@ -189,16 +229,17 @@ public class RenderableElement {
         getClasses().add(classId);
     }
 
-    public boolean isFocusable(){
-        return canBeFocused;
-    }
-    public boolean isFocused(){
-        return isFocusable() && getUiFrame().getFocusedElement() == this;
-    }
-
     public void setFocused(boolean focus){
         getUiFrame().trySetFocus(this,focus);
     }
+    public void setShouldCull(boolean shouldCull){
+        cull = shouldCull;
+    }
+    //================= OTHER =========================
+
+
+
+
     //================== RUNTIME ======================
     protected void run(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){
         clearChildAdditionBuffer();
@@ -209,13 +250,16 @@ public class RenderableElement {
 
         guiGraphics.pose().mulPose(getTransformMatrix());
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
+        setVisible(isFullyCulled(guiGraphics));
         if(!isVisible()) return;
 
         guiGraphics.pose().translate(0,0,getZIndex());
         render(guiGraphics,mouseX,mouseY,partialTick);
 
-
+        if(shouldCull()) createCullRegion(guiGraphics);
         runChildren(guiGraphics,mouseX,mouseY,partialTick);
+        if(shouldCull()) disableCullRegion(guiGraphics);
+
         guiGraphics.pose().popPose();
     }
 
@@ -230,6 +274,15 @@ public class RenderableElement {
     }
 
     public void onRemove(){}
+
+    public void createCullRegion(GuiGraphics guiGraphics){
+        Vec2 p1 = getGlobalPoint();
+        Vec2 p2 = getGlobalCornerPoint();
+        guiGraphics.enableScissor((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
+    }
+    public void disableCullRegion(GuiGraphics guiGraphics){
+        guiGraphics.disableScissor();
+    }
     //====================== EVENTS ============================
     public void addEventListener(String event, IEasyEventListener eventListener, EventPhase phase){
         if(phase == EventPhase.CAPTURE){
@@ -304,21 +357,22 @@ public class RenderableElement {
         return orderedList;
     }
 
+
     /*
         used to get the top most rendered element at a point.
         mainly used for mouse click, move, release and pressed events
      */
-    public RenderableElement getHighestPriorityChildWithBoundedPoint(int x,int y){
+    public RenderableElement getHighestPriorityChildWithBoundedPoint(GuiGraphics guiGraphics,int x,int y){
 
         RenderableElement element = null;
         for(RenderableElement child : getPriorityOrderedChildren()){
-            RenderableElement result = child.getHighestPriorityChildWithBoundedPoint(x,y);
+            RenderableElement result = child.getHighestPriorityChildWithBoundedPoint(guiGraphics,x,y);
             if(result != null && (element == null || element.zIndex < result.zIndex)){
                 element = result;
             }
         }
         //does not matter if element has higher z index because children have an auto +1
-        if( element == null && isPointBounded(x,y)){
+        if( element == null && isPointBounded(guiGraphics,x,y)){
             return this;
         }
         return element;

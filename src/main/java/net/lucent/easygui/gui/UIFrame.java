@@ -1,5 +1,6 @@
 package net.lucent.easygui.gui;
 
+import net.lucent.easygui.gui.elements.EasyTooltip;
 import net.lucent.easygui.gui.events.type.EasyEvent;
 import net.lucent.easygui.gui.events.EasyEvents;
 import net.lucent.easygui.gui.events.EventHandler;
@@ -20,6 +21,7 @@ import java.util.List;
 public class UIFrame {
 
     private RenderableElement root;
+    private EasyTooltip tooltip;
 
     private Matrix4f baseTransform;
     private boolean useMinecraftScale = true;
@@ -102,10 +104,16 @@ public class UIFrame {
     public void setRoot(RenderableElement element){
         root = element;
     }
+    public void setTooltip(EasyTooltip tooltip){this.tooltip = tooltip;}
+    public void createTooltipAtPosWithScale(int x,int y,float scale){
+        tooltip.getTransform().setScale(scale);
+        tooltip.getPositioning().setX(x);
+        tooltip.getPositioning().setY(y);
+    }
     //======================= GETTERS =======================
 
     public RenderableElement getRoot(){return root;}
-
+    public EasyTooltip getTooltip(){return tooltip;}
     public boolean isUsingMinecraftScale(){return this.useMinecraftScale;}
 
     public int getHeight(){
@@ -138,7 +146,7 @@ public class UIFrame {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().mulPose(getBaseTransform());
 
-        highestPriorityHoveredElement =  root.getHighestPriorityChildWithBoundedPoint(mouseX,mouseY);
+        highestPriorityHoveredElement =  root.getHighestPriorityChildWithBoundedPoint(guiGraphics,mouseX,mouseY);
 
         if(root != null) root.run(guiGraphics,mouseX,mouseY,partialTick);
         guiGraphics.pose().popPose();

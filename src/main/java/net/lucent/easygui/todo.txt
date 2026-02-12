@@ -1,0 +1,2 @@
+- edit IPositioningRules to only have getCoordinate instead of separate for x and y
+- edit isPointBoundedByToCheck if point is in a cull region or not
