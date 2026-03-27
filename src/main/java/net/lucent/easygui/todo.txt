@@ -1,8 +1,4 @@
-- known bugs
-    - dynamic scroll box calculates maxYOffset without accounting for box height
-    - dynamic scroll box calculates maxYOffset using x
-    - Positioning is broken with useMinecraftScaling = false
-
-
-- ideas
-    - add a max width for labels. so for centering it still uses current width, but wrapping uses maxWidth
+- edit IPositioningRules to only have getCoordinate instead of separate for x and y
+- edit isPointBoundedByToCheck if point is in a cull region or not
+- store and create cull regions through UIFrame so i can use them for hover checks
+- potential add positioning origin (e.g where in element local space should it be positioned relative too)

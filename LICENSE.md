@@ -1,17 +1,20 @@
-MIT License
+ALL RIGHTS RESERVED
 
-Copyright (c) 2025 Oliver Hesse
+## License & Use
+We reserve all rights. The points below outline what you can, cannot and must do when dealing with the
+contents of this repository.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+### You CAN
+* Use this mod in a modpack.
+* Write your own code that uses this code as a dependency (such as addons or datapacks).
+* Submit Pull Requests to this repository.
+* Fork and modify the code as long as modifications are not distributed publicly.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+### You CANNOT
+* Use or redistribute ANY assets of this mod, even for personal use.
 
+### Disclaimer
+<sub> 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,3 +22,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+</sub>
