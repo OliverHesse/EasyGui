@@ -19,14 +19,17 @@ import net.minecraft.util.FormattedCharSequence;
     OR you can set the container and then set up different positioning sand scale for the text
  */
 public class EasyLabel extends RenderableElement {
-
-    private IPositioningRule textPositioningX = PositioningRules.START;
-    private IPositioningRule textPositioningY = PositioningRules.START;
+    public enum TextPositionRule{
+        START,
+        CENTER,
+        END
+    }
+    private TextPositionRule textPositioningX = TextPositionRule.START;
+    private TextPositionRule textPositioningY = TextPositionRule.START;
     private float textScale = 1;
 
     private boolean fitWidth = true;
     private boolean fitHeight = true;
-    private boolean wrapText = false;
 
     private int maxHeight;
     private boolean useMaxHeight = false;
@@ -40,10 +43,39 @@ public class EasyLabel extends RenderableElement {
     public EasyLabel(UIFrame frame) {
         super(frame);
         setShouldCull(true);
+
     }
 
-    public void renderCharSequence(GuiGraphics guiGraphics,FormattedCharSequence charSequence){
-        guiGraphics.drawString(font,charSequence,0,0,0xFF000000);
+    public int getTextX(FormattedCharSequence charSequence){
+        if(textPositioningX == TextPositionRule.START) return 0;
+        else if(textPositioningX == TextPositionRule.CENTER){
+            return getWidth()/2- font.width(charSequence)/2;
+        }
+        else{
+            return getWidth()-font.width(charSequence);
+        }
+    }
+    public int getTextStartHeight(int lines){
+        if(textPositioningX == TextPositionRule.START) return 0;
+        else if(textPositioningX == TextPositionRule.CENTER){
+            return getHeight()/2- lines*font.lineHeight/2;
+        }
+        else{
+            return getWidth()-lines*font.lineHeight;
+        }
+    }
+    public void setTextPositioningX(TextPositionRule textPositioningX) {
+        this.textPositioningX = textPositioningX;
+    }
+    public void setTextPositioningY(TextPositionRule textPositioningY){
+        this.textPositioningY=textPositioningY;
+    }
+
+    public void renderCharSequence(GuiGraphics guiGraphics, FormattedCharSequence charSequence){
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(getTextX(charSequence),0,0);
+        guiGraphics.drawString(font,charSequence,0,0,0xFF000000,false);
+        guiGraphics.pose().popPose();
 
     }
 
@@ -52,12 +84,15 @@ public class EasyLabel extends RenderableElement {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(textScale,textScale,0);
-        if(wrapText){
-            for (FormattedCharSequence charSequence : font.split(text,getWidth())){
-                renderCharSequence(guiGraphics,charSequence);
-                guiGraphics.pose().translate(0,font.lineHeight,0);
-            }
+        guiGraphics.pose().translate(0,getTextStartHeight(font.split(text,getWidth()).size()),0);
+
+        for (FormattedCharSequence charSequence : font.split(text,getWidth())){
+            renderCharSequence(guiGraphics,charSequence);
+            guiGraphics.pose().translate(0,font.lineHeight,0);
         }
+
+        guiGraphics.pose().popPose();
+
 
     }
 
@@ -66,8 +101,7 @@ public class EasyLabel extends RenderableElement {
     public int getHeight() {
         int newHeight = 0;
         if(fitHeight){
-            if(!wrapText) newHeight =  font.lineHeight;
-            else newHeight=  font.split(text,getWidth()).size()*font.lineHeight;
+            newHeight=  font.split(text,getWidth()).size()*font.lineHeight;
         }else newHeight =  super.getHeight();
         if(useMaxHeight){
             return Math.min(newHeight,maxHeight);
@@ -79,7 +113,9 @@ public class EasyLabel extends RenderableElement {
     public int getWidth() {
         int newWidth = 0;
         if(fitWidth){
-            newWidth = font.width(text);
+            for(FormattedCharSequence sequence : font.split(text,Integer.MAX_VALUE)){
+                if(font.width(sequence) > newWidth) newWidth = font.width(sequence);
+            }
         } else newWidth = super.getWidth();
         if(useMaxWidth){
             return Math.min(newWidth,maxWidth);
@@ -100,7 +136,7 @@ public class EasyLabel extends RenderableElement {
     @Override
     public void setWidth(int width) {
         super.setWidth(width);
-        fitWidth = true;
+        fitWidth = false;
     }
 
     public void setMaxHeight(int maxHeight) {
@@ -110,7 +146,7 @@ public class EasyLabel extends RenderableElement {
 
     public void setMaxWidth(int maxWidth) {
         this.maxWidth = maxWidth;
-        useMaxWidth = false;
+        useMaxWidth = true;
     }
 
     public void setUseMaxHeight(boolean use){
@@ -127,7 +163,11 @@ public class EasyLabel extends RenderableElement {
     public void setFitHeight(boolean fit){
         this.fitHeight =fit;
     }
-    public void setWrapText(boolean wrap){
-        wrapText=wrap;
+    public void setTextScale(float scale) {
+        this.textScale = scale;
+    }
+
+    public void setText(Component text) {
+        this.text = text;
     }
 }

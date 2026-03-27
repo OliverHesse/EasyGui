@@ -145,11 +145,13 @@ public class UIFrame {
     public void run(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
         guiGraphics.pose().pushPose();
         guiGraphics.pose().mulPose(getBaseTransform());
-
+        System.out.println("getting hovered element");
         highestPriorityHoveredElement =  root.getHighestPriorityChildWithBoundedPoint(guiGraphics,mouseX,mouseY);
 
+        System.out.println("running root");
         if(root != null) root.run(guiGraphics,mouseX,mouseY,partialTick);
         guiGraphics.pose().popPose();
+        //TODO run tooltip
     }
     //todo
     public boolean renderItemTooltip(GuiGraphics guiGraphics, AbstractContainerScreen<?> screen, int x, int y){

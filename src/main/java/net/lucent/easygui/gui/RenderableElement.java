@@ -9,6 +9,7 @@ import net.lucent.easygui.gui.layout.transform.Transform;
 import net.lucent.easygui.gui.listeners.IEasyEventListener;
 import net.lucent.easygui.util.BoundChecker;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.world.phys.Vec2;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -97,15 +98,32 @@ public class RenderableElement {
         Vec2 mousePos = new Vec2((float) x,(float)y);
         return mousePos.x > p1.x && mousePos.y > p1.y && mousePos.x < p2.x && mousePos.y < p2.y;
     }
+
     public boolean isFullyCulled(GuiGraphics guiGraphics){
+        return false;
+        /*TODO fix
         Vec2 point1 = getGlobalPoint();
         Vec2 point2 = getGlobalCornerPoint();
 
+        ScreenRectangle rectangle =  guiGraphics.scissorStack.stack.peek();
         boolean corner1 = guiGraphics.containsPointInScissor((int) point1.x, (int) point1.y);
         boolean corner2 = guiGraphics.containsPointInScissor((int) point1.x, (int) point2.y);
         boolean corner3 = guiGraphics.containsPointInScissor((int) point2.x, (int) point2.y);
         boolean corner4 = guiGraphics.containsPointInScissor((int) point2.x, (int) point1.y);
-        return corner1 || corner2 || corner3 || corner4;
+        boolean allCornersNotVisible = !corner1 && !corner2 && !corner3 && !corner4;
+
+        if(!allCornersNotVisible) return false;
+
+        if(rectangle == null) return false;
+        return !(
+                (point1.x < rectangle.left() && point2.x > rectangle.right()) &&2
+                        (point1.y < rectangle.top() && point2.y > rectangle.bottom())
+                );
+
+
+         */
+
+
     }
     //================= TRANSFORMATION MATRICES ===================
     public  Positioning getPositioning(){return positioning;}
@@ -194,6 +212,9 @@ public class RenderableElement {
         return cull;
     }
     //================= SETTERS =======================
+    public void setParent(RenderableElement parent){
+        this.parent = parent;
+    }
     public void setUiFrame(UIFrame frame){this.uiFrame=frame;}
     public void setActive(boolean active){this.active = active;}
     public void setVisible(boolean visible){this.visible =visible;}
@@ -244,13 +265,16 @@ public class RenderableElement {
     protected void run(GuiGraphics guiGraphics,int mouseX,int mouseY, float partialTick){
         clearChildAdditionBuffer();
         clearChildRemovalBuffer();
+
         if(!isActive()) return;
         guiGraphics.pose().pushPose();
         guiGraphics.pose().mulPose(getPositioningMatrix());
-
         guiGraphics.pose().mulPose(getTransformMatrix());
+
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
-        setVisible(isFullyCulled(guiGraphics));
+
+        setVisible(!isFullyCulled(guiGraphics));
+
         if(!isVisible()) return;
 
         guiGraphics.pose().translate(0,0,getZIndex());
@@ -308,7 +332,7 @@ public class RenderableElement {
     }
 
     public void addChild(RenderableElement element){
-        element.parent = this;
+        element.setParent(this);
         childAdditionBuffer.add(element);
     }
     public void clearChildAdditionBuffer(){

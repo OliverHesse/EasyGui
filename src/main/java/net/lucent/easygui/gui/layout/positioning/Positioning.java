@@ -103,13 +103,14 @@ public class Positioning {
     //========================= Position Matrix ===========================
     public void updatePositionMatrix(){
         //make sure to update rawCoordinates
+        System.out.println("trying to update Raw coords");
         updateRawCoordinates();
-
+        System.out.println("getting position maxtrix");
         //get the context matrix
         Matrix4f contextMatrix = context.getPositioningContextMatrix(element);
 
         positionMatrix = contextMatrix.translate(rawX,rawY,0);
-
+        System.out.println("sending event");
         initiateEvent();
     }
 

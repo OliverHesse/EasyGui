@@ -33,10 +33,10 @@ public class EasyDraggableElement extends RenderableElement {
 
     public void mouseDragEvent(EasyEvent event){
         if(!(event instanceof EasyMouseEvent easyMouseEvent)) return; //make sure the right event was called (should always be this but double check)
-        if(!isHovered()) return;
-        if(isHovered() && isPressed()){
 
-            Vec2 point = globalToLocalPoint((float) (easyMouseEvent.getMouseX()+ easyMouseEvent.getDragX()),(float)(easyMouseEvent.getMouseY()+easyMouseEvent.getDragY()));
+        if(isPressed()){
+
+            Vec2 point = globalToLocalPoint((float) (easyMouseEvent.getMouseX()),(float)(easyMouseEvent.getMouseY()));
 
             getPositioning().setX((int) ((point.x-clickedMouseX)+getPositioning().getX()));
             getPositioning().setY((int) ((point.y-clickedMouseY)+getPositioning().getY()));
@@ -48,10 +48,7 @@ public class EasyDraggableElement extends RenderableElement {
     public void mouseMoveEvent(EasyEvent event){
         if(!(event instanceof EasyMouseEvent easyMouseEvent)) return; //make sure the right event was called (should always be this but double check)
         setHovered(easyMouseEvent.getTarget() == this); //the target of these events is the highest priority ordered element
-        if(isPressed() && !isHovered()){
-            setZIndex(10);
-            setPressed(false); //if mouse moves away and was being pressed unPress
-        }
+
 
 
     }

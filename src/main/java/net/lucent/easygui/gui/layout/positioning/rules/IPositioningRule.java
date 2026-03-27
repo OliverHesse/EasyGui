@@ -3,6 +3,9 @@ package net.lucent.easygui.gui.layout.positioning.rules;
 import net.lucent.easygui.gui.RenderableElement;
 
 public interface IPositioningRule {
+
+
+
     /**
      *
      * @param rawX x value transformed using PositioningRule.START
