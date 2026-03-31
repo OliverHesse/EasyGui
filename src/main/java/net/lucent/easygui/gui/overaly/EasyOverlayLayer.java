@@ -22,6 +22,7 @@ import java.awt.event.MouseEvent;
 
 //TODO by default cannot detect screen resize
 //TODO add all events
+//TODO add mouse move events since i can tell mc to "release mouse"
 public class EasyOverlayLayer implements IEasyScreen, LayeredDraw.Layer {
 
     private  UIFrame frame;
@@ -85,6 +86,7 @@ public class EasyOverlayLayer implements IEasyScreen, LayeredDraw.Layer {
             return;
         }
         getUIFrame().mouseReleased(mouseX,mouseY,event.getButton());
+
     }
     public void onInputEvent(InputEvent.Key keyEvent){
         if(keyEvent.getAction() == InputConstants.PRESS){
@@ -97,9 +99,16 @@ public class EasyOverlayLayer implements IEasyScreen, LayeredDraw.Layer {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
 
         if((type == EasyOverlayType.GAME && Minecraft.getInstance().player != null) || type == EasyOverlayType.TITLE_MENU){
+            Minecraft mc = Minecraft.getInstance();
+            double scale = mc.getWindow().getGuiScale();
+
+            getUIFrame().mouseMoved(mc.mouseHandler.xpos()/scale,mc.mouseHandler.ypos()/scale);
+
             getUIFrame().run(guiGraphics,mouseX,mouseY,partialTick);
         }
     }
+
+
 
     @Override
     public void setUIFrame(UIFrame frame) {
