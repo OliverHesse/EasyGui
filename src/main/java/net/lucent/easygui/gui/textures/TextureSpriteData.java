@@ -41,6 +41,16 @@ public class TextureSpriteData implements ITextureData{
         guiGraphics.blitSprite(textureSprite,0,0,getWidth(),getHeight());
     }
 
+    @Override
+    public void renderAt(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blitSprite(textureSprite,x,y,getWidth(),getHeight());
+    }
+
+    @Override
+    public void renderAt(GuiGraphics guiGraphics, int x, int y, int widthOverride, int heightOverride) {
+        guiGraphics.blitSprite(textureSprite,x,y,widthOverride,heightOverride);
+    }
+
     public void render(GuiGraphics guiGraphics,int width,int height) {
         guiGraphics.blitSprite(textureSprite,0,0,width,height);
     }

@@ -49,7 +49,7 @@ public class EasyMouseEvent extends EasyEvent {
         return MouseScrollEvent(target,mouseX,mouseY,deltaX,deltaY,false);
     }
     public static EasyMouseEvent MouseScrollEvent(RenderableElement target,double mouseX,double mouseY,double deltaX,double deltaY,boolean global){
-        String event = global ? EasyEvents.GLOBAL_MOUSE_UP_EVENT : EasyEvents.MOUSE_UP_EVENT;
+        String event = global ? EasyEvents.GLOBAL_MOUSE_SCROLL_EVENT : EasyEvents.MOUSE_SCROLL_EVENT;
         return new EasyMouseEvent(target,event,mouseX,mouseY,0,deltaX,deltaY,0,0);
     }
     public EasyMouseEvent(RenderableElement target, String event, double mouseX, double mouseY,  int button,double deltaX, double deltaY, double dragX, double dragY) {

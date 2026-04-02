@@ -12,4 +12,9 @@ public interface ITextureData {
     int getHeight();
 
     void render(GuiGraphics guiGraphics);
+    void render(GuiGraphics guiGraphics,int widthOverride,int heightOverride);
+    void renderAt(GuiGraphics guiGraphics,int x, int y);
+    void renderAt(GuiGraphics guiGraphics,int x,int y, int widthOverride,int heightOverride);
+
+
 }

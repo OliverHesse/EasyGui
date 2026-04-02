@@ -38,8 +38,20 @@ public record TextureDataSubsection(
         guiGraphics.blit(texture,0,0,u,v,getWidth(),getHeight(),getTextureWidth(),getTextureHeight());
 
     }
-    public void render(GuiGraphics guiGraphics, int widthOverride,int heightOverride){
-        guiGraphics.blit(texture,0,0,u,v,u+widthOverride,v+heightOverride,getTextureWidth(),getTextureHeight());
 
+    @Override
+    public void renderAt(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blit(texture,x,y,0,0,getTextureWidth(),getTextureHeight(),getTextureWidth(),getTextureHeight());
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int widthOverride, int heightOverride){
+        guiGraphics.blit(texture,0,0,u,v,widthOverride,heightOverride,getTextureWidth(),getTextureHeight());
+
+    }
+
+    @Override
+    public void renderAt(GuiGraphics guiGraphics, int x, int y, int widthOverride, int heightOverride) {
+        guiGraphics.blit(texture,x,y,0,0,widthOverride,heightOverride,getTextureWidth(),getTextureHeight());
     }
 }

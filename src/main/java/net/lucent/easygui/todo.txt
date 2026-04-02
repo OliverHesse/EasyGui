@@ -1,4 +1,4 @@
-- edit IPositioningRules to only have getCoordinate instead of separate for x and y
 - edit isPointBoundedByToCheck if point is in a cull region or not
 - store and create cull regions through UIFrame so i can use them for hover checks
 - potential add positioning origin (e.g where in element local space should it be positioned relative too)
+- add a onOpen and onClose or onRemove to elements so they can react to the menu being closed

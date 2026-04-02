@@ -31,6 +31,21 @@ public record TextureData(ResourceLocation textureLocation,int textureWidth,int 
 
     @Override
     public void render(GuiGraphics guiGraphics) {
-        guiGraphics.blit(textureLocation,0,0,0,0,getTextureHeight(),getTextureHeight(),getTextureHeight(),getTextureHeight());
+        guiGraphics.blit(textureLocation,0,0,0,0,getTextureWidth(),getTextureHeight(),getTextureWidth(),getTextureHeight());
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int widthOverride, int heightOverride) {
+        guiGraphics.blit(textureLocation,0,0,0,0,widthOverride,heightOverride,getTextureWidth(),getTextureHeight());
+    }
+
+    @Override
+    public void renderAt(GuiGraphics guiGraphics, int x, int y){
+        guiGraphics.blit(textureLocation,x,y,0,0,getTextureWidth(),getTextureHeight(),getTextureWidth(),getTextureHeight());
+    }
+
+    @Override
+    public void renderAt(GuiGraphics guiGraphics, int x, int y, int widthOverride, int heightOverride) {
+        guiGraphics.blit(textureLocation,x,y,0,0,widthOverride,heightOverride,getTextureWidth(),getTextureHeight());
     }
 }
