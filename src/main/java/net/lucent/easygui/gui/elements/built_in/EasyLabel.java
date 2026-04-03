@@ -84,7 +84,8 @@ public class EasyLabel extends RenderableElement {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         guiGraphics.pose().pushPose();
         guiGraphics.pose().scale(textScale,textScale,0);
-        guiGraphics.pose().translate(0,getTextStartHeight(font.split(text,getWidth()).size()),0);
+        //TODO set up such that if we have fixed size dont scale with text, otherwise scale with text
+        guiGraphics.pose().translate(0,getTextStartHeight(font.split(text,(int)(getWidth()/textScale)).size())/textScale,0);
 
         for (FormattedCharSequence charSequence : font.split(text,getWidth())){
             renderCharSequence(guiGraphics,charSequence);
