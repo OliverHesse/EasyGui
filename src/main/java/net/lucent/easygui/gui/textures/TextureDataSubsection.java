@@ -41,7 +41,7 @@ public record TextureDataSubsection(
 
     @Override
     public void renderAt(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(texture,x,y,0,0,getTextureWidth(),getTextureHeight(),getTextureWidth(),getTextureHeight());
+        guiGraphics.blit(texture,x,y,u,v,getWidth(),getHeight(),getTextureWidth(),getTextureHeight());
     }
 
     @Override
@@ -52,6 +52,6 @@ public record TextureDataSubsection(
 
     @Override
     public void renderAt(GuiGraphics guiGraphics, int x, int y, int widthOverride, int heightOverride) {
-        guiGraphics.blit(texture,x,y,0,0,widthOverride,heightOverride,getTextureWidth(),getTextureHeight());
+        guiGraphics.blit(texture,x,y,u,v,widthOverride,heightOverride,getTextureWidth(),getTextureHeight());
     }
 }
