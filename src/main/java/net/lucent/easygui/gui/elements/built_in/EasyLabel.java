@@ -49,19 +49,19 @@ public class EasyLabel extends RenderableElement {
     public int getTextX(FormattedCharSequence charSequence){
         if(textPositioningX == TextPositionRule.START) return 0;
         else if(textPositioningX == TextPositionRule.CENTER){
-            return getWidth()/2- font.width(charSequence)/2;
+            return getWidth()/2- getWidth(charSequence)/2;
         }
         else{
-            return getWidth()-font.width(charSequence);
+            return getWidth()-getWidth(charSequence);
         }
     }
     public int getTextStartHeight(int lines){
         if(textPositioningX == TextPositionRule.START) return 0;
         else if(textPositioningX == TextPositionRule.CENTER){
-            return getHeight()/2- lines*font.lineHeight/2;
+            return (int) (getHeight()/2- lines*getLineHeight()/2);
         }
         else{
-            return getWidth()-lines*font.lineHeight;
+            return (int) (getHeight()-lines*getLineHeight());
         }
     }
     public void setTextPositioningX(TextPositionRule textPositioningX) {
@@ -74,6 +74,7 @@ public class EasyLabel extends RenderableElement {
     public void renderCharSequence(GuiGraphics guiGraphics, FormattedCharSequence charSequence){
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(getTextX(charSequence),0,0);
+        guiGraphics.pose().scale(textScale,textScale,1);
         guiGraphics.drawString(font,charSequence,0,0,0xFF000000,false);
         guiGraphics.pose().popPose();
 
@@ -82,15 +83,15 @@ public class EasyLabel extends RenderableElement {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().scale(textScale,textScale,0);
-        //TODO set up such that if we have fixed size dont scale with text, otherwise scale with text
-        guiGraphics.pose().translate(0,getTextStartHeight(font.split(text,(int)(getWidth()/textScale)).size())/textScale,0);
+
+        //move to first line render position
+        guiGraphics.pose().translate(0,getTextStartHeight(font.split(text,getWidth()).size()),0);
 
         for (FormattedCharSequence charSequence : font.split(text,getWidth())){
             renderCharSequence(guiGraphics,charSequence);
-            guiGraphics.pose().translate(0,font.lineHeight,0);
+            guiGraphics.pose().translate(0,getLineHeight(),0);
         }
+
 
         guiGraphics.pose().popPose();
 
@@ -102,7 +103,7 @@ public class EasyLabel extends RenderableElement {
     public int getHeight() {
         int newHeight = 0;
         if(fitHeight){
-            newHeight=  font.split(text,getWidth()).size()*font.lineHeight;
+            newHeight= (int) (font.split(text,getWidth()).size()*getLineHeight());
         }else newHeight =  super.getHeight();
         if(useMaxHeight){
             return Math.min(newHeight,maxHeight);
@@ -110,18 +111,29 @@ public class EasyLabel extends RenderableElement {
         return newHeight;
     }
 
+    /**
+     *
+     * @return the dimensions of the container around the text
+     */
     @Override
     public int getWidth() {
         int newWidth = 0;
         if(fitWidth){
             for(FormattedCharSequence sequence : font.split(text,Integer.MAX_VALUE)){
-                if(font.width(sequence) > newWidth) newWidth = font.width(sequence);
+                if(font.width(sequence)*textScale > newWidth) newWidth = getWidth(sequence);
             }
         } else newWidth = super.getWidth();
         if(useMaxWidth){
             return Math.min(newWidth,maxWidth);
         }
         return newWidth;
+    }
+
+    public int getLineHeight(){
+        return (int) (font.lineHeight*textScale);
+    }
+    public int getWidth(FormattedCharSequence charSequence){
+        return (int) (font.width(charSequence)*textScale);
     }
 
     //======================= SETTERS =======================
