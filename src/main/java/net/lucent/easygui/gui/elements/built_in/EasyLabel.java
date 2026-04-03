@@ -13,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
 
+import java.util.Collection;
+
 /*
     split into 2 elements essentially, the container, and the text
     you can set the container to always match the text,
@@ -85,9 +87,9 @@ public class EasyLabel extends RenderableElement {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
         //move to first line render position
-        guiGraphics.pose().translate(0,getTextStartHeight(font.split(text,getWidth()).size()),0);
+        guiGraphics.pose().translate(0,getTextStartHeight(getLines().size()),0);
 
-        for (FormattedCharSequence charSequence : font.split(text,getWidth())){
+        for (FormattedCharSequence charSequence : getLines()){
             renderCharSequence(guiGraphics,charSequence);
             guiGraphics.pose().translate(0,getLineHeight(),0);
         }
@@ -103,7 +105,7 @@ public class EasyLabel extends RenderableElement {
     public int getHeight() {
         int newHeight = 0;
         if(fitHeight){
-            newHeight= (int) (font.split(text,getWidth()).size()*getLineHeight());
+            newHeight= getLines().size()*getLineHeight());
         }else newHeight =  super.getHeight();
         if(useMaxHeight){
             return Math.min(newHeight,maxHeight);
@@ -135,7 +137,9 @@ public class EasyLabel extends RenderableElement {
     public int getWidth(FormattedCharSequence charSequence){
         return (int) (font.width(charSequence)*textScale);
     }
-
+    public Collection<FormattedCharSequence> getLines(){
+        return font.split(text,(int)(getWidth()/textScale));
+    }
     //======================= SETTERS =======================
 
 
