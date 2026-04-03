@@ -85,7 +85,7 @@ public class EasyLabel extends RenderableElement {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-
+        guiGraphics.pose().pushPose();
         //move to first line render position
         guiGraphics.pose().translate(0,getTextStartHeight(getLines().size()),0);
 
