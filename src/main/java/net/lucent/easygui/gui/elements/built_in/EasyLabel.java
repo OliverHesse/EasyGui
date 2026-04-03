@@ -105,7 +105,7 @@ public class EasyLabel extends RenderableElement {
     public int getHeight() {
         int newHeight = 0;
         if(fitHeight){
-            newHeight= getLines().size()*getLineHeight());
+            newHeight= getLines().size()*getLineHeight();
         }else newHeight =  super.getHeight();
         if(useMaxHeight){
             return Math.min(newHeight,maxHeight);
