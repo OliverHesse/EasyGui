@@ -34,12 +34,19 @@ public class EasyOverlayHandler {
         }
 
     }
+
     @SubscribeEvent
     public static void onRenderGuiLayer(RenderGuiLayerEvent.Pre event){
         if(vanillaOverrides.containsKey(event.getName())){
             event.setCanceled(true);
             vanillaOverrides.get(event.getName()).render(event.getGuiGraphics(),event.getPartialTick());
         }
+    }
+
+    public UIFrame getFrame(ResourceLocation layer){
+        if(vanillaOverrides.containsKey(layer)) return vanillaOverrides.get(layer).getUIFrame();
+        if(customOverlays.containsKey(layer)) return customOverlays.get(layer).frame;
+        return null;
     }
 
 }

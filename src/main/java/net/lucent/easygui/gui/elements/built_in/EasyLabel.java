@@ -11,6 +11,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.util.FormattedCharSequence;
 
 import java.util.Collection;
@@ -42,6 +43,7 @@ public class EasyLabel extends RenderableElement {
 
     private Font font = Minecraft.getInstance().font;
 
+    private int color = 0xFF000000;
     public EasyLabel(UIFrame frame) {
         super(frame);
         setShouldCull(true);
@@ -77,7 +79,7 @@ public class EasyLabel extends RenderableElement {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(getTextX(charSequence),0,0);
         guiGraphics.pose().scale(textScale,textScale,1);
-        guiGraphics.drawString(font,charSequence,0,0,0xFF000000,false);
+        guiGraphics.drawString(font,charSequence,0,0,color,false);
         guiGraphics.pose().popPose();
 
     }
@@ -140,9 +142,11 @@ public class EasyLabel extends RenderableElement {
     public Collection<FormattedCharSequence> getLines(){
         return font.split(text,(int)(getWidth()/textScale));
     }
+    public int getTextColor(){return color;}
     //======================= SETTERS =======================
 
-
+    public void setTextColor(int color){this.color = color;}
+    public void setTextColor(ColorRGBA color){this.color = color.rgba();}
 
     @Override
     public void setHeight(int height) {
