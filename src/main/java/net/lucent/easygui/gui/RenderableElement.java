@@ -344,6 +344,7 @@ public class RenderableElement {
         for(RenderableElement element : childRemovalBuffer){
             element.onRemove();
             element.removeChildren();
+            children.remove(element);
         }
         childRemovalBuffer.clear();
     }
