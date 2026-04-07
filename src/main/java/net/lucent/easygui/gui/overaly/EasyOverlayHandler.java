@@ -43,7 +43,7 @@ public class EasyOverlayHandler {
         }
     }
 
-    public UIFrame getFrame(ResourceLocation layer){
+    public static UIFrame getFrame(ResourceLocation layer){
         if(vanillaOverrides.containsKey(layer)) return vanillaOverrides.get(layer).getUIFrame();
         if(customOverlays.containsKey(layer)) return customOverlays.get(layer).frame;
         return null;
