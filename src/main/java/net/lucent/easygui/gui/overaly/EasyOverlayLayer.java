@@ -55,7 +55,14 @@ public class EasyOverlayLayer implements IEasyScreen, LayeredDraw.Layer {
             oldWidth = width;
             oldHeight = height;
         }
-        frame.run(guiGraphics, (int) handler.xpos(), (int) handler.ypos(),deltaTracker.getGameTimeDeltaTicks());
+        double scale = Minecraft.getInstance().getWindow().getGuiScale();
+
+        getUIFrame().mouseMoved(Minecraft.getInstance().mouseHandler.xpos()/scale,Minecraft.getInstance().mouseHandler.ypos()/scale);
+
+        getUIFrame().run(
+                guiGraphics,
+                (int) (Minecraft.getInstance().mouseHandler.xpos()/scale), (int) (Minecraft.getInstance().mouseHandler.ypos()/scale),
+                deltaTracker.getGameTimeDeltaTicks());
     }
 
     @SubscribeEvent
@@ -96,17 +103,7 @@ public class EasyOverlayLayer implements IEasyScreen, LayeredDraw.Layer {
         }
     }
 
-    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick){
 
-        if((type == EasyOverlayType.GAME && Minecraft.getInstance().player != null) || type == EasyOverlayType.TITLE_MENU){
-            Minecraft mc = Minecraft.getInstance();
-            double scale = mc.getWindow().getGuiScale();
-
-            getUIFrame().mouseMoved(mc.mouseHandler.xpos()/scale,mc.mouseHandler.ypos()/scale);
-
-            getUIFrame().run(guiGraphics,mouseX,mouseY,partialTick);
-        }
-    }
 
 
 
