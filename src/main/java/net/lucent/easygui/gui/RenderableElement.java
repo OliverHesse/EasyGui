@@ -51,7 +51,7 @@ public class RenderableElement {
         positioning =  new Positioning(PositioningContexts.ABSOLUTE, PositioningRules.START,this);
         transform  = new Transform(this);
         addEventListener(EasyEvents.FRAME_DIMENSIONS_CHANGE_EVENT,(easyEvent)->{
-            System.out.println("event resize revcieved");
+
             positioning.updatePositionMatrix();
         });
     }
