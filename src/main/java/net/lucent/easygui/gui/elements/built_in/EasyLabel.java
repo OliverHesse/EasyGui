@@ -20,6 +20,7 @@ import java.util.Collection;
     split into 2 elements essentially, the container, and the text
     you can set the container to always match the text,
     OR you can set the container and then set up different positioning sand scale for the text
+    TODO add a scale to fit for text scale
  */
 public class EasyLabel extends RenderableElement {
     public enum TextPositionRule{
@@ -60,8 +61,8 @@ public class EasyLabel extends RenderableElement {
         }
     }
     public int getTextStartHeight(int lines){
-        if(textPositioningX == TextPositionRule.START) return 0;
-        else if(textPositioningX == TextPositionRule.CENTER){
+        if(textPositioningY == TextPositionRule.START) return 0;
+        else if(textPositioningY == TextPositionRule.CENTER){
             return (int) (getHeight()/2- lines*getLineHeight()/2);
         }
         else{

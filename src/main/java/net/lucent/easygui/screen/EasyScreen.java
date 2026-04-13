@@ -89,6 +89,11 @@ public class EasyScreen extends Screen implements IEasyScreen{
     }
 
     @Override
+    public boolean isPauseScreen() {
+        return getUIFrame().shouldPauseGame();
+    }
+
+    @Override
     public UIFrame getUIFrame() {
         return frame;
     }

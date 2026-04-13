@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UIFrame {
-
+    private boolean pauseGame;
     private RenderableElement root;
     private EasyTooltip tooltip;
 
@@ -101,9 +101,13 @@ public class UIFrame {
     public void setCarriedItemSlot(String id){
         this.carriedItemSlot = id;
     }
-    public void setRoot(RenderableElement element){
+    public void setRoot(RenderableElement element) {
+        if(root != null){
+            removeElementFromIdAndClasses(getRoot());
+        }
         root = element;
     }
+    public void setPauseGame(boolean pause){this.pauseGame = pause;}
     public void setTooltip(EasyTooltip tooltip){this.tooltip = tooltip;}
     public void createTooltipAtPosWithScale(int x,int y,float scale){
         tooltip.getTransform().setScale(scale);
@@ -115,6 +119,7 @@ public class UIFrame {
     public RenderableElement getRoot(){return root;}
     public EasyTooltip getTooltip(){return tooltip;}
     public boolean isUsingMinecraftScale(){return this.useMinecraftScale;}
+    public boolean shouldPauseGame(){return this.pauseGame;}
 
     public int getHeight(){
         return isUsingMinecraftScale() ? Minecraft.getInstance().getWindow().getGuiScaledHeight() : Minecraft.getInstance().getWindow().getHeight();

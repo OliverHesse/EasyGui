@@ -20,6 +20,8 @@ import java.util.List;
 
 public class RenderableElement {
 
+
+
     private Positioning positioning;
     private Transform transform;
     private RenderableElement parent;
@@ -181,7 +183,6 @@ public class RenderableElement {
     }
     public boolean isActive(){return this.active;}
     public boolean isVisible(){return this.visible;}
-
 
     public int getTotalZIndex(){
         RenderableElement element = getParent();

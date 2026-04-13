@@ -150,4 +150,9 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
     public void setUIFrame(UIFrame frame) {
         this.frame = frame;
     }
+
+    @Override
+    public boolean isPauseScreen() {
+        return getUIFrame().shouldPauseGame();
+    }
 }
