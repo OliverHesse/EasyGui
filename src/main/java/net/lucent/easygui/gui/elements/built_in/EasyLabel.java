@@ -21,6 +21,11 @@ import java.util.Collection;
     you can set the container to always match the text,
     OR you can set the container and then set up different positioning sand scale for the text
     TODO add a scale to fit for text scale
+    if scale to fit is true everytime width,height, text or text scale is changed update
+    for now this will only apply to "natural format" so font.split() will use INF width
+    we then check if the max line length is larger than width, and calc the change needed to fit
+    For now will only work for width not height
+    for width it will work when auto wrapped lines go outside of width bounds
  */
 public class EasyLabel extends RenderableElement {
     public enum TextPositionRule{
@@ -39,6 +44,8 @@ public class EasyLabel extends RenderableElement {
     private boolean useMaxHeight = false;
     private int maxWidth;
     private boolean useMaxWidth = false;
+
+    private boolean scaleToFit = false;
 
     private Component text;
 
@@ -71,6 +78,19 @@ public class EasyLabel extends RenderableElement {
             return (int) (getHeight()-lines*getLineHeight());
         }
     }
+
+    public boolean isScaleToFit(){return scaleToFit;}
+    public void setScaleToFit(boolean state){scaleToFit=state;}
+    public void updateScale(){
+        if(!isScaleToFit())return;
+        Collection<FormattedCharSequence> lines = font.split(text,Integer.MAX_VALUE);
+        int maxWidth = 0;
+        for(FormattedCharSequence line:lines){
+            if(font.width(line) > maxWidth) maxWidth = font.width(line);
+        }
+        if(maxWidth > getWidth())setTextScale((float) getWidth()/maxWidth);
+    }
+
     public void setTextPositioningX(TextPositionRule textPositioningX) {
         this.textPositioningX = textPositioningX;
     }
@@ -168,12 +188,14 @@ public class EasyLabel extends RenderableElement {
     public void setHeight(int height) {
         super.setHeight(height);
         fitHeight = false;
+        updateScale();
     }
 
     @Override
     public void setWidth(int width) {
         super.setWidth(width);
         fitWidth = false;
+        updateScale();
     }
 
     public void setMaxHeight(int maxHeight) {
@@ -202,9 +224,11 @@ public class EasyLabel extends RenderableElement {
     }
     public void setTextScale(float scale) {
         this.textScale = scale;
+        updateScale();
     }
 
     public void setText(Component text) {
         this.text = text;
+        updateScale();
     }
 }
