@@ -51,6 +51,8 @@ public class EasyLabel extends RenderableElement {
 
     }
 
+
+
     public int getTextX(FormattedCharSequence charSequence){
         if(textPositioningX == TextPositionRule.START) return 0;
         else if(textPositioningX == TextPositionRule.CENTER){
@@ -76,6 +78,13 @@ public class EasyLabel extends RenderableElement {
         this.textPositioningY=textPositioningY;
     }
 
+    public void setFont(Font font){
+        this.font = font;
+    }
+    public Font getFont(){
+        return this.font;
+    }
+
     public void renderCharSequence(GuiGraphics guiGraphics, FormattedCharSequence charSequence){
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(getTextX(charSequence),0,0);
@@ -83,6 +92,12 @@ public class EasyLabel extends RenderableElement {
         guiGraphics.drawString(font,charSequence,0,0,color,false);
         guiGraphics.pose().popPose();
 
+    }
+
+    @Override
+    public void renderTick(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.renderTick(guiGraphics, mouseX, mouseY, partialTick);
+        if(getFont() == null) setFont(Minecraft.getInstance().font);
     }
 
     @Override

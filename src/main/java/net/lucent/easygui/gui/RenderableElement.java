@@ -366,6 +366,7 @@ public class RenderableElement {
     public List<RenderableElement> getPriorityOrderedChildren(){
         List<RenderableElement> orderedList = new ArrayList<>();
         for (RenderableElement element : getChildren()){
+            if(!element.isActive()) continue;
             //try insert into list
             if(orderedList.isEmpty()) {
                 orderedList.add(element);
