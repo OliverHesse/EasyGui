@@ -88,7 +88,7 @@ public class EasyLabel extends RenderableElement {
         for(FormattedCharSequence line:lines){
             if(font.width(line) > maxWidth) maxWidth = font.width(line);
         }
-        if(maxWidth > getWidth())setTextScale((float) getWidth()/maxWidth);
+        if(maxWidth > getWidth())textScale = (float) getWidth()/maxWidth;
     }
 
     public void setTextPositioningX(TextPositionRule textPositioningX) {
