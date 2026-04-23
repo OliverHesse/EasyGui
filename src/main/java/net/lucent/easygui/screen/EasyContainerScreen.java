@@ -38,7 +38,7 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
             guiGraphics.pose().popPose();
             return;
         }
-        super.renderSlot(guiGraphics, slot);
+
     }
 
     @Override
@@ -48,7 +48,7 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
             guiGraphics.pose().popPose();
             return;
         }
-        super.renderSlotHighlight(guiGraphics, slot, mouseX, mouseY, partialTick);
+
     }
 
     @Override
@@ -66,7 +66,7 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
             guiGraphics.pose().popPose();
             return;
         }
-        super.renderFloatingItem(guiGraphics, stack, x, y, text);
+
     }
 
     @Override
@@ -108,7 +108,7 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
         else if(menu.getCarried() != ItemStack.EMPTY && hoveredSlot != null && getUIFrame().hasRenderableLinkedToSlot(hoveredSlot.index)){
             getUIFrame().setCarriedItemSlot(hoveredSlot.index);
         }
-        return  super.mouseClicked(mouseX,mouseY,button) || result;
+        return super.mouseClicked(mouseX,mouseY,button) || result;
     }
 
     @Override
