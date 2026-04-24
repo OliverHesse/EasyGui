@@ -190,11 +190,7 @@ public class UIFrame {
             guiGraphics.pose().mulPose(element.getCompletePositioningMatrix());
             guiGraphics.pose().mulPose(element.getTransformMatrix());
             guiGraphics.pose().translate(0,0,element.getTotalZIndex());
-            if(!element.isVisible() || !element.isActive()){
-                guiGraphics.pose().popPose();
-                return false;
-            }
-            return true;
+            return element.isVisible() && element.isActive();
         }
         return false;
 
@@ -207,11 +203,7 @@ public class UIFrame {
             guiGraphics.pose().mulPose(element.getTransformMatrix());
 
             guiGraphics.pose().translate(0,0,element.getTotalZIndex());
-            if(!element.isVisible() || !element.isActive()){
-                guiGraphics.pose().popPose();
-                return false;
-            }
-            return true;
+            return element.isVisible() && element.isActive();
         }
         return false;
     }
@@ -222,7 +214,7 @@ public class UIFrame {
             guiGraphics.pose().translate(x,y,0);
             guiGraphics.pose().mulPose(renderable.getTransformMatrix());
             guiGraphics.pose().translate(0,0,renderable.getTotalZIndex());
-            return  false;
+            return  true;
         }
         return false;
     }

@@ -35,20 +35,18 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
     protected void renderSlot(GuiGraphics guiGraphics, Slot slot) {
         if(getUIFrame().renderItemSlot(guiGraphics,slot)){
             super.renderSlot(guiGraphics, slot);
-            guiGraphics.pose().popPose();
-            return;
-        }
 
+        }
+        guiGraphics.pose().popPose();
     }
 
     @Override
     protected void renderSlotHighlight(GuiGraphics guiGraphics, Slot slot, int mouseX, int mouseY, float partialTick) {
         if(getUIFrame().renderHoveredItemSlot(guiGraphics,slot,mouseX,mouseY,partialTick)){
             super.renderSlotHighlight(guiGraphics, slot, mouseX, mouseY, partialTick);
-            guiGraphics.pose().popPose();
-            return;
-        }
 
+        }
+        guiGraphics.pose().popPose();
     }
 
     @Override
@@ -61,11 +59,9 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
     @Override
     public void renderFloatingItem(GuiGraphics guiGraphics, ItemStack stack, int x, int y, String text) {
         if(getUIFrame().renderFloatingItem(guiGraphics,stack,x,y,text)){
-
             super.renderFloatingItem(guiGraphics, stack, 0, 0, text);
-            guiGraphics.pose().popPose();
-            return;
         }
+        guiGraphics.pose().popPose();
 
     }
 
