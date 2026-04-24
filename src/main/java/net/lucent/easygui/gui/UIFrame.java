@@ -214,7 +214,7 @@ public class UIFrame {
             guiGraphics.pose().translate(x,y,0);
             guiGraphics.pose().mulPose(renderable.getTransformMatrix());
             guiGraphics.pose().translate(0,0,renderable.getTotalZIndex());
-            return  true;
+            return true;
         }
         return false;
     }

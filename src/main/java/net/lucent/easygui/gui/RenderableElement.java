@@ -274,6 +274,8 @@ public class RenderableElement {
 
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
 
+        if(!isVisible()) return;
+
         setVisible(!isFullyCulled(guiGraphics));
 
         if(!isVisible()) return;

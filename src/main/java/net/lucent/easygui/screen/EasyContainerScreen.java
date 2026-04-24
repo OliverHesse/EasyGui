@@ -100,11 +100,12 @@ public class EasyContainerScreen<T extends AbstractContainerMenu> extends Abstra
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         boolean result = getUIFrame().mouseClicked(mouseX,mouseY,button);
+        boolean result2 =  super.mouseClicked(mouseX,mouseY,button);
         if(menu.getCarried() == ItemStack.EMPTY && getUIFrame().getCarriedItemSlot() != null ) getUIFrame().setCarriedItemSlot(null);
         else if(menu.getCarried() != ItemStack.EMPTY && hoveredSlot != null && getUIFrame().hasRenderableLinkedToSlot(hoveredSlot.index)){
             getUIFrame().setCarriedItemSlot(hoveredSlot.index);
         }
-        return super.mouseClicked(mouseX,mouseY,button) || result;
+        return result2 || result;
     }
 
     @Override
