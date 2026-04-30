@@ -2,3 +2,10 @@
 - store and create cull regions through UIFrame so i can use them for hover checks
 - potential add positioning origin (e.g where in element local space should it be positioned relative too)
 - add a onOpen and onClose or onRemove to elements so they can react to the menu being closed
+
+
+- add some sort of value sync on players?
+- so when a ui frame is generated, be it a menu, screen or overlay users can define a syncedDataInstance
+- this is stored on the server on the player, it links and ID(screen,menu or overlay) to a syncedDataInstance.
+- this way the server can do things like setData(id,val) and that is auto synced to the client which is auto read by the menu
+- this could be useful in a lot of scenarios where the player only needs the data for display purposes

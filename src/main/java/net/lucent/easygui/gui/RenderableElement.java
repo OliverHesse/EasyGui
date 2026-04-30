@@ -274,11 +274,9 @@ public class RenderableElement {
 
         renderTick(guiGraphics,mouseX,mouseY,partialTick);
 
-        if(!isVisible()) return;
-
-        setVisible(!isFullyCulled(guiGraphics));
-
-        if(!isVisible()) return;
+        if(!isVisible()){
+            guiGraphics.pose().popPose();
+        }
 
         guiGraphics.pose().translate(0,0,getZIndex());
         render(guiGraphics,mouseX,mouseY,partialTick);
