@@ -157,6 +157,7 @@ public class UIFrame {
         if(root != null) root.run(guiGraphics,mouseX,mouseY,partialTick);
         guiGraphics.pose().popPose();
         //TODO run tooltip
+        if(tooltip == null) return;
         tooltip.getPositioning().setX(mouseX);
         tooltip.getPositioning().setY(mouseY);
         tooltip.run(guiGraphics,mouseX,mouseY,partialTick);
