@@ -276,6 +276,7 @@ public class RenderableElement {
 
         if(!isVisible()){
             guiGraphics.pose().popPose();
+            return;
         }
 
         guiGraphics.pose().translate(0,0,getZIndex());
