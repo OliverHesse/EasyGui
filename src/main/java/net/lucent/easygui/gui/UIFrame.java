@@ -157,6 +157,9 @@ public class UIFrame {
         if(root != null) root.run(guiGraphics,mouseX,mouseY,partialTick);
         guiGraphics.pose().popPose();
         //TODO run tooltip
+        tooltip.getPositioning().setX(mouseX);
+        tooltip.getPositioning().setY(mouseY);
+        tooltip.run(guiGraphics,mouseX,mouseY,partialTick);
     }
     //todo
     public boolean renderItemTooltip(GuiGraphics guiGraphics, AbstractContainerScreen<?> screen, int x, int y){
