@@ -62,7 +62,8 @@ public class EventHandler {
     public static void runForAllChildren(EasyEvent event, UIFrame frame){
         RenderableElement root =  frame.getRoot();
         event.setEventPhase(EventPhase.AT_TARGET);
-        for(RenderableElement element : EventHelper.getAllElements(root)){
+        List<RenderableElement> elements = EventHelper.getAllElements(root);
+        for(RenderableElement element : elements){
             event.setCurrentElement(element);
             for(IEasyEventListener listener : event.getCurrentElement().getCaptureListeners(event.getEvent())){
                 listener.run(event);
