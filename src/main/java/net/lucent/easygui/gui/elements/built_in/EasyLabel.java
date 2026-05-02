@@ -91,10 +91,9 @@ public class EasyLabel extends RenderableElement {
 
         if(maxWidth > getWidth()){
             textScale = (float) getWidth()/maxWidth;
-            //should force it to fit inside height
-            if(fitHeight && getLineHeight()*lines.size() > getHeight()){
-                textScale = textScale * (float) getHeight()/(getLineHeight()*lines.size());
-            }
+        }
+        if(fitHeight && getLineHeight()*lines.size() > getHeight()){
+            textScale = Math.min(textScale * (float) getHeight()/(getLineHeight()*lines.size()),textScale);
         }
     }
 

@@ -13,7 +13,7 @@ public class EasyTooltip extends RenderableElement {
 
     public EasyTooltip(UIFrame frame) {
         super(frame);
-        setActive(false);
+        //setActive(false);
         getTransform().setUseScale(true);
     }
 
